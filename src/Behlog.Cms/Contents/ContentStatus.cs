@@ -1,4 +1,7 @@
 using System;
+using Behlog.Core;
+
+namespace Behlog.Cms;
 
 public class ContentStatus : Enumeration
 {
