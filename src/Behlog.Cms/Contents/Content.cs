@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Behlog.Core;
 using Behlog.Extensions;
+using Behlog.Cms.Events;
 
 namespace Behlog.Cms;
 
@@ -24,6 +25,7 @@ public class Content : AggregateRoot<Guid>
         OrderNum = args.OrderNum;
         Categories = args.Categories;
         //Publish CreatedEvent
+
 
     }
 
@@ -57,4 +59,47 @@ public class Content : AggregateRoot<Guid>
 
     #endregion
     
+    #region Events
+
+    private void publishCreatedEvent()
+    {
+        var e = new ContentCreatedEvent(
+            id: Id,
+            title: Title,
+            slug: Slug,
+            contetTypeId: ContentTypeId,
+            body: Body,
+            bodyType: BodyType,
+            authorUserId: AuthorUserId,
+            summary: Summary,
+            status: Status,
+            altTitle: AltTitle,
+            orderNum: OrderNum,
+            categories: Categories
+        );
+
+        //TODO : publish the event
+    }
+
+    private void publishUpdatedEvent() 
+    {
+        var e = new ContentUpdatedEvent(
+            id: Id,
+            title: Title,
+            slug: Slug,
+            contetTypeId: ContentTypeId,
+            body: Body,
+            bodyType: BodyType,
+            authorUserId: AuthorUserId,
+            summary: Summary,
+            status: Status,
+            altTitle: AltTitle,
+            orderNum: OrderNum,
+            categories: Categories
+        );
+
+        //TODO : publish the event
+    }
+
+    #endregion
 }
