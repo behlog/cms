@@ -21,7 +21,7 @@ public class Content : AggregateRoot<Guid>
         OrderNum = args.OrderNum;
 
         //Publish CreatedEvent
-        
+
     }
 
     #region Methods
@@ -35,7 +35,6 @@ public class Content : AggregateRoot<Guid>
         
         return content;
     }
-
 
     #endregion
 
