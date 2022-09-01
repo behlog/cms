@@ -3,9 +3,10 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Events;
 
-public class ContentCategoryCreatedEvent : DomainEvent 
+public class ContentCategoryUpdatedEvent : DomainEvent
 {
-    public ContentCategoryCreatedEvent(
+
+    public ContentCategoryUpdatedEvent(
         Guid id,
         string title,
         string altTitle,
