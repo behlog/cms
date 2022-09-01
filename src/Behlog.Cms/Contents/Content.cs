@@ -1,14 +1,15 @@
 using System;
+using Behlog.Core;
 
 namespace Behlog.Cms;
 
-public class Content 
+public class Content : AggregateRoot<Guid>
 {
      
-
     public static Content Create() {
-
-        return new();
+        var content = new Content();
+        content.Id = Guid.NewGuid();
+        return content;
     }
 
     #region Props
@@ -18,7 +19,8 @@ public class Content
     public Guid? ContentTypeId { get; }
     public string Body { get; }
     public string AuthorUserId { get; }
-
+    public string Summary { get; }
+    
     #endregion
     
 }

@@ -8,7 +8,7 @@
 
   <ItemGroup>
   <Reference Include="Behlog.Core">
-    <HintPath>../../../core/src/bin/Debug/net6.0/Behlog.Core.dll</HintPath>
+    <HintPath>../../../core/src/bin/Debug/net6.0/ref/Behlog.Core.dll</HintPath>
   </Reference>
 </ItemGroup>
 
