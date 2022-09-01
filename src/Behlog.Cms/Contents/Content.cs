@@ -22,7 +22,7 @@ public class Content : AggregateRoot<Guid>
         AuthorUserId = args.AuthorUserId;
         Summary = args.Summary;
         OrderNum = args.OrderNum;
-
+        Categories = args.Categories;
         //Publish CreatedEvent
 
     }
@@ -47,6 +47,7 @@ public class Content : AggregateRoot<Guid>
     public string Slug { get; }
     public Guid ContentTypeId { get; }
     public string Body { get; }
+    public ContentBodyType BodyType { get; }
     public string AuthorUserId { get; }
     public string Summary { get; }
     public ContentStatus Status { get; }
