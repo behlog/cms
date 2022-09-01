@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using Behlog.Core;
 
 namespace Behlog.Cms.Events;
 
-public class ContentCreatedEvent : DomainEvent
+public class ContentUpdatedEvent : DomainEvent
 {
 
-    public ContentCreatedEvent(
+    public ContentUpdatedEvent(
         Guid id,
         string title,
         string slug,
