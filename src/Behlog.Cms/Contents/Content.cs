@@ -6,7 +6,7 @@ using Behlog.Cms.Events;
 
 namespace Behlog.Cms;
 
-public class Content : AggregateRoot<Guid>
+public class Content : AggregateRoot<Guid>, IHasMetadata
 {
     // private readonly IDateService _dateService = new DateService();
 
@@ -57,6 +57,13 @@ public class Content : AggregateRoot<Guid>
     public int OrderNum { get; }
     public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
 
+
+    public DateTime CreatedDate { get; }
+    public DateTime? LastUpdated { get; }
+    public string CreatedByUserId { get; }
+    public string LastUpdatedByUserId { get; }
+    public string CreatedByIp { get; }
+    public string LastUpdatedByIp { get; }
     #endregion
     
     #region Events
