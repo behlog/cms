@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Behlog.Cms;
 
@@ -12,6 +13,7 @@ public class CreateContentArg
     public string Summary { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
+    public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
 }
 
 public class UpdateContentArg 
@@ -24,4 +26,5 @@ public class UpdateContentArg
     public string Summary { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
+    public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
 }

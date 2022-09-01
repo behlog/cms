@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Behlog.Core;
+using Behlog.Extensions;
 
 namespace Behlog.Cms;
 
@@ -10,10 +12,11 @@ public class Content : AggregateRoot<Guid>
     protected Content(CreateContentArg args) : base()
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
+
         Id = Guid.NewGuid();
         Title = args.Title;
         AltTitle = args.AltTitle;
-        Slug = args.Slug;
+        Slug = args.Slug?.MakeSlug();
         ContentTypeId = args.ContentTypeId;
         Body = args.Body;
         AuthorUserId = args.AuthorUserId;
@@ -49,7 +52,8 @@ public class Content : AggregateRoot<Guid>
     public ContentStatus Status { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
-    
+    public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
+
     #endregion
     
 }
