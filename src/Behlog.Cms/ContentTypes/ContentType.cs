@@ -5,9 +5,9 @@ namespace Behlog.Core;
 public class ContentType : AggregateRoot<Guid> {
 
 
-    public static ContentType Create() {
-        
-    }
+    // public static ContentType Create() {
+
+    // }
 
     #region Props
     
