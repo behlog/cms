@@ -8,9 +8,19 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
 {
     private readonly IDateService _dateService = new DateService();
 
-    protected Comment()
+    protected Comment(CreateCommentArg args) : base()
     {
-        
+        if(args is null) throw new ArgumentNullException(nameof(args));
+
+        Id = Guid.NewGuid();
+        Title = args.Title;
+        Body = args.Body;
+        BodyType = args.BodyType;
+        WebUrl = args.WebUrl;
+        AuthorName = args.AuthorName;
+        // AuthorUserId = //TODO : save logged-in UserId
+        CreatedDate = DateTime.UtcNow; //TODO : get from dateservice
+
     }
 
 
@@ -31,4 +41,11 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     public string CreatedByIp { get; }
     public string LastUpdatedByIp { get; }
     #endregion
+
+    public static Comment Create(CreateCommentArg args) 
+    {
+        var comment = new Comment(args);
+
+        return comment;
+    }
 }
