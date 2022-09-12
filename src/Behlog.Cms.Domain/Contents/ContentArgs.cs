@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 public class CreateContentArg 
 {

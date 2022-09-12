@@ -2,7 +2,7 @@ using System;
 using Behlog.Core;
 using Behlog.Extensions;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 // Invariants
 public partial class ContentCategory

@@ -1,14 +1,15 @@
 using System;
 using Behlog.Core;
 using Behlog.Extensions;
+using iman.Domain;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 public class Comment : AggregateRoot<Guid>, IHasMetadata
 {
-    private readonly IDateService _dateService = new DateService();
+    // private readonly IDateService _dateService = new DateService();
 
-    protected Comment(CreateCommentArg args) : base()
+    protected Comment(CreateCommentArg args, IMediator mediator) : base(mediator)
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
 
@@ -17,6 +18,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Body = args.Body;
         BodyType = args.BodyType;
         WebUrl = args.WebUrl;
+        Email = args.Email;
         AuthorName = args.AuthorName;
         // AuthorUserId = //TODO : save logged-in UserId
         CreatedDate = DateTime.UtcNow; //TODO : get from dateservice
@@ -42,9 +44,9 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     public string LastUpdatedByIp { get; }
     #endregion
 
-    public static Comment Create(CreateCommentArg args) 
+    public static Comment Create(CreateCommentArg args, IMediator mediator) 
     {
-        var comment = new Comment(args);
+        var comment = new Comment(args, mediator);
 
         return comment;
     }

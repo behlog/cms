@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Behlog.Cms.Domain.Events;
 using Behlog.Core;
 using Behlog.Extensions;
-using Behlog.Cms.Events;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 public class Content : AggregateRoot<Guid>, IHasMetadata
 {

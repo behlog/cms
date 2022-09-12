@@ -12,4 +12,8 @@
   </Reference>
 </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="iman.Domain" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>

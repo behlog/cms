@@ -1,6 +1,6 @@
 using Behlog.Core;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 public class ContentBodyType : Enumeration 
 {

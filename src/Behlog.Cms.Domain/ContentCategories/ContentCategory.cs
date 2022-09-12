@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Behlog.Cms.Domain.Events;
 using Behlog.Core;
-using Behlog.Cms.Events;
 using Behlog.Extensions;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 public partial class ContentCategory : AggregateRoot<Guid> 
 {

@@ -1,12 +1,11 @@
 using System;
 using Behlog.Core;
 
-namespace Behlog.Cms.Events;
+namespace Behlog.Cms.Domain.Events;
 
-public class ContentCategoryUpdatedEvent : DomainEvent
+public class ContentCategoryCreatedEvent : DomainEvent 
 {
-
-    public ContentCategoryUpdatedEvent(
+    public ContentCategoryCreatedEvent(
         Guid id,
         string title,
         string altTitle,

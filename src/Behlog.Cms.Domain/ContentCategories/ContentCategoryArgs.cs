@@ -1,6 +1,6 @@
 using System;
 
-namespace Behlog.Cms;
+namespace Behlog.Cms.Domain;
 
 public class CreateContentCategoryArg 
 {
