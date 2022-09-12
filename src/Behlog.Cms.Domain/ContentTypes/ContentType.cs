@@ -1,13 +1,14 @@
 using System;
+using iman.Domain;
 
 namespace Behlog.Core;
 
 public class ContentType : AggregateRoot<Guid> {
-
-
-    // public static ContentType Create() {
-
-    // }
+    
+    protected ContentType(IMediator mediator) : base(mediator)
+    {
+        
+    }
 
     #region Props
     
@@ -17,4 +18,7 @@ public class ContentType : AggregateRoot<Guid> {
     public EntityStatus Status { get; }
 
     #endregion
+    
+    
+    
 }

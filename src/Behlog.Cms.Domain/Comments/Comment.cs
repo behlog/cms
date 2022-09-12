@@ -1,7 +1,7 @@
 using System;
+using iman.Domain;
 using Behlog.Core;
 using Behlog.Extensions;
-using iman.Domain;
 
 namespace Behlog.Cms.Domain;
 
@@ -24,7 +24,6 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         CreatedDate = DateTime.UtcNow; //TODO : get from dateservice
 
     }
-
 
     #region Props
 

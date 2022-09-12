@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Behlog.Cms.Domain.Events;
 using Behlog.Core;
 using Behlog.Extensions;
+using iman.Domain;
 
 namespace Behlog.Cms.Domain;
 
@@ -10,7 +11,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
 {
     // private readonly IDateService _dateService = new DateService();
 
-    protected Content(CreateContentArg args) : base()
+    protected Content(CreateContentArg args, IMediator mediator) : base(mediator)
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
 
@@ -25,14 +26,13 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
         OrderNum = args.OrderNum;
         Categories = args.Categories;
         //Publish CreatedEvent
-
-
+        
     }
 
     #region Methods
 
-    public static Content Create(CreateContentArg args) {
-        var content = new Content(args);
+    public static Content Create(CreateContentArg args, IMediator mediator) {
+        var content = new Content(args, mediator);
         
         // content.CreateDate = _dateService.UtcNow();
 
