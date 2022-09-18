@@ -15,7 +15,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
 
-        Id = Guid.NewGuid();
+        // Id = Guid.NewGuid();
         Title = args.Title;
         AltTitle = args.AltTitle;
         Slug = args.Slug?.MakeSlug();

@@ -10,12 +10,12 @@ namespace Behlog.Cms.Domain;
 public partial class ContentCategory : AggregateRoot<Guid> 
 {
 
-    protected ContentCategory(CreateContentCategoryArg args) : base()
+    protected ContentCategory(CreateContentCategoryArg args, IMediator mediator) : base(mediator)
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
         checkRequiredFields(args);
 
-        Id = Guid.NewGuid();
+        // Id = Guid.NewGuid();
         Title = args.Title;
         AltTitle = args.AltTitle;
         Slug = args.Slug;
@@ -28,40 +28,51 @@ public partial class ContentCategory : AggregateRoot<Guid>
 
     #region Methods
 
-    public static ContentCategory Create(CreateContentCategoryArg args)
+    public static async Task<ContentCategory> CreateAsync(CreateContentCategoryArg args, IMediator mediator)
     {
-        var category = new ContentCategory(args);
-        category.publishCreatedEvent();
+        var category = new ContentCategory(args, mediator);
+        await category.publishCreatedEvent();
         return category;
     }
 
+    public async Task UpdateAsync(UpdateContentCategoryArg args) {
+        checkRequiredFields(args);
+        Title = args.Title;
+        Slug = args.Slug;
+        ParentId = args.ParentId;
+        Description = args.Description;
+        ContentTypeId = args.ContentTypeId;
+
+        await this.publishUpdatedEvent();
+
+    }
 
     #endregion
 
     #region Props
-    public string Title { get; }
-    public string AltTitle { get; }
+    public string Title { get; protected set; }
+    public string AltTitle { get; protected set; }
     private string _slug;
     public string Slug 
     {
         get => _slug;
-        set 
+        protected set 
         {
             _slug = value;
             if(_slug.IsNullOrEmpty() && Title.IsNotNullOrEmpty())
                 _slug = Title.MakeSlug();
         }
     }
-    public Guid? ParentId { get; }
-    public string Description { get; }
-    public Guid? ContentTypeId { get; }
-    public EntityStatus Status { get; }
+    public Guid? ParentId { get; protected set; }
+    public string Description { get; protected set; }
+    public Guid? ContentTypeId { get; protected set; }
+    public EntityStatus Status { get; protected set; }
 
     #endregion
 
     #region Events 
 
-    private void publishCreatedEvent() 
+    private async Task publishCreatedEvent() 
     {
         var e = new ContentCategoryCreatedEvent(
             id: Id,
@@ -73,12 +84,22 @@ public partial class ContentCategory : AggregateRoot<Guid>
             contentTypeId: ContentTypeId,
             status: Status
         );
-        //TODO : publish event
+        await _mediator.PublishAsync(e);
     }
 
-    private void publishUpdatedEvent(UpdateContentCategoryArg args) 
+    private async Task publishUpdatedEvent() 
     {
-
+        var e = new ContentCategoryUpdatedEvent(
+            id: Id,
+            title: Title,
+            altTitle: AltTitle,
+            slug: Slug,
+            parentId: ParentId,
+            description: Description,
+            contentTypeId: ContentTypeId,
+            status: Status
+        );
+        await _mediator.PublishAsync(e);
     }
 
     #endregion

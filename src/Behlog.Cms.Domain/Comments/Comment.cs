@@ -13,7 +13,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
 
-        Id = Guid.NewGuid();
+        // Id = Guid.NewGuid();
         Title = args.Title;
         Body = args.Body;
         BodyType = args.BodyType;
