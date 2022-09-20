@@ -10,6 +10,10 @@ namespace Behlog.Cms.Domain;
 public partial class ContentCategory : AggregateRoot<Guid> 
 {
 
+    private ContentCategory(IMediator mediator) : base(mediator)
+    {
+    }
+    
     protected ContentCategory(CreateContentCategoryArg args, IMediator mediator) : base(mediator)
     {
         if(args is null) throw new ArgumentNullException(nameof(args));

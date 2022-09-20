@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using Behlog.Cms.Domain.Events;
+using iman.Domain;
 using Behlog.Core;
 using Behlog.Cms.Core;
+using Behlog.Cms.Events;
 using Behlog.Extensions;
-using iman.Domain;
 
 namespace Behlog.Cms.Domain;
 
@@ -40,21 +38,41 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
         return content;
     }
 
+    public async Task UpdateAsync(UpdateContentArg args)
+    {
+        if (args is null) throw new ArgumentNullException(nameof(args));
+
+        // Id = args.Id;
+        Title = args.Title.Trim().CorrectYeKe();
+        Slug = args.Slug?.MakeSlug();
+        ContentTypeId = args.ContentTypeId;
+        Body = args.Body;
+        BodyType = args.BodyType;
+        AuthorUserId = args.AuthorUserId;
+        Summary = args.Summary;
+        Status = args.Status;
+        AltTitle = args.AltTitle?.Trim().CorrectYeKe();
+        OrderNum = args.OrderNum;
+        Categories = args.Categories;
+
+        await publishUpdatedEvent();
+    }
+
     #endregion
 
     #region Props
 
-    public string Title { get; }
-    public string Slug { get; }
-    public Guid ContentTypeId { get; }
-    public string Body { get; }
-    public ContentBodyType BodyType { get; }
-    public string AuthorUserId { get; }
-    public string Summary { get; }
-    public ContentStatus Status { get; }
-    public string AltTitle { get; }
-    public int OrderNum { get; }
-    public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
+    public string Title { get; protected set; }
+    public string Slug { get; protected set; }
+    public Guid ContentTypeId { get; protected set; }
+    public string Body { get; protected set; }
+    public ContentBodyType BodyType { get; protected set; }
+    public string AuthorUserId { get; protected set; }
+    public string Summary { get; protected set; }
+    public ContentStatus Status { get; protected set; }
+    public string AltTitle { get; protected set; }
+    public int OrderNum { get; protected set; }
+    public IReadOnlyCollection<Guid> Categories { get; protected set; } = new List<Guid>();
 
 
     public DateTime CreatedDate { get; }
@@ -84,16 +102,16 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories
         );
 
-        await _mediator.PublishAsync(e);
+        await _mediator.PublishAsync(e).ConfigureAwait(false);
     }
 
-    private void publishUpdatedEvent() 
+    private async Task publishUpdatedEvent() 
     {
         var e = new ContentUpdatedEvent(
             id: Id,
             title: Title,
             slug: Slug,
-            contetTypeId: ContentTypeId,
+            contentTypeId: ContentTypeId,
             body: Body,
             bodyType: BodyType,
             authorUserId: AuthorUserId,
@@ -104,7 +122,13 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories
         );
 
-        //TODO : publish the event
+        await _mediator.PublishAsync(e).ConfigureAwait(false);
+    }
+
+    private async Task publishRemovedEvent()
+    {
+        var e = new ContentRemovedEvent(Id);
+        await _mediator.PublishAsync(e).ConfigureAwait(false);
     }
 
     #endregion

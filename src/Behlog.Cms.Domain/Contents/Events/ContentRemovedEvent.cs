@@ -1,6 +1,10 @@
-namespace Behlog.Cms.Domain.Events;
+using iman.Domain;
 
-public class ContentRemovedEvent
+namespace Behlog.Cms.Events;
+
+public class ContentRemovedEvent : DomainEvent
 {
-    
+    public ContentRemovedEvent(Guid id) => Id = id;
+
+    public Guid Id { get; }
 }

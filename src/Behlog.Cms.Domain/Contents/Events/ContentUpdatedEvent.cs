@@ -1,8 +1,7 @@
-using System;
-using Behlog.Core;
 using iman.Domain;
+using Behlog.Cms.Domain;
 
-namespace Behlog.Cms.Domain.Events;
+namespace Behlog.Cms.Events;
 
 public class ContentUpdatedEvent : DomainEvent
 {
@@ -11,7 +10,7 @@ public class ContentUpdatedEvent : DomainEvent
         Guid id,
         string title,
         string slug,
-        Guid contetTypeId,
+        Guid contentTypeId,
         string body,
         ContentBodyType bodyType,
         string authorUserId,
@@ -24,7 +23,7 @@ public class ContentUpdatedEvent : DomainEvent
         Id = id;
         Title = title;
         Slug = slug;
-        ContentTypeId = contetTypeId;
+        ContentTypeId = contentTypeId;
         Body = body;
         BodyType = bodyType;
         AuthorUserId = authorUserId;

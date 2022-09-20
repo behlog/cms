@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using Behlog.Core;
 using iman.Domain;
+using Behlog.Cms.Domain;
 
-namespace Behlog.Cms.Domain.Events;
+namespace Behlog.Cms.Events;
 
 public class ContentCreatedEvent : DomainEvent
 {
