@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Behlog.Cms.Domain.Events;
 using Behlog.Core;
+using Behlog.Cms.Core;
 using Behlog.Extensions;
 using iman.Domain;
 
@@ -9,6 +10,7 @@ namespace Behlog.Cms.Domain;
 
 public class Content : AggregateRoot<Guid>, IHasMetadata
 {
+    protected AggregateCompletionTask CompletionTask = new();
     // private readonly IDateService _dateService = new DateService();
 
     protected Content(CreateContentArg args, IMediator mediator) : base(mediator)
@@ -26,18 +28,15 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
         OrderNum = args.OrderNum;
         Categories = args.Categories;
         //Publish CreatedEvent
-        
+        CompletionTask.Add(
+            publishCreatedEvent());
     }
 
     #region Methods
 
-    public static Content Create(CreateContentArg args, IMediator mediator) {
+    public static async Task<Content> CreateAsync(CreateContentArg args, IMediator mediator) {
         var content = new Content(args, mediator);
-        
-        // content.CreateDate = _dateService.UtcNow();
-
-        //ApplyAndPublish CreatedEvent
-        
+        await (Task)content.CompletionTask;
         return content;
     }
 
@@ -68,7 +67,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     
     #region Events
 
-    private void publishCreatedEvent()
+    private async Task publishCreatedEvent()
     {
         var e = new ContentCreatedEvent(
             id: Id,
@@ -85,7 +84,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories
         );
 
-        //TODO : publish the event
+        await _mediator.PublishAsync(e);
     }
 
     private void publishUpdatedEvent() 
