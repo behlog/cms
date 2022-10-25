@@ -12,37 +12,11 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
 {
     protected AggregateCompletionTask CompletionTask = new();
 
-    private readonly IBehlogManager _manager;
-
     private Content() : base()
     {
         
     }
     
-    #region Methods
-
-    public async Task UpdateAsync(UpdateContentArg args)
-    {
-        if (args is null) throw new ArgumentNullException(nameof(args));
-
-        // Id = args.Id;
-        Title = args.Title.Trim().CorrectYeKe();
-        Slug = args.Slug?.MakeSlug();
-        ContentTypeId = args.ContentTypeId;
-        Body = args.Body;
-        BodyType = args.BodyType;
-        AuthorUserId = args.AuthorUserId;
-        Summary = args.Summary;
-        Status = args.Status;
-        AltTitle = args.AltTitle?.Trim().CorrectYeKe();
-        OrderNum = args.OrderNum;
-        Categories = args.Categories;
-
-        await publishUpdatedEvent();
-    }
-
-    #endregion
-
     #region Props
 
     public string Title { get; protected set; }
@@ -53,33 +27,32 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
     public string AuthorUserId { get; protected set; }
     public string Summary { get; protected set; }
     public ContentStatus Status { get; protected set; }
+    public DateTime? PublishDate { get; protected set; }
     public string AltTitle { get; protected set; }
     public int OrderNum { get; protected set; }
     public IReadOnlyCollection<Guid> Categories { get; protected set; } = new List<Guid>();
 
 
-    public DateTime CreatedDate { get; }
-    public DateTime? LastUpdated { get; }
-    public string CreatedByUserId { get; }
-    public string LastUpdatedByUserId { get; }
-    public string CreatedByIp { get; }
-    public string LastUpdatedByIp { get; }
+    public DateTime CreatedDate { get; protected set; }
+    public DateTime? LastUpdated { get; protected set; }
+    public string CreatedByUserId { get; protected set; }
+    public string LastUpdatedByUserId { get; protected set; }
+    public string CreatedByIp { get; protected set; }
+    public string LastUpdatedByIp { get; protected set; }
     #endregion
 
     #region Builders
 
-    public async static Task<Content> CreateAsync(
+    public static async Task<Content> CreateAsync(
         CreateContentCommand command, IBehlogManager manager)
     {
-        if(command is null) 
-            throw new ArgumentNullException(nameof(command));
-
-        if (manager is null)
-            throw new ArgumentNullException(nameof(manager));
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
         var content = new Content
         {
             Id = Guid.NewGuid(),
+            CreatedDate = DateTime.UtcNow, //TODO : from dateservice
             Title = command.Title.Trim().CorrectYeKe(),
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Slug = command.Slug?.MakeSlug().CorrectYeKe()!,
@@ -88,22 +61,59 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
             AuthorUserId = command.AuthorUserId,
             Summary = command.Summary?.CorrectYeKe()!,
             OrderNum = command.OrderNum,
-            Categories = command.Categories?.ToList()!
+            Categories = command.Categories?.ToList()!,
+            Status = ContentStatus.Draft,
+            BodyType = command.BodyType,
+            CreatedByIp = "", //TODO : read from UserContext
+            CreatedByUserId = "", //TODO : read from UserContext
         };
 
-        await content.publishCreatedEvent();
+        await content.PublishCreatedEvent(manager);
         return await Task.FromResult(content);
     }
     
-    
-    // public async Task UpdateAsync()
-    
+    public async Task UpdateAsync(
+        UpdateContentCommand command, IBehlogManager manager)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+        
+        Title = command.Title.Trim().CorrectYeKe();
+        Slug = command.Slug?.MakeSlug().CorrectYeKe()!;
+        ContentTypeId = command.ContentTypeId;
+        Body = command.Body?.CorrectYeKe()!;
+        BodyType = command.BodyType;
+        AuthorUserId = command.AuthorUserId;
+        Summary = command.Summary?.CorrectYeKe()!;
+        Status = command.Status;
+        AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
+        OrderNum = command.OrderNum;
+        Categories = command.Categories;
+        LastUpdated = DateTime.UtcNow; //TODO : use date service
+        
+        await PublishUpdatedEvent(manager);
+    }
+
+
+    public async Task PublishContentAsync(IBehlogManager manager)
+    {
+        Status = ContentStatus.Published;
+        PublishDate = DateTime.UtcNow;
+        
+        var publishDate = DateTime.UtcNow;
+        var userId = "";
+        var userIp = "";
+
+        var e = new ContentPublishedEvent(
+            Id, publishDate, userId, userIp);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
 
     #endregion
     
     #region Events
 
-    private async Task publishCreatedEvent()
+    private async Task PublishCreatedEvent(IBehlogManager manager)
     {
         var e = new ContentCreatedEvent(
             id: Id,
@@ -120,10 +130,10 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
             categories: Categories
         );
 
-        await _manager.PublishAsync(e).ConfigureAwait(false);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
-    private async Task publishUpdatedEvent() 
+    private async Task PublishUpdatedEvent(IBehlogManager manager) 
     {
         var e = new ContentUpdatedEvent(
             id: Id,
@@ -140,13 +150,13 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
             categories: Categories
         );
 
-        await _manager.PublishAsync(e).ConfigureAwait(false);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
-    private async Task publishRemovedEvent()
+    private async Task PublishRemovedEvent(IBehlogManager manager)
     {
         var e = new ContentRemovedEvent(Id);
-        await _manager.PublishAsync(e).ConfigureAwait(false);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     #endregion
