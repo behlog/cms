@@ -1,11 +1,10 @@
-using System;
-using iman.Domain;
+using Behlog.Core.Domain;
 
 namespace Behlog.Core;
 
-public class ContentType : AggregateRoot<Guid> {
+public class ContentType : BehlogEntity<Guid> {
     
-    protected ContentType(IMediator mediator) : base(mediator)
+    protected ContentType()
     {
         
     }

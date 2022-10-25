@@ -1,10 +1,9 @@
-using System;
 using Behlog.Core;
-using iman.Domain;
+using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Domain.Events;
 
-public class ContentCategoryCreatedEvent : DomainEvent 
+public class ContentCategoryCreatedEvent : BehlogDomainEvent 
 {
     public ContentCategoryCreatedEvent(
         Guid id,

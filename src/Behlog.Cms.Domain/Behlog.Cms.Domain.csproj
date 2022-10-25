@@ -7,14 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-  <Reference Include="Behlog.Core">
-    <HintPath>../../../core/src/bin/Debug/net6.0/ref/Behlog.Core.dll</HintPath>
-  </Reference>
-</ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Behlog.Core" Version="1.0.0" />
-    <PackageReference Include="iman.Domain" Version="1.0.0" />
+    <Reference Include="Behlog.Core">
+      <HintPath>..\..\..\core\src\bin\Debug\net6.0\Behlog.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
-
+  
 </Project>

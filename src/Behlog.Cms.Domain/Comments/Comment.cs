@@ -1,15 +1,14 @@
 using System;
-using iman.Domain;
 using Behlog.Core;
-using Behlog.Extensions;
+using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Domain;
 
-public class Comment : AggregateRoot<Guid>, IHasMetadata
+public class Comment : BehlogEntity<Guid>, IHasMetadata
 {
     // private readonly IDateService _dateService = new DateService();
 
-    protected Comment(CreateCommentArg args, IMediator mediator) : base(mediator)
+    protected Comment(CreateCommentArg args)
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
 
@@ -43,9 +42,9 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     public string LastUpdatedByIp { get; }
     #endregion
 
-    public static Comment Create(CreateCommentArg args, IMediator mediator) 
+    public static Comment Create(CreateCommentArg args) 
     {
-        var comment = new Comment(args, mediator);
+        var comment = new Comment(args);
 
         return comment;
     }

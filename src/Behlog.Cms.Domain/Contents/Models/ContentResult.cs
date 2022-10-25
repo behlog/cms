@@ -1,16 +1,17 @@
-using Behlog.Cms.Domain;
-using Behlog.Core.Domain;
+using Behlog.Core;
 
-namespace Behlog.Cms.Events;
+namespace Behlog.Cms.Domain.Models;
 
-public class ContentCreatedEvent : BehlogDomainEvent
+public class ContentResult : BehlogResult
 {
 
-    public ContentCreatedEvent(
+    public ContentResult(
         Guid id,
         string title,
         string slug,
-        Guid contetTypeId,
+        Guid contentTypeId,
+        string contentTypeTitle,
+        string contentTypeSlug,
         string body,
         ContentBodyType bodyType,
         string authorUserId,
@@ -18,12 +19,14 @@ public class ContentCreatedEvent : BehlogDomainEvent
         ContentStatus status,
         string altTitle,
         int orderNum,
-        IReadOnlyCollection<Guid> categories)
+        IReadOnlyCollection<Guid> categories) : base()
     {
         Id = id;
         Title = title;
-        Slug = slug;
-        ContentTypeId = contetTypeId;
+        Slug = slug;;
+        ContentTypeId = contentTypeId;
+        ContentTypeTitle = contentTypeTitle;
+        ContentTypeSlug = contentTypeSlug;
         Body = body;
         BodyType = bodyType;
         AuthorUserId = authorUserId;
@@ -33,11 +36,13 @@ public class ContentCreatedEvent : BehlogDomainEvent
         OrderNum = orderNum;
         Categories = categories;
     }
-
+    
     public Guid Id { get; }
     public string Title { get; }
     public string Slug { get; }
     public Guid ContentTypeId { get; }
+    public string ContentTypeTitle { get; }
+    public string ContentTypeSlug { get; }
     public string Body { get; }
     public ContentBodyType BodyType { get; }
     public string AuthorUserId { get; }
@@ -45,5 +50,6 @@ public class ContentCreatedEvent : BehlogDomainEvent
     public ContentStatus Status { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
-    public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
+    public IReadOnlyCollection<Guid> Categories { get; protected set; } = new List<Guid>();
+    
 }

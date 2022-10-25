@@ -1,42 +1,25 @@
-using iman.Domain;
 using Behlog.Core;
 using Behlog.Cms.Core;
 using Behlog.Cms.Events;
 using Behlog.Extensions;
+using Behlog.Core.Domain;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Domain.Models;
 
 namespace Behlog.Cms.Domain;
 
-public class Content : AggregateRoot<Guid>, IHasMetadata
+public class Content : BehlogEntity<Guid>, IHasMetadata
 {
     protected AggregateCompletionTask CompletionTask = new();
-    // private readonly IDateService _dateService = new DateService();
 
-    protected Content(CreateContentArg args, IMediator mediator) : base(mediator)
+    private readonly IBehlogManager _manager;
+
+    private Content() : base()
     {
-        if(args is null) throw new ArgumentNullException(nameof(args));
-
-        // Id = Guid.NewGuid();
-        Title = args.Title;
-        AltTitle = args.AltTitle;
-        Slug = args.Slug?.MakeSlug();
-        ContentTypeId = args.ContentTypeId;
-        Body = args.Body;
-        AuthorUserId = args.AuthorUserId;
-        Summary = args.Summary;
-        OrderNum = args.OrderNum;
-        Categories = args.Categories;
-        //Publish CreatedEvent
-        CompletionTask.Add(
-            publishCreatedEvent());
+        
     }
-
+    
     #region Methods
-
-    public static async Task<Content> CreateAsync(CreateContentArg args, IMediator mediator) {
-        var content = new Content(args, mediator);
-        await (Task)content.CompletionTask;
-        return content;
-    }
 
     public async Task UpdateAsync(UpdateContentArg args)
     {
@@ -82,6 +65,41 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     public string CreatedByIp { get; }
     public string LastUpdatedByIp { get; }
     #endregion
+
+    #region Builders
+
+    public async static Task<Content> CreateAsync(
+        CreateContentCommand command, IBehlogManager manager)
+    {
+        if(command is null) 
+            throw new ArgumentNullException(nameof(command));
+
+        if (manager is null)
+            throw new ArgumentNullException(nameof(manager));
+
+        var content = new Content
+        {
+            Id = Guid.NewGuid(),
+            Title = command.Title.Trim().CorrectYeKe(),
+            AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
+            Slug = command.Slug?.MakeSlug().CorrectYeKe()!,
+            ContentTypeId = command.ContentTypeId,
+            Body = command.Body?.CorrectYeKe()!,
+            AuthorUserId = command.AuthorUserId,
+            Summary = command.Summary?.CorrectYeKe()!,
+            OrderNum = command.OrderNum,
+            Categories = command.Categories?.ToList()!
+        };
+
+        await content.publishCreatedEvent();
+        return await Task.FromResult(content);
+    }
+    
+    
+    // public async Task UpdateAsync()
+    
+
+    #endregion
     
     #region Events
 
@@ -102,7 +120,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories
         );
 
-        await _mediator.PublishAsync(e).ConfigureAwait(false);
+        await _manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     private async Task publishUpdatedEvent() 
@@ -122,13 +140,13 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories
         );
 
-        await _mediator.PublishAsync(e).ConfigureAwait(false);
+        await _manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     private async Task publishRemovedEvent()
     {
         var e = new ContentRemovedEvent(Id);
-        await _mediator.PublishAsync(e).ConfigureAwait(false);
+        await _manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     #endregion

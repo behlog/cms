@@ -1,20 +1,18 @@
-using System;
-using System.Collections.Generic;
-using iman.Domain;
 using Behlog.Core;
 using Behlog.Extensions;
 using Behlog.Cms.Domain.Events;
+using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Domain;
 
-public partial class ContentCategory : AggregateRoot<Guid> 
+public partial class ContentCategory : BehlogEntity<Guid> 
 {
 
-    private ContentCategory(IMediator mediator) : base(mediator)
+    private ContentCategory()
     {
     }
     
-    protected ContentCategory(CreateContentCategoryArg args, IMediator mediator) : base(mediator)
+    protected ContentCategory(CreateContentCategoryArg args)
     {
         if(args is null) throw new ArgumentNullException(nameof(args));
         checkRequiredFields(args);
@@ -32,9 +30,9 @@ public partial class ContentCategory : AggregateRoot<Guid>
 
     #region Methods
 
-    public static async Task<ContentCategory> CreateAsync(CreateContentCategoryArg args, IMediator mediator)
+    public static async Task<ContentCategory> CreateAsync(CreateContentCategoryArg args)
     {
-        var category = new ContentCategory(args, mediator);
+        var category = new ContentCategory(args);
         await category.publishCreatedEvent();
         return category;
     }
@@ -88,7 +86,7 @@ public partial class ContentCategory : AggregateRoot<Guid>
             contentTypeId: ContentTypeId,
             status: Status
         );
-        await _mediator.PublishAsync(e);
+        // await _mediator.PublishAsync(e);
     }
 
     private async Task publishUpdatedEvent() 
@@ -103,7 +101,7 @@ public partial class ContentCategory : AggregateRoot<Guid>
             contentTypeId: ContentTypeId,
             status: Status
         );
-        await _mediator.PublishAsync(e);
+        // await _mediator.PublishAsync(e);
     }
 
     #endregion

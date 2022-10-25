@@ -1,9 +1,9 @@
-using iman.Domain;
 using Behlog.Cms.Domain;
+using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Events;
 
-public class ContentUpdatedEvent : DomainEvent
+public class ContentUpdatedEvent : BehlogDomainEvent
 {
 
     public ContentUpdatedEvent(
