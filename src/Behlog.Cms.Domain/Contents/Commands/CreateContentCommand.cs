@@ -1,9 +1,10 @@
 using Behlog.Cms.Domain;
+using Behlog.Cms.Domain.Models;
 using Behlog.Core;
 
 namespace Behlog.Cms.Commands;
 
-public class CreateContentCommand : IBehlogCommand
+public class CreateContentCommand : IBehlogCommand<ContentResult>
 {
     
     public CreateContentCommand(
