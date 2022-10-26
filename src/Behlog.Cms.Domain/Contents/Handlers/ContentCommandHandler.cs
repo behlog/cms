@@ -10,7 +10,8 @@ namespace Behlog.Cms.Domain.Handlers;
 public class ContentCommandHandler :
     IBehlogCommandHandler<CreateContentCommand, ContentResult>,
     IBehlogCommandHandler<UpdateContentCommand>,
-    IBehlogCommandHandler<SoftDeleteContentCommand>
+    IBehlogCommandHandler<SoftDeleteContentCommand>,
+    IBehlogCommandHandler<PublishContentCommand>
 {
     private readonly IBehlogManager _manager;
     private readonly IContentRepository _contentRepository;
@@ -57,6 +58,16 @@ public class ContentCommandHandler :
 
         await _contentRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
-    
-    
+
+
+    public async Task HandleAsync(
+        PublishContentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var content = await _contentRepository.FindAsync(command.Id);
+        await content.PublishContentAsync(_manager);
+
+        await _contentRepository.SaveChangesAsync(cancellationToken);
+    }
 }
