@@ -27,6 +27,7 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
     public string AuthorUserId { get; protected set; }
     public string Summary { get; protected set; }
     public ContentStatus Status { get; protected set; }
+    public DateTime? LastStatusChangedDate { get; protected set; }
     public DateTime? PublishDate { get; protected set; }
     public string AltTitle { get; protected set; }
     public int OrderNum { get; protected set; }
@@ -90,17 +91,35 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
         OrderNum = command.OrderNum;
         Categories = command.Categories;
         LastUpdated = DateTime.UtcNow; //TODO : use date service
+        LastUpdatedByUserId = ""; //TODO : read from UserContext
         
         await PublishUpdatedEvent(manager);
+    }
+
+    /// <summary>
+    /// Mark a <see cref="Content"/> as <see cref="ContentStatus.Deleted"/>.
+    /// When soft deleted, the Content wont displayed anymore and the user must
+    /// find it on recycle bin.
+    /// </summary>
+    /// <param name="manager"></param>
+    public async Task SoftDeleteAsync(IBehlogManager manager)
+    {
+        Status = ContentStatus.Deleted;
+        LastStatusChangedDate = DateTime.UtcNow;
+        LastUpdatedByUserId = ""; //TODO : userContext
+        
+        var e = new ContentSoftDeletedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
 
     public async Task PublishContentAsync(IBehlogManager manager)
     {
         Status = ContentStatus.Published;
-        PublishDate = DateTime.UtcNow;
-        
         var publishDate = DateTime.UtcNow;
+        PublishDate = publishDate;
+        LastStatusChangedDate = publishDate;
+        
         var userId = "";
         var userIp = "";
 
