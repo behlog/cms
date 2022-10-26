@@ -5,6 +5,7 @@ using Behlog.Extensions;
 using Behlog.Core.Domain;
 using Behlog.Cms.Commands;
 using Behlog.Cms.Domain.Models;
+using Behlog.Cms.Exceptions;
 
 namespace Behlog.Cms.Domain;
 
@@ -115,6 +116,11 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
 
     public async Task PublishContentAsync(IBehlogManager manager)
     {
+        if (!Status.CanPublished())
+        {
+            throw new ContentCannotPublishedException(Status);
+        }
+        
         Status = ContentStatus.Published;
         var publishDate = DateTime.UtcNow;
         PublishDate = publishDate;
@@ -123,8 +129,7 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
         var userId = "";
         var userIp = "";
 
-        var e = new ContentPublishedEvent(
-            Id, publishDate, userId, userIp);
+        var e = new ContentPublishedEvent(Id, publishDate, userId, userIp);
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 

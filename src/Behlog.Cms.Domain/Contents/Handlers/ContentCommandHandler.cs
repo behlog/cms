@@ -11,7 +11,7 @@ public class ContentCommandHandler :
     IBehlogCommandHandler<CreateContentCommand, ContentResult>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
-    IBehlogCommandHandler<PublishContentCommand>
+    IBehlogCommandHandler<PublishContentCommand, BehlogResult>
 {
     private readonly IBehlogManager _manager;
     private readonly IContentRepository _contentRepository;
@@ -58,9 +58,8 @@ public class ContentCommandHandler :
 
         await _contentRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
-
-
-    public async Task HandleAsync(
+    
+    public async Task<BehlogResult> HandleAsync(
         PublishContentCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
@@ -69,5 +68,7 @@ public class ContentCommandHandler :
         await content.PublishContentAsync(_manager);
 
         await _contentRepository.SaveChangesAsync(cancellationToken);
+
+        return BehlogResult.Create();
     }
 }

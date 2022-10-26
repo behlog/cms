@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Commands;
 
-public class PublishContentCommand : IBehlogCommand
+public class PublishContentCommand : IBehlogCommand<BehlogResult>
 {
     public PublishContentCommand(Guid contentId)
     {

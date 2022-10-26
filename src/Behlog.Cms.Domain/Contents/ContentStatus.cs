@@ -21,4 +21,10 @@ public class ContentStatus : Enumeration
 
     public static ContentStatus Planned =>
         new ContentStatus(2, nameof(Planned));
+
+
+    public bool CanPublished()
+    {
+        return Id != Deleted.Id;
+    }
 }
