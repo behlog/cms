@@ -52,9 +52,16 @@ public class ContentTypeCommandHandler :
         return await Task.FromResult(result);
     }
 
-    public Task HandleAsync(UpdateContentTypeCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task HandleAsync(
+        UpdateContentTypeCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var contentType = await _contentTypeRepository.FindAsync(command.Id).ConfigureAwait(false);
+        await contentType.UpdateAsync(command, _manager);
+        _contentTypeRepository.MarkForUpdate(contentType);
+        await _contentTypeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public Task HandleAsync(SoftDeleteContentTypeCommand message, CancellationToken cancellationToken = new CancellationToken())
