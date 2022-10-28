@@ -4,7 +4,7 @@ using Behlog.Cms.Events;
 using Behlog.Extensions;
 using Behlog.Core.Domain;
 using Behlog.Cms.Commands;
-using Behlog.Cms.Domain.Models;
+using Behlog.Cms.Models;
 using Behlog.Cms.Exceptions;
 
 namespace Behlog.Cms.Domain;

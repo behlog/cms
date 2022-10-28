@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Behlog.Core;
+﻿using Behlog.Core;
 using Behlog.Extensions;
+using Behlog.Cms.Models;
 
 namespace Behlog.Cms.Commands
 {
 
-    public class CreateContentTypeCommand
+    public class CreateContentTypeCommand : IBehlogCommand<ContentTypeResult>
     {
         public CreateContentTypeCommand(
             string systemName,

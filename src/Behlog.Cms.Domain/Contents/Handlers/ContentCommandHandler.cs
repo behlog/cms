@@ -1,5 +1,5 @@
 using Behlog.Cms.Commands;
-using Behlog.Cms.Domain.Models;
+using Behlog.Cms.Models;
 using Behlog.Cms.Repository;
 using Behlog.Core;
 using Behlog.Extensions;

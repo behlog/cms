@@ -3,7 +3,7 @@ using Behlog.Extensions;
 
 namespace Behlog.Cms.Commands
 {
-    public class SoftDeleteContentTypeCommand
+    public class SoftDeleteContentTypeCommand : IBehlogCommand
     {
         public SoftDeleteContentTypeCommand(Guid contentTypeId) {
             contentTypeId.ThrowIfGuidIsEmpty(

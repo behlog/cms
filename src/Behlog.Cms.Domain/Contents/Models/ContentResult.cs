@@ -1,6 +1,7 @@
 using Behlog.Core;
+using Behlog.Cms.Domain;
 
-namespace Behlog.Cms.Domain.Models;
+namespace Behlog.Cms.Models;
 
 public class ContentResult : BehlogResult
 {

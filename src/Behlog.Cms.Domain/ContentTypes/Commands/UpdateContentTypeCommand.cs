@@ -4,7 +4,7 @@ using Behlog.Extensions;
 namespace Behlog.Cms.Commands
 {
 
-    public class UpdateContentTypeCommand
+    public class UpdateContentTypeCommand : IBehlogCommand
     {
 
         public UpdateContentTypeCommand(
