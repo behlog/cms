@@ -139,8 +139,7 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
     /// </summary>
     public async Task RemoveAsync(IBehlogManager manager)
     {
-        var e = new ContentRemovedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        await PublishRemovedEvent(manager);
     }
     
     #endregion
