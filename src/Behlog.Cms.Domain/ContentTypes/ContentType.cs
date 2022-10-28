@@ -75,6 +75,20 @@ public class ContentType : BehlogEntity<Guid> {
         await PublishUpdatedEvent(manager);
     }
 
+
+    public async Task SoftDeleteAsync(
+        SoftDeleteContentTypeCommand command, IBehlogManager manager)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+        
+        Status = EntityStatus.Deleted;
+        LastStatusChangedOn = DateTime.UtcNow;
+
+        var e = new ContentTypeSoftDeletedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+
     #endregion
 
     #region Events
