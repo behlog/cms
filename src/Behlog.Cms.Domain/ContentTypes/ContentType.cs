@@ -76,10 +76,8 @@ public class ContentType : BehlogEntity<Guid> {
     }
 
 
-    public async Task SoftDeleteAsync(
-        SoftDeleteContentTypeCommand command, IBehlogManager manager)
+    public async Task SoftDeleteAsync(IBehlogManager manager)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
         manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
         
         Status = EntityStatus.Deleted;

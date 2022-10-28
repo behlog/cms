@@ -59,6 +59,11 @@ public partial class ContentCategory : BehlogEntity<Guid>
         await PublishUpdatedEvent(manager);
     }
 
+    public async Task SoftDeleteAsync()
+    {
+        
+    }
+
     #endregion
 
     #region Props

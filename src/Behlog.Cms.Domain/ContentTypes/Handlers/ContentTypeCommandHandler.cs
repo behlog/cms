@@ -55,7 +55,7 @@ public class ContentTypeCommandHandler :
         cancellationToken.ThrowIfCancellationRequested();
 
         var contentType = await _contentTypeRepository.FindAsync(command.Id).ConfigureAwait(false);
-        await contentType.SoftDeleteAsync(command, _manager);
+        await contentType.SoftDeleteAsync(_manager);
         await _contentTypeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
     
