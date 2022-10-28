@@ -7,20 +7,22 @@ using Behlog.Extensions;
 namespace Behlog.Cms.Domain.Handlers;
 
 
-public class ContentCommandHandler :
+public class ContentCommandHandlers :
     IBehlogCommandHandler<CreateContentCommand, ContentResult>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
-    IBehlogCommandHandler<PublishContentCommand, BehlogResult>
+    IBehlogCommandHandler<PublishContentCommand, BehlogResult>,
+    IBehlogCommandHandler<RemoveContentCommand>
 {
     private readonly IBehlogManager _manager;
     private readonly IContentRepository _contentRepository;
 
-    public ContentCommandHandler(
+    public ContentCommandHandlers(
         IBehlogManager manager, IContentRepository contentRepository)
     {
         _manager = manager ?? throw new ArgumentNullException(nameof(manager));
-        _contentRepository = contentRepository ?? throw new ArgumentNullException(nameof(contentRepository));
+        _contentRepository = contentRepository 
+            ?? throw new ArgumentNullException(nameof(contentRepository));
     }
 
     public async Task<ContentResult> HandleAsync(
@@ -30,12 +32,8 @@ public class ContentCommandHandler :
 
         var content = await Content.CreateAsync(command, _manager);
         await _contentRepository.AddAsync(content, cancellationToken).ConfigureAwait(false);
-        
-        //TODO : use mapper exts here.
-        return new ContentResult(
-            content.Id, content.Title, content.Slug, content.ContentTypeId,
-            "", "", content.Body, content.BodyType, content.AuthorUserId, command.Summary,
-            content.Status, content.AltTitle, command.OrderNum, content.Categories);
+
+        return await Task.FromResult(content.ToResult());
     }
 
     public async Task HandleAsync(
@@ -54,6 +52,7 @@ public class ContentCommandHandler :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
         var content = await _contentRepository.FindAsync(command.Id).ConfigureAwait(false);
+        content.ThrowExceptionIfReferenceIsNull(nameof(content));
         await content.SoftDeleteAsync(_manager);
 
         await _contentRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -65,10 +64,21 @@ public class ContentCommandHandler :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
         var content = await _contentRepository.FindAsync(command.Id);
+        content.ThrowExceptionIfReferenceIsNull(nameof(content));
         await content.PublishContentAsync(_manager);
 
         await _contentRepository.SaveChangesAsync(cancellationToken);
 
         return BehlogResult.Create();
+    }
+
+    public async Task HandleAsync(
+        RemoveContentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var content = await _contentRepository.FindAsync(command.Id).ConfigureAwait(false);
+        content.ThrowExceptionIfReferenceIsNull(nameof(content));
+        await _contentRepository.DeleteAsync(content, cancellationToken).ConfigureAwait(false);
     }
 }

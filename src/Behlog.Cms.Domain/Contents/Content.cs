@@ -133,6 +133,16 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+    
+    /// <summary>
+    /// Removing the <see cref="Content"/> physically. When Removed, the data cannot recovered.
+    /// </summary>
+    public async Task RemoveAsync(IBehlogManager manager)
+    {
+        var e = new ContentRemovedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+    
     #endregion
     
     #region Events
