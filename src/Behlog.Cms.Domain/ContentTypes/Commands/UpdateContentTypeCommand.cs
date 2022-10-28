@@ -9,7 +9,8 @@ namespace Behlog.Cms.Commands
 
         public UpdateContentTypeCommand(
             Guid id, string systemName, string title,
-            string lang, string slug, string description = "") {
+            string lang, string slug, 
+            bool enabled = true, string description = "") {
             
             id.ThrowIfGuidIsEmpty(
                 new BehlogInvalidEntityIdException(nameof(ContentType)));
@@ -19,6 +20,7 @@ namespace Behlog.Cms.Commands
             Lang = lang?.Trim()!;
             Slug = slug?.Trim()!;
             Description = description?.CorrectYeKe()!;
+            Enabled = enabled;
         }
 
         public Guid Id { get; }
@@ -27,5 +29,6 @@ namespace Behlog.Cms.Commands
         public string Slug { get; }
         public string Description { get; }
         public string Lang { get; }
+        public bool Enabled { get; }
     }
 }

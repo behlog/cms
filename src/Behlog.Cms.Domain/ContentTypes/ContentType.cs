@@ -47,12 +47,51 @@ public class ContentType : BehlogEntity<Guid> {
             CreateDate = DateTime.UtcNow
         };
 
-        var e = new ContentTypeCreatedEvent(
-            contentType.Id, command.SystemName, contentType.Title,
-            contentType.Slug, command.Description);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        await contentType.PublishCreatedEvent(manager);
 
         return await Task.FromResult(contentType);
+    }
+
+
+    public async Task UpdateAsync(
+        UpdateContentTypeCommand command, IBehlogManager manager)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+
+        Title = command.Title?.Trim().CorrectYeKe()!;
+        Slug = command.Slug?.Trim().MakeSlug().CorrectYeKe()!;
+        SystemName = command.SystemName?.Trim()!;
+        Lang = command.Lang;
+        if (command.Enabled && Status != EntityStatus.Enabled ||
+            !command.Enabled && Status != EntityStatus.Disabled)
+        {
+            LastStatusChangedOn = DateTime.UtcNow;
+        }
+        Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
+        Description = command.Description?.CorrectYeKe()!;
+        ModifyDate = DateTime.UtcNow;
+
+        await PublishUpdatedEvent(manager);
+    }
+
+    #endregion
+
+    #region Events
+
+    protected async Task PublishCreatedEvent(IBehlogManager manager)
+    {
+        var e = new ContentTypeCreatedEvent(
+            Id, SystemName, Title, Lang, Slug, Description);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+    
+    protected async Task PublishUpdatedEvent(IBehlogManager manager)
+    {
+        var e = new ContentTypeUpdatedEvent(
+            Id, SystemName, Title, Lang, Slug, Status,
+            Description, LastStatusChangedOn);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     #endregion

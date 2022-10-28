@@ -3,11 +3,12 @@ using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Events;
 
-public class ContentTypeCreatedEvent : BehlogDomainEvent
+public class ContentTypeUpdatedEvent : BehlogDomainEvent
 {
-    public ContentTypeCreatedEvent(
+    public ContentTypeUpdatedEvent(
         Guid id, string systemName, string title, 
-        string lang, string slug, string description)
+        string lang, string slug, EntityStatus status,
+        string description, DateTime? lastStatusChangedOn)
     {
         Id = id;
         SystemName = systemName;
@@ -15,7 +16,9 @@ public class ContentTypeCreatedEvent : BehlogDomainEvent
         Lang = lang;
         Slug = slug;
         Description = description;
-    }
+        Status = status;
+        LastStatusChangedOn = lastStatusChangedOn;
+    }   
     
     public Guid Id { get; }
     public string SystemName { get; }
@@ -23,4 +26,6 @@ public class ContentTypeCreatedEvent : BehlogDomainEvent
     public string Lang { get; }
     public string Slug { get; }
     public string Description { get; }
+    public EntityStatus Status { get; }
+    public DateTime? LastStatusChangedOn { get; }
 }
