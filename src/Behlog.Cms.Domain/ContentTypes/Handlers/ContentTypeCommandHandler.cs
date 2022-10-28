@@ -2,11 +2,9 @@ using Behlog.Cms.Commands;
 using Behlog.Cms.Repository;
 using Behlog.Core;
 using Behlog.Extensions;
-using Behlog.Core.Contracts;
-using Behlog.Cms.Commands;
 using Behlog.Cms.Models;
 
-namespace Behlog.Cms.Domain.Handlers;
+namespace Behlog.Cms.Handlers;
 
 
 public class ContentTypeCommandHandler :
@@ -35,21 +33,7 @@ public class ContentTypeCommandHandler :
         var contentType = await ContentType.CreateAsync(command, _manager);
         await _contentTypeRepository.AddAsync(contentType, cancellationToken).ConfigureAwait(false);
 
-        var result = new ContentTypeResult
-        {
-            Id = contentType.Id,
-            Lang = contentType.Lang,
-            Title = contentType.Title,
-            Slug = contentType.Slug,
-            Status = contentType.Status,
-            CreateDate = contentType.CreateDate,
-            ModifyDate = contentType.ModifyDate,
-            SystemName = contentType.SystemName,
-            LastStatusChangedOn = contentType.LastStatusChangedOn,
-            Description = contentType.Description
-        };
-
-        return await Task.FromResult(result);
+        return await Task.FromResult(contentType.ToResult());
     }
 
     public async Task HandleAsync(
@@ -64,8 +48,15 @@ public class ContentTypeCommandHandler :
         await _contentTypeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public Task HandleAsync(SoftDeleteContentTypeCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task HandleAsync(
+        SoftDeleteContentTypeCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var contentType = await _contentTypeRepository.FindAsync(command.Id).ConfigureAwait(false);
+        await contentType.SoftDeleteAsync(command, _manager);
+        await _contentTypeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
+    
 }

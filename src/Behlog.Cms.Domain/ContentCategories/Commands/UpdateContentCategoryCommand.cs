@@ -1,14 +1,14 @@
-using Behlog.Cms.Models;
 using Behlog.Core;
 
 namespace Behlog.Cms.Commands;
 
-public class CreateContentCategoryCommand : IBehlogCommand<ContentCategoryResult>
+public class UpdateContentCategoryCommand : IBehlogCommand
 {
-    public CreateContentCategoryCommand(
-        string title, string altTitle, string slug, 
+    public UpdateContentCategoryCommand(
+        Guid id, string title, string altTitle, string slug, 
         Guid? parentId, string description, Guid? contentTypeId)
     {
+        Id = id;
         Title = title;
         AltTitle = altTitle;
         Slug = slug;
@@ -17,6 +17,7 @@ public class CreateContentCategoryCommand : IBehlogCommand<ContentCategoryResult
         ContentTypeId = contentTypeId;
     }
     
+    public Guid Id { get; }
     public string Title { get; }
     public string AltTitle { get; }
     public string Slug { get; }
