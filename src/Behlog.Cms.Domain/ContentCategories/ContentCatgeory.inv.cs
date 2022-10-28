@@ -1,4 +1,5 @@
 using System;
+using Behlog.Cms.Commands;
 using Behlog.Core;
 using Behlog.Extensions;
 
@@ -8,19 +9,18 @@ namespace Behlog.Cms.Domain;
 public partial class ContentCategory
 {
 
-    private static void checkRequiredFields(CreateContentCategoryArg args) 
+    private static void checkRequiredFields(CreateContentCategoryCommand command) 
     {
-        if(args is null) throw new ArgumentNullException(nameof(args));
-        
-        if(args.Title.IsNullOrEmpty())
-            throw new BehlogRequiredFieldException(nameof(args.Title));
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        if(command.Title.IsNullOrEmpty())
+            throw new BehlogRequiredFieldException(nameof(command.Title));
     }
 
-    private static void checkRequiredFields(UpdateContentCategoryArg args)
+    private static void checkRequiredFields(UpdateContentCategoryCommand command)
     {
-        if(args is null) throw new ArgumentNullException(nameof(args));
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
         
-        if(args.Title.IsNullOrEmpty())
-            throw new BehlogRequiredFieldException(nameof(args.Title));
+        if(command.Title.IsNullOrEmpty())
+            throw new BehlogRequiredFieldException(nameof(command.Title));
     }
 }

@@ -6,7 +6,7 @@ public class UpdateContentCategoryCommand : IBehlogCommand
 {
     public UpdateContentCategoryCommand(
         Guid id, string title, string altTitle, string slug, 
-        Guid? parentId, string description, Guid? contentTypeId)
+        Guid? parentId, string description, Guid? contentTypeId, bool enabled = true)
     {
         Id = id;
         Title = title;
@@ -15,6 +15,7 @@ public class UpdateContentCategoryCommand : IBehlogCommand
         ParentId = parentId;
         Description = description;
         ContentTypeId = contentTypeId;
+        Enabled = enabled;
     }
     
     public Guid Id { get; }
@@ -24,4 +25,5 @@ public class UpdateContentCategoryCommand : IBehlogCommand
     public Guid? ParentId { get; }
     public string Description { get; }
     public Guid? ContentTypeId { get; }
+    public bool Enabled { get; }
 }
