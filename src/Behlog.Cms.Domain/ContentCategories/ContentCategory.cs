@@ -59,9 +59,13 @@ public partial class ContentCategory : BehlogEntity<Guid>
         await PublishUpdatedEvent(manager);
     }
 
-    public async Task SoftDeleteAsync()
+    public async Task SoftDeleteAsync(IBehlogManager manager)
     {
-        
+        Status = EntityStatus.Deleted;
+        LastStatusChangedOn = DateTime.UtcNow;
+
+        var e = new ContentCategorySoftDeletedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     #endregion

@@ -1,9 +1,9 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Domain;
-using Behlog.Cms.Models;
-using Behlog.Cms.Repository;
 using Behlog.Core;
 using Behlog.Extensions;
+using Behlog.Cms.Domain;
+using Behlog.Cms.Models;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Repository;
 
 namespace Behlog.Cms.Handlers;
 
@@ -35,14 +35,29 @@ public class ContentCategoryCommandHandlers :
         return await Task.FromResult(category.ToResult());
     }
 
-    public Task HandleAsync(UpdateContentCategoryCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task HandleAsync(
+        UpdateContentCategoryCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var category = await _contentCategoryRepository.FindAsync(command.Id).ConfigureAwait(false);
+        category.ThrowExceptionIfReferenceIsNull(nameof(category));
+        await category.UpdateAsync(command, _manager);
+        
+        _contentCategoryRepository.MarkForUpdate(category);
+        await _contentCategoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public Task HandleAsync(SoftDeleteContentCategoryCommand message,
-        CancellationToken cancellationToken = new CancellationToken())
+    public async Task HandleAsync(
+        SoftDeleteContentCategoryCommand command,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var category = await _contentCategoryRepository.FindAsync(command.Id).ConfigureAwait(false);
+        category.ThrowExceptionIfReferenceIsNull(nameof(category));
+        await category.SoftDeleteAsync(_manager);
+        _contentCategoryRepository.MarkForUpdate(category);
+        await _contentCategoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }
