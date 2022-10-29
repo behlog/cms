@@ -21,8 +21,5 @@
             <HintPath>..\Behlog.Cms.Domain\bin\Debug\net6.0\Behlog.Cms.Domain.dll</HintPath>
         </Reference>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Contracts" />
-    </ItemGroup>
 
 </Project>

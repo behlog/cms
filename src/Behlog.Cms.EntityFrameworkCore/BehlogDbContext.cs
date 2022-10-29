@@ -1,11 +1,10 @@
 ﻿using Behlog.Core;
-using Behlog.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Behlog.Cms.EntityFrameworkCore;
 
-public class BehlogDbContext : DbContext, IBehlogDbContext
+public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
 {
     private IDbContextTransaction _transaction;
 
@@ -119,5 +118,20 @@ public class BehlogDbContext : DbContext, IBehlogDbContext
     public async Task MigrateDbAsync(CancellationToken cancellationToken = default)
     {
         await Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    public void AddRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+    {
+        throw new NotImplementedException();
+    }
+
+    public void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class
+    {
+        throw new NotImplementedException();
     }
 }
