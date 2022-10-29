@@ -4,6 +4,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{00436295-75B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behlog.Cms.Domain", "src\Behlog.Cms.Domain\Behlog.Cms.Domain.csproj", "{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behlog.Cms.EntityFrameworkCore", "src\Behlog.Cms.EntityFrameworkCore\Behlog.Cms.EntityFrameworkCore.csproj", "{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,5 +19,9 @@ Global
 		{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
