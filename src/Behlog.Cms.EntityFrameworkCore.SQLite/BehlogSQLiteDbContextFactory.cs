@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.DependencyInjection;
 using Behlog.Core.Models;
 using Behlog.Extensions;
 
-namespace Behlog.Cms.EntityFrameworkCore.SqlServer;
+namespace Behlog.Cms.EntityFrameworkCore.SQLite;
 
-public class BehlogSqlServerContextFactory : IDesignTimeDbContextFactory<BehlogSqlServerDbContext>
+public class BehlogSQLiteDbContextFactory : IDesignTimeDbContextFactory<BehlogDbContext>
 {
-    public BehlogSqlServerDbContext CreateDbContext(string[] args)
+    public BehlogDbContext CreateDbContext(string[] args)
     {
         var services = new ServiceCollection();
         services.AddOptions();
@@ -25,7 +24,6 @@ public class BehlogSqlServerContextFactory : IDesignTimeDbContextFactory<BehlogS
             .SetBasePath(basePath)
             .AddJsonFile("appsettings.json", false, reloadOnChange: true)
             .Build();
-        
         services.AddSingleton<IConfigurationRoot>(provider => configuration);
         services.Configure<BehlogOptions>(options => configuration.Bind(options));
         Console.WriteLine("Configurations binded to options...");
@@ -46,9 +44,9 @@ public class BehlogSqlServerContextFactory : IDesignTimeDbContextFactory<BehlogS
         }
         Console.WriteLine($"Connecting to {dbConfig.DbName}...");
         Console.WriteLine($"Using connection string: {dbConfig.ConnectionString}...");
-        services.AddEntityFrameworkSqlServer();
+        services.AddEntityFrameworkSqlite();
         var optionsBuilder = new DbContextOptionsBuilder<BehlogDbContext>();
         optionsBuilder.Configure(dbConfig, services.BuildServiceProvider());
-        return new BehlogSqlServerDbContext(optionsBuilder.Options);
+        return new BehlogSQLiteDbContext(optionsBuilder.Options);
     }
 }
