@@ -18,5 +18,6 @@ public class ContentBodyType : Enumeration
 
     public static ContentBodyType Markdown 
         => new ContentBodyType(2, nameof(Markdown));
-        
+
+    public static ContentBodyType Find(int id) => FromValue<ContentBodyType>(id);
 }

@@ -12,7 +12,7 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
     {
     }
     
-    public void Dispose()
+    public new void Dispose()
     {
         _transaction?.Dispose();
         base.Dispose();
@@ -71,7 +71,7 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         await _transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public int SaveChanges()
+    public new int SaveChanges()
     {
         ChangeTracker.DetectChanges();
         ChangeTracker.AutoDetectChangesEnabled = false;
@@ -80,7 +80,7 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         return result;
     }
 
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.DetectChanges();
         ChangeTracker.AutoDetectChangesEnabled = false;

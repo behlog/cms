@@ -22,7 +22,8 @@ public class ContentStatus : Enumeration
     public static ContentStatus Planned =>
         new ContentStatus(2, nameof(Planned));
 
-
+    public static ContentStatus Find(int id) => FromValue<ContentStatus>(id);
+    
     public bool CanPublished()
     {
         return Id != Deleted.Id;
