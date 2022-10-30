@@ -21,7 +21,8 @@ public class File : BehlogEntity<Guid>
     
     public string Url { get; }
     
+    public FileStatus Status { get; }
     
-
+    public string Description { get; }
     #endregion
 }
