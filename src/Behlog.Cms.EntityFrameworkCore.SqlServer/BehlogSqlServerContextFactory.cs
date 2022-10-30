@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Behlog.Core;
-using Behlog.Core.Models;
-using Behlog.Extensions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Behlog.Core.Models;
+using Behlog.Extensions;
 
 namespace Behlog.Cms.EntityFrameworkCore.SqlServer;
 
