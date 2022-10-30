@@ -1,4 +1,5 @@
-﻿using Behlog.Core;
+﻿using Behlog.Cms.EntityFrameworkCore.Configurations;
+using Behlog.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -133,5 +134,11 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
     public void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class
     {
         throw new NotImplementedException();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.AddContentConfiguration();
+        base.OnModelCreating(modelBuilder);
     }
 }
