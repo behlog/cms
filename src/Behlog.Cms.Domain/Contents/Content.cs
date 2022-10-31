@@ -48,6 +48,9 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
     
     public ICollection<ContentCategoryItem> Categories { get; protected set; } = new HashSet<ContentCategoryItem>();
 
+    public ICollection<ContentMeta> Meta { get; protected set; }
+        = new HashSet<ContentMeta>();
+
     #endregion
 
     #region Builders
