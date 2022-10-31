@@ -12,8 +12,8 @@ public class FileStatus : Enumeration
     public static FileStatus Deleted
         => new FileStatus(-1, nameof(Deleted));
 
-    public static FileStatus UnAttached
-        => new FileStatus(0, nameof(UnAttached));
+    public static FileStatus Created
+        => new FileStatus(0, nameof(Created));
 
     public static FileStatus Attached
         => new FileStatus(1, nameof(Attached));
@@ -24,4 +24,5 @@ public class FileStatus : Enumeration
     public static FileStatus Archived
         => new FileStatus(3, nameof(Archived));
 
+    public static FileStatus Find(int id) => FromValue<FileStatus>(id);
 }

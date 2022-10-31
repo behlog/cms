@@ -25,8 +25,7 @@ public class ContentType : BehlogEntity<Guid> {
     public DateTime? LastStatusChangedOn { get; protected set; }
 
     #endregion
-
-
+    
     #region Builders
 
     public static async Task<ContentType> CreateAsync(

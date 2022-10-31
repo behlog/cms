@@ -138,7 +138,12 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.AddContentTypeConfiguration();
         modelBuilder.AddContentConfiguration();
+        modelBuilder.AddContentCategoryConfiguration();
+        modelBuilder.AddCommentConfiguration();
+        modelBuilder.AddFileConfiguration();
+        
         base.OnModelCreating(modelBuilder);
     }
 }

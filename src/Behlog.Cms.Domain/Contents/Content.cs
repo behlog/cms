@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Behlog.Core;
 using Behlog.Cms.Core;
 using Behlog.Cms.Events;
@@ -32,15 +33,21 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
     public DateTime? PublishDate { get; protected set; }
     public string AltTitle { get; protected set; }
     public int OrderNum { get; protected set; }
-    public IReadOnlyCollection<Guid> Categories { get; protected set; } = new List<Guid>();
-
-
+    public string IconName { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     public string CreatedByUserId { get; protected set; }
     public string LastUpdatedByUserId { get; protected set; }
     public string CreatedByIp { get; protected set; }
     public string LastUpdatedByIp { get; protected set; }
+    #endregion
+
+    #region Navigations
+
+    public ContentType ContentType { get; protected set; }
+    
+    public ICollection<ContentCategoryItem> Categories { get; protected set; } = new HashSet<ContentCategoryItem>();
+
     #endregion
 
     #region Builders
@@ -63,13 +70,14 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
             AuthorUserId = command.AuthorUserId,
             Summary = command.Summary?.CorrectYeKe()!,
             OrderNum = command.OrderNum,
-            Categories = command.Categories?.ToList()!,
             Status = ContentStatus.Draft,
             BodyType = command.BodyType,
             CreatedByIp = "", //TODO : read from UserContext
             CreatedByUserId = "", //TODO : read from UserContext
         };
 
+        content.Categories = command.Categories?.ToList()
+            .Select(categoryId => new ContentCategoryItem(content.Id, categoryId)).ToList()!;
         await content.PublishCreatedEvent(manager);
         return await Task.FromResult(content);
     }
@@ -90,7 +98,8 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
         Status = command.Status;
         AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         OrderNum = command.OrderNum;
-        Categories = command.Categories;
+        Categories = command.Categories?.ToList()
+            .Select(categoryId => new ContentCategoryItem(Id, categoryId)).ToList()!;
         LastUpdated = DateTime.UtcNow; //TODO : use date service
         LastUpdatedByUserId = ""; //TODO : read from UserContext
         
@@ -160,7 +169,7 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
             status: Status,
             altTitle: AltTitle,
             orderNum: OrderNum,
-            categories: Categories
+            categories: Categories?.Select(_=> _.CategoryId).ToList()!
         );
 
         await manager.PublishAsync(e).ConfigureAwait(false);
@@ -180,7 +189,7 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
             status: Status,
             altTitle: AltTitle,
             orderNum: OrderNum,
-            categories: Categories
+            categories: Categories?.Select(_=> _.CategoryId).ToList()!
         );
 
         await manager.PublishAsync(e).ConfigureAwait(false);

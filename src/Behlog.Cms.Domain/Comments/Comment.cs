@@ -26,20 +26,26 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
 
     #region Props
 
-    public string Title { get; }
-    public string Body { get; }
-    public ContentBodyType BodyType { get; }
-    public string Email { get; }
-    public string WebUrl { get; }
-    public string AuthorUserId { get; }
-    public string AuthorName { get; }
-    
-    public DateTime CreatedDate { get; }
-    public DateTime? LastUpdated { get; }
-    public string CreatedByUserId { get; }
-    public string LastUpdatedByUserId { get; }
-    public string CreatedByIp { get; }
-    public string LastUpdatedByIp { get; }
+    public string Title { get; protected set; }
+    public string Body { get; protected set; }
+    public ContentBodyType BodyType { get; protected set; }
+    public string Email { get; protected set; }
+    public string WebUrl { get; protected set; }
+    public string AuthorUserId { get; protected set; }
+    public string AuthorName { get; protected set; }
+    public Guid ContentId { get; protected set; }
+    public DateTime CreatedDate { get; protected set; }
+    public DateTime? LastUpdated { get; protected set; }
+    public string CreatedByUserId { get; protected set; }
+    public string LastUpdatedByUserId { get; protected set; }
+    public string CreatedByIp { get; protected set; }
+    public string LastUpdatedByIp { get; protected set; }
+    #endregion
+
+    #region Navigations
+
+    public Content Content { get; protected set; }
+
     #endregion
 
     public static Comment Create(CreateCommentArg args) 

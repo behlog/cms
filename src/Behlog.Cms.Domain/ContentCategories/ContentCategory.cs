@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Behlog.Cms.Commands;
 using Behlog.Core;
 using Behlog.Extensions;
@@ -81,6 +82,13 @@ public partial class ContentCategory : BehlogEntity<Guid>
     public DateTime CreateDate { get; protected set; }
     public DateTime? ModifyDate { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
+
+    #endregion
+
+    #region Navigations
+
+    public ICollection<ContentCategoryItem> Contents { get; protected set; } 
+        = new HashSet<ContentCategoryItem>();
 
     #endregion
 

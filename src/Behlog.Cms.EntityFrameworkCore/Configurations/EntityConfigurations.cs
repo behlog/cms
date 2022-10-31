@@ -16,4 +16,6 @@ public static partial class EntityConfigurations
     public const string FileTableName = nameof(File);
 
     public const string ContentCategoryTableName = nameof(ContentCategory);
+
+    public const string ContentCategoryItemTableName = nameof(ContentCategoryItem);
 }

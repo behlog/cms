@@ -11,18 +11,20 @@ public class File : BehlogEntity<Guid>
 
     #region props
 
-    public string Title { get; }
+    public string Title { get; protected set; }
     
-    public string FilePath { get; }
+    public string FilePath { get; protected set; }
     
-    public string Extension { get; }
+    public string AlternateFilePath { get; protected set; }
     
-    public string AltTitle { get; }
+    public string Extension { get; protected set; }
     
-    public string Url { get; }
+    public string AltTitle { get; protected set; }
     
-    public FileStatus Status { get; }
+    public string Url { get; protected set; }
     
-    public string Description { get; }
+    public FileStatus Status { get; protected set; }
+    
+    public string Description { get; protected set; }
     #endregion
 }
