@@ -6,22 +6,8 @@ namespace Behlog.Cms.Domain;
 
 public class Comment : BehlogEntity<Guid>, IHasMetadata
 {
-    // private readonly IDateService _dateService = new DateService();
-
-    protected Comment(CreateCommentArg args)
+    private Comment()
     {
-        if(args is null) throw new ArgumentNullException(nameof(args));
-
-        // Id = Guid.NewGuid();
-        Title = args.Title;
-        Body = args.Body;
-        BodyType = args.BodyType;
-        WebUrl = args.WebUrl;
-        Email = args.Email;
-        AuthorName = args.AuthorName;
-        // AuthorUserId = //TODO : save logged-in UserId
-        CreatedDate = DateTime.UtcNow; //TODO : get from dateservice
-
     }
 
     #region Props
@@ -48,10 +34,4 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
 
     #endregion
 
-    public static Comment Create(CreateCommentArg args) 
-    {
-        var comment = new Comment(args);
-
-        return comment;
-    }
 }

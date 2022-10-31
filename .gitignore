@@ -355,3 +355,7 @@ MigrationBackup/
 .vscode/
 .DS_Store
 *.DS_Store
+
+# SQLite
+*.db
+
