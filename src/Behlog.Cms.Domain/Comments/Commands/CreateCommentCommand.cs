@@ -8,6 +8,7 @@ namespace Behlog.Cms.Commands;
 public class CreateCommentCommand : IBehlogCommand<CommentResult>
 {
     
+    public Guid ContentId { get; }
     public string Title { get; }
     public string Body { get; }
     public ContentBodyType BodyType { get; }

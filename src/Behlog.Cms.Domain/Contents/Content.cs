@@ -80,7 +80,8 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
         };
 
         content.Categories = command.Categories?.ToList()
-            .Select(categoryId => new ContentCategoryItem(content.Id, categoryId)).ToList()!;
+            .Select(categoryId => new ContentCategoryItem(content.Id, categoryId))
+            .ToList()!;
         await content.PublishCreatedEvent(manager);
         return await Task.FromResult(content);
     }
