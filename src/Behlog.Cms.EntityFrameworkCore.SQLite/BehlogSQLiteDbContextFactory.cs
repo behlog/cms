@@ -10,9 +10,9 @@ using Behlog.Extensions;
 
 namespace Behlog.Cms.EntityFrameworkCore.SQLite;
 
-public class BehlogSQLiteDbContextFactory : IDesignTimeDbContextFactory<BehlogDbContext>
+public class BehlogSQLiteDbContextFactory : IDesignTimeDbContextFactory<BehlogSQLiteDbContext>
 {
-    public BehlogDbContext CreateDbContext(string[] args)
+    public BehlogSQLiteDbContext CreateDbContext(string[] args)
     {
         var services = new ServiceCollection();
         services.AddOptions();
