@@ -6,9 +6,7 @@ namespace Behlog.Cms.Domain;
 public class File : BehlogEntity<Guid>, IHasMetadata
 {
 
-    private File()
-    {
-    }
+    private File() { }
 
     #region props
     
@@ -28,5 +26,9 @@ public class File : BehlogEntity<Guid>, IHasMetadata
     public string LastUpdatedByIp { get; protected set; }
     #endregion
 
+    #region Builders
+
     
+
+    #endregion
 }
