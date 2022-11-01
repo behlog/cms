@@ -25,6 +25,7 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
     public Guid ContentId { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
+    public DateTime? LastStatusChangedOn { get; protected set; }
     public string CreatedByUserId { get; protected set; }
     public string LastUpdatedByUserId { get; protected set; }
     public string CreatedByIp { get; protected set; }
@@ -83,6 +84,62 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         LastUpdatedByUserId = ""; //TODO : read from context
 
         await PublishUpdatedEvent(manager);
+    }
+    
+    public async Task SoftDeleteAsync(IBehlogManager manager)
+    {
+        //TODO : Check if comment can be soft deleted
+        ChangeStatus(CommentStatus.Deleted);
+
+        await PublishSoftDeletedEvent(manager);
+    }
+
+
+    public async Task RemoveAsync(IBehlogManager manager)
+    {
+        await PublishRemovedEvent(manager);
+    }
+
+    /// <summary>
+    /// Approve the <see cref="Comment"/>
+    /// </summary>
+    /// <param name="manager"></param>
+    public async Task ApproveAsync(IBehlogManager manager)
+    {
+        if(Status == CommentStatus.Approved) return;
+        
+        ChangeStatus(CommentStatus.Approved);
+        await PublishApprovedEvent(manager);
+    }
+
+    /// <summary>
+    /// Reject the <see cref="Comment"/>
+    /// </summary>
+    /// <param name="manager"></param>
+    public async Task RejectAsync(IBehlogManager manager)
+    {
+        if(Status == CommentStatus.Rejected) return;
+        
+        ChangeStatus(CommentStatus.Rejected);
+        await PublishRejectedEvent(manager);
+    }
+
+
+    public async Task BlockAsync(IBehlogManager manager)
+    {
+        if(Status == CommentStatus.Blocked) return;
+        
+        ChangeStatus(CommentStatus.Blocked);
+        await PublishBlockedEvent(manager);
+    }
+
+
+    public async Task MarkAsSpamAsync(IBehlogManager manager)
+    {
+        if(Status == CommentStatus.Spam) return;
+        
+        ChangeStatus(CommentStatus.Spam);
+        await PublishSpammedEvent(manager);
     }
 
     #endregion
@@ -143,6 +200,14 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+    private void ChangeStatus(CommentStatus status)
+    {
+        Status = status;
+        LastStatusChangedOn = DateTime.UtcNow;
+        LastUpdatedByUserId = ""; //TODO : from userContext
+        LastUpdatedByIp = ""; //TODO : from HttpContext
+    }
+    
     #endregion
 
 }

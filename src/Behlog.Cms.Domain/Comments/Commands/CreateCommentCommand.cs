@@ -14,6 +14,5 @@ public class CreateCommentCommand : IBehlogCommand<CommentResult>
     public ContentBodyType BodyType { get; }
     public string Email { get; }
     public string WebUrl { get; }
-    public string AuthorUserId { get; }
     public string AuthorName { get; }
 }

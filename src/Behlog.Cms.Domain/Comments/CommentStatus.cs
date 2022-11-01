@@ -4,28 +4,43 @@ namespace Behlog.Cms.Domain;
 
 public class CommentStatus : Enumeration
 {
-    public CommentStatus(int id, string name, string title = "") 
+    private CommentStatus(int id, string name, string title = "") 
         : base(id, name, title)
     {
+        if (id == Approved.Id && !CanApproved())
+            throw new Exception("Comment cannot be approved!");
+
+        if (id == Rejected.Id && !CanRejected())
+            throw new Exception("Comment cannot be rejected!");
     }
 
     public static CommentStatus Find(int id) => FromValue<CommentStatus>(id);
 
-    public static CommentStatus Deleted
-        = new CommentStatus(-1, nameof(Deleted));
+    public static CommentStatus Deleted = new(-1, nameof(Deleted));
 
-    public static CommentStatus Created
-        = new CommentStatus(0, nameof(Created));
+    public static CommentStatus Created = new(0, nameof(Created));
 
-    public static CommentStatus Approved
-        = new CommentStatus(1, nameof(Approved));
+    public static CommentStatus Approved = new(1, nameof(Approved));
 
-    public static CommentStatus Rejected
-        = new CommentStatus(2, nameof(Rejected));
+    public static CommentStatus Rejected = new(2, nameof(Rejected));
 
-    public static CommentStatus Spam
-        = new CommentStatus(3, nameof(Spam));
+    public static CommentStatus Spam = new(3, nameof(Spam));
 
-    public static CommentStatus Blocked
-        = new CommentStatus(4, nameof(Blocked));
+    public static CommentStatus Blocked = new(4, nameof(Blocked));
+
+
+    private bool CanApproved()
+    {
+        return this != Deleted &&
+               this != Spam &&
+               this != Blocked;
+    }
+
+    private bool CanRejected()
+    {
+        return this != Deleted &&
+               this != Spam &&
+               this != Blocked;
+    }
+    
 }
