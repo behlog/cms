@@ -89,6 +89,14 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+    private async Task PublishRemovedEvent(IBehlogManager manager)
+    {
+        var e = new CommentRemovedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+    
+    
+
     #endregion
 
 }
