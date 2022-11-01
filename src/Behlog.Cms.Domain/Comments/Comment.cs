@@ -18,6 +18,7 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
     public string Title { get; protected set; }
     public string Body { get; protected set; }
     public ContentBodyType BodyType { get; protected set; }
+    public CommentStatus Status { get; protected set; }
     public string Email { get; protected set; }
     public string WebUrl { get; protected set; }
     public string AuthorUserId { get; protected set; }
@@ -53,6 +54,7 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
             Email = command.Email?.Trim()!,
             AuthorName = command.AuthorName?.Trim().CorrectYeKe()!,
             BodyType = command.BodyType,
+            Status = CommentStatus.Created,
             ContentId = command.ContentId,
             CreatedDate = DateTime.UtcNow,
             WebUrl = command.WebUrl?.Trim().CorrectYeKe()!,
@@ -60,9 +62,8 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
             CreatedByIp = "", //TODO : read from HttpContext
             CreatedByUserId = ""
         };
-        await comment.PublishCreatedEvent(manager);
         
-        //TODO : Publish CreatedEvent
+        await comment.PublishCreatedEvent(manager);
         return await Task.FromResult(comment);
     }
 
