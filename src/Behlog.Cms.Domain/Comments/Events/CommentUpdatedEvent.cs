@@ -1,6 +1,7 @@
+using Behlog.Cms.Domain;
 using Behlog.Core.Domain;
 
-namespace Behlog.Cms.Domain.Events;
+namespace Behlog.Cms.Events;
 
 public class CommentUpdatedEvent : BehlogDomainEvent
 {

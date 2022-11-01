@@ -1,9 +1,8 @@
-using System;
-using Behlog.Cms.Commands;
-using Behlog.Cms.Domain.Events;
 using Behlog.Core;
-using Behlog.Core.Domain;
 using Behlog.Extensions;
+using Behlog.Cms.Events;
+using Behlog.Core.Domain;
+using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Domain;
 
@@ -67,6 +66,25 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         return await Task.FromResult(comment);
     }
 
+
+    public async Task UpdateAsync(
+        UpdateCommentCommand command, IBehlogManager manager)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+
+        Title = command.Title?.Trim().CorrectYeKe()!;
+        Body = command.Body?.CorrectYeKe()!;
+        BodyType = command.BodyType;
+        Email = command.Email?.Trim().CorrectYeKe()!;
+        WebUrl = command.WebUrl?.Trim().CorrectYeKe()!;
+        LastUpdated = DateTime.UtcNow;
+        LastUpdatedByIp = ""; //TODO : read from Context
+        LastUpdatedByUserId = ""; //TODO : read from context
+
+        await PublishUpdatedEvent(manager);
+    }
+
     #endregion
 
     #region Event Publishers
@@ -94,8 +112,36 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         var e = new CommentRemovedEvent(Id);
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
-    
-    
+
+    private async Task PublishApprovedEvent(IBehlogManager manager)
+    {
+        var e = new CommentApprovedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false); 
+    }
+
+    private async Task PublishBlockedEvent(IBehlogManager manager)
+    {
+        var e = new CommentBlockedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+
+    private async Task PublishRejectedEvent(IBehlogManager manager)
+    {
+        var e = new CommentRejectedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+
+    private async Task PublishSoftDeletedEvent(IBehlogManager manager)
+    {
+        var e = new CommentSoftDeletedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+
+    private async Task PublishSpammedEvent(IBehlogManager manager)
+    {
+        var e = new CommentSpammedEvent(Id);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
 
     #endregion
 
