@@ -60,6 +60,7 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
             CreatedByIp = "", //TODO : read from HttpContext
             CreatedByUserId = ""
         };
+        await comment.PublishCreatedEvent(manager);
         
         //TODO : Publish CreatedEvent
         return await Task.FromResult(comment);
