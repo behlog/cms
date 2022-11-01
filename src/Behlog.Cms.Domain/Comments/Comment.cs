@@ -1,5 +1,6 @@
 using System;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Domain.Events;
 using Behlog.Core;
 using Behlog.Core.Domain;
 using Behlog.Extensions;
@@ -62,6 +63,28 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         
         //TODO : Publish CreatedEvent
         return await Task.FromResult(comment);
+    }
+
+    #endregion
+
+    #region Event Publishers
+
+    private async Task PublishCreatedEvent(IBehlogManager manager)
+    {
+        var e = new CommentCreatedEvent(
+            Id, Title, Body, BodyType, Email, WebUrl, AuthorUserId,
+            AuthorName, CreatedByUserId, CreatedByIp, CreatedDate);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+
+
+    private async Task PublishUpdatedEvent(IBehlogManager manager)
+    {
+        var e = new CommentUpdatedEvent(
+            Id, Title, Body, BodyType, Email, WebUrl, AuthorUserId,
+            AuthorName, CreatedByUserId, LastUpdatedByUserId,
+            CreatedByIp, LastUpdatedByIp, CreatedDate, LastUpdated);
+        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     #endregion

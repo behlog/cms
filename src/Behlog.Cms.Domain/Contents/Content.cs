@@ -1,11 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Behlog.Core;
 using Behlog.Cms.Core;
 using Behlog.Cms.Events;
 using Behlog.Extensions;
 using Behlog.Core.Domain;
 using Behlog.Cms.Commands;
-using Behlog.Cms.Models;
 using Behlog.Cms.Exceptions;
 
 namespace Behlog.Cms.Domain;
@@ -14,11 +12,8 @@ public class Content : BehlogEntity<Guid>, IHasMetadata
 {
     protected AggregateCompletionTask CompletionTask = new();
 
-    private Content() : base()
-    {
-        
-    }
-    
+    private Content() { }
+
     #region Props
 
     public string Title { get; protected set; }
