@@ -33,7 +33,7 @@ public partial class ContentCategory : BehlogEntity<Guid>
             ParentId = command.ParentId,
             ContentTypeId = command.ContentTypeId,
             Description = command.Description,
-            CreateDate = DateTime.UtcNow
+            CreatedDate = DateTime.UtcNow
         };
         await category.PublishCreatedEvent(manager);
         return await Task.FromResult(category);
@@ -49,7 +49,7 @@ public partial class ContentCategory : BehlogEntity<Guid>
         ParentId = command.ParentId;
         Description = command.Description?.CorrectYeKe()!;
         ContentTypeId = command.ContentTypeId;
-        ModifyDate = DateTime.UtcNow;
+        LastUpdated = DateTime.UtcNow;
         if (Status == EntityStatus.Enabled && !command.Enabled ||
             Status != EntityStatus.Enabled && command.Enabled)
         {
@@ -79,8 +79,8 @@ public partial class ContentCategory : BehlogEntity<Guid>
     public string Description { get; protected set; }
     public Guid? ContentTypeId { get; protected set; }
     public EntityStatus Status { get; protected set; }
-    public DateTime CreateDate { get; protected set; }
-    public DateTime? ModifyDate { get; protected set; }
+    public DateTime CreatedDate { get; protected set; }
+    public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
 
     #endregion

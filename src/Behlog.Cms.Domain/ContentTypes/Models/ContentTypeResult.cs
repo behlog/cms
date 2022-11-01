@@ -11,7 +11,7 @@ public class ContentTypeResult : BehlogResult
     public string Description { get; set; }
     public string Lang { get; set; }
     public EntityStatus Status { get; set; }
-    public DateTime CreateDate { get; set; }
-    public DateTime? ModifyDate { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public DateTime? LastUpdated { get; set; }
     public DateTime? LastStatusChangedOn { get; set; }
 }

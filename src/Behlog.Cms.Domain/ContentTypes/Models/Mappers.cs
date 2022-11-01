@@ -18,8 +18,8 @@ public static class ContentTypeMappers
             Slug = contentType.Slug,
             Status = contentType.Status,
             Description = contentType.Description,
-            CreateDate = contentType.CreateDate,
-            ModifyDate = contentType.ModifyDate,
+            CreatedDate = contentType.CreatedDate,
+            LastUpdated = contentType.LastUpdated,
             SystemName = contentType.SystemName,
             LastStatusChangedOn = contentType.LastStatusChangedOn
         };

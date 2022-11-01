@@ -20,8 +20,8 @@ public class ContentType : BehlogEntity<Guid> {
     public string Description { get; protected set; }
     public string Lang { get; protected set; }
     public EntityStatus Status { get; protected set; }
-    public DateTime CreateDate { get; protected set; }
-    public DateTime? ModifyDate { get; protected set; }
+    public DateTime CreatedDate { get; protected set; }
+    public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
 
     #endregion
@@ -43,7 +43,7 @@ public class ContentType : BehlogEntity<Guid> {
             Slug = command.Slug?.Trim().CorrectYeKe()!,
             Status = EntityStatus.Enabled,
             Title = command.Title?.Trim().CorrectYeKe()!,
-            CreateDate = DateTime.UtcNow
+            CreatedDate = DateTime.UtcNow
         };
 
         await contentType.PublishCreatedEvent(manager);
@@ -69,7 +69,7 @@ public class ContentType : BehlogEntity<Guid> {
         }
         Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
         Description = command.Description?.CorrectYeKe()!;
-        ModifyDate = DateTime.UtcNow;
+        LastUpdated = DateTime.UtcNow;
 
         await PublishUpdatedEvent(manager);
     }
