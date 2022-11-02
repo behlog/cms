@@ -6,7 +6,7 @@ namespace Behlog.Cms.Models;
 public class FileResult : BehlogResult
 {
     
-    public Guid Id { get; }
+    public Guid Id { get; set; }
     public string Title { get; set; }
     public string FilePath { get; set; }
     public string AlternateFilePath { get; set; }
