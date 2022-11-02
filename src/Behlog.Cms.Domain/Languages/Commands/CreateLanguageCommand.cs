@@ -1,7 +1,7 @@
 using Behlog.Cms.Domain.Languages.Models;
 using Behlog.Core;
 
-namespace Behlog.Cms.Domain.Languages.Commands;
+namespace Behlog.Cms.Commands;
 
 public class CreateLanguageCommand : IBehlogCommand<LanguageResult>
 {

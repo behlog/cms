@@ -1,7 +1,7 @@
 using Behlog.Core;
 using Behlog.Core.Domain;
 
-namespace Behlog.Cms.Domain.Languages.Events;
+namespace Behlog.Cms.Events;
 
 public class LanguageCreatedEvent : BehlogDomainEvent
 {
