@@ -1,5 +1,8 @@
+using Behlog.Cms.Domain.Languages.Commands;
+using Behlog.Cms.Domain.Languages.Events;
 using Behlog.Core;
 using Behlog.Core.Domain;
+using Behlog.Extensions;
 
 namespace Behlog.Cms.Domain.Languages;
 
@@ -19,7 +22,27 @@ public class Language : BehlogEntity<Guid>
 
     #region Builders
 
-    
+    public static async Task<Language> CreateAsync(
+        CreateLanguageCommand command, IBehlogManager manager)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+
+        var lang = new Language
+        {
+            Id = Guid.NewGuid(),
+            Code = command.Code,
+            Name = command.Name.Trim(),
+            Title = command.Title?.Trim().CorrectYeKe()!,
+            Status = EntityStatus.Enabled
+        };
+
+        var e = new LanguageCreatedEvent(
+            lang.Id, lang.Title, lang.Name, lang.Code, lang.Status);
+        await manager.PublishAsync(e).ConfigureAwait(false);
+
+        return lang;
+    }
 
     #endregion
 }
