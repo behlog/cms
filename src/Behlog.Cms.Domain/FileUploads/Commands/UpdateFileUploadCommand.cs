@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Commands;
 
-public class UpdateFileCommand : IBehlogCommand
+public class UpdateFileUploadCommand : IBehlogCommand
 {
     public Guid Id { get; }
     public string Title { get; }

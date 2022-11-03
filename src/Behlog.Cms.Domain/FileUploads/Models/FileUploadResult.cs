@@ -3,7 +3,7 @@ using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.Models;
 
-public class FileResult : BehlogResult
+public class FileUploadResult : BehlogResult
 {
     
     public Guid Id { get; set; }
@@ -13,7 +13,7 @@ public class FileResult : BehlogResult
     public string Extension { get; set; }
     public string AltTitle { get; set; }
     public string Url { get; set; }
-    public FileStatus Status { get; set; }
+    public FileUploadStatus Status { get; set; }
     public string Description { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? LastUpdated { get; set; }

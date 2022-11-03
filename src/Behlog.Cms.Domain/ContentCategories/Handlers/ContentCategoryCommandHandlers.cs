@@ -1,9 +1,9 @@
 using Behlog.Core;
+using Behlog.Cms.Store;
 using Behlog.Extensions;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
 using Behlog.Cms.Commands;
-using Behlog.Cms.Repository;
 
 namespace Behlog.Cms.Handlers;
 
@@ -14,15 +14,17 @@ public class ContentCategoryCommandHandlers :
     IBehlogCommandHandler<RemoveContentCategoryCommand>
 {
     private readonly IBehlogManager _manager;
-    private readonly IContentCategoryRepository _contentCategoryRepository;
-    
-    
+    private readonly IContentCategoryWriteStore _writeStore;
+    private readonly IContentCategoryReadStore _readStore;
+
     public ContentCategoryCommandHandlers(
-        IBehlogManager manager, IContentCategoryRepository contentCategoryRepository)
+        IBehlogManager manager, 
+        IContentCategoryWriteStore writeStore, 
+        IContentCategoryReadStore readStore)
     {
         _manager = manager ?? throw new ArgumentNullException(nameof(manager));
-        _contentCategoryRepository = contentCategoryRepository 
-            ?? throw new ArgumentNullException(nameof(contentCategoryRepository));
+        _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
+        _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
     }
     
     public async Task<ContentCategoryResult> HandleAsync(
@@ -31,7 +33,7 @@ public class ContentCategoryCommandHandlers :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
         var category = ContentCategory.Create(command);
-        await _contentCategoryRepository.AddAsync(category, cancellationToken).ConfigureAwait(false);
+        await _writeStore.AddAsync(category, cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(category.ToResult());
     }
@@ -41,12 +43,12 @@ public class ContentCategoryCommandHandlers :
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
-        var category = await _contentCategoryRepository.FindAsync(command.Id).ConfigureAwait(false);
+        var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
         category.Update(command);
-        _contentCategoryRepository.MarkForUpdate(category);
-        await _contentCategoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        _writeStore.MarkForUpdate(category);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task HandleAsync(
@@ -55,12 +57,12 @@ public class ContentCategoryCommandHandlers :
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
-        var category = await _contentCategoryRepository.FindAsync(command.Id).ConfigureAwait(false);
+        var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
         category.SoftDelete();
-        _contentCategoryRepository.MarkForUpdate(category);
-        await _contentCategoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        _writeStore.MarkForUpdate(category);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
 
@@ -70,9 +72,9 @@ public class ContentCategoryCommandHandlers :
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
-        var category = await _contentCategoryRepository.FindAsync(command.Id).ConfigureAwait(false);
+        var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
 
-        await _contentCategoryRepository.DeleteAsync(category, cancellationToken).ConfigureAwait(false);
+        await _writeStore.DeleteAsync(category, cancellationToken).ConfigureAwait(false);
     }
 }

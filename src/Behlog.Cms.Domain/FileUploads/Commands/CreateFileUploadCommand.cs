@@ -3,9 +3,9 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Commands;
 
-public class CreateFileCommand : IBehlogCommand<FileResult>
+public class CreateFileUploadCommand : IBehlogCommand<FileUploadResult>
 {
-    public CreateFileCommand(
+    public CreateFileUploadCommand(
         string filePath, string title, string description)
     {
         FilePath = filePath;
@@ -13,7 +13,7 @@ public class CreateFileCommand : IBehlogCommand<FileResult>
         Description = description;
     }
 
-    public CreateFileCommand(
+    public CreateFileUploadCommand(
         string filePath, string alternateFilePath, 
         string title, string altTitle, string description)
     {
@@ -33,7 +33,7 @@ public class CreateFileCommand : IBehlogCommand<FileResult>
 }
 
 
-public class CreateFileWithUrlCommand : IBehlogCommand<FileResult>
+public class CreateFileWithUrlCommand : IBehlogCommand<FileUploadResult>
 {
     public CreateFileWithUrlCommand(
         string title, string altTitle, string url, string description)

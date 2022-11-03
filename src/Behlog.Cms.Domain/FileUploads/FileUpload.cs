@@ -6,10 +6,10 @@ using Behlog.Extensions;
 
 namespace Behlog.Cms.Domain;
 
-public class File : BehlogEntity<Guid>, IHasMetadata
+public class FileUpload : AggregateRoot<Guid>, IHasMetadata
 {
 
-    private File() { }
+    private FileUpload() { }
 
     #region props
     
@@ -19,7 +19,7 @@ public class File : BehlogEntity<Guid>, IHasMetadata
     public string Extension { get; protected set; }
     public string AltTitle { get; protected set; }
     public string Url { get; protected set; }
-    public FileStatus Status { get; protected set; }
+    public FileUploadStatus Status { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
     public string Description { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
@@ -33,17 +33,17 @@ public class File : BehlogEntity<Guid>, IHasMetadata
     #region Builders
     
     
-    public static async Task<File> CreateAsync(
-        CreateFileCommand command, IBehlogManager manager)
+    public static async Task<FileUpload> CreateAsync(
+        CreateFileUploadCommand command, IBehlogManager manager)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
-        var file = new File
+        var file = new FileUpload
         {
             Id = Guid.NewGuid(),
             Title = command.Title?.Trim().CorrectYeKe()!,
-            Status = FileStatus.Created,
+            Status = FileUploadStatus.Created,
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Description = command.Description?.CorrectYeKe()!,
             CreatedDate = DateTime.UtcNow,
@@ -58,7 +58,7 @@ public class File : BehlogEntity<Guid>, IHasMetadata
 
 
     public async Task UpdateAsync(
-        UpdateFileCommand command, IBehlogManager manager)
+        UpdateFileUploadCommand command, IBehlogManager manager)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
@@ -67,9 +67,9 @@ public class File : BehlogEntity<Guid>, IHasMetadata
         AltTitle = command.AltTitle;
         Description = command.Description;
 
-        if (command.Hidden && Status != FileStatus.Hidden)
+        if (command.Hidden && Status != FileUploadStatus.Hidden)
         {
-            ChangeStatus(FileStatus.Hidden);
+            ChangeStatus(FileUploadStatus.Hidden);
         }
         
 
@@ -82,7 +82,7 @@ public class File : BehlogEntity<Guid>, IHasMetadata
 
     private async Task PublishCreatedEvent(IBehlogManager manager)
     {
-        var e = new FileCreatedEvent(
+        var e = new FileUploadCreatedEvent(
             Id, Title, FilePath, AlternateFilePath, Extension, AltTitle,
             Url, Status, Description, CreatedDate, CreatedByUserId, CreatedByIp);
         await manager.PublishAsync(e).ConfigureAwait(false);
@@ -101,7 +101,7 @@ public class File : BehlogEntity<Guid>, IHasMetadata
 
     #region helpers
 
-    private void ChangeStatus(FileStatus status)
+    private void ChangeStatus(FileUploadStatus status)
     {
         Status = status;
         LastStatusChangedOn = DateTime.UtcNow;

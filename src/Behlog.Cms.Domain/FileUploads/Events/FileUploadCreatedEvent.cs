@@ -3,11 +3,11 @@ using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Events;
 
-public class FileCreatedEvent : BehlogDomainEvent
+public class FileUploadCreatedEvent : BehlogDomainEvent
 {
-    public FileCreatedEvent(
+    public FileUploadCreatedEvent(
         Guid id, string title, string filePath, string alternateFilePath, 
-        string extension, string altTitle, string url, FileStatus status, 
+        string extension, string altTitle, string url, FileUploadStatus status, 
         string description, DateTime createdDate, string createdByUserId, 
         string createdByIp)
     {
@@ -32,7 +32,7 @@ public class FileCreatedEvent : BehlogDomainEvent
     public string Extension { get; }
     public string AltTitle { get; }
     public string Url { get; }
-    public FileStatus Status { get; }
+    public FileUploadStatus Status { get; }
     public string Description { get; }
     public DateTime CreatedDate { get; }
     public string CreatedByUserId { get; }

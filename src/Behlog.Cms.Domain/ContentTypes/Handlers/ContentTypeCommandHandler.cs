@@ -1,8 +1,8 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Repository;
 using Behlog.Core;
+using Behlog.Cms.Store;
 using Behlog.Extensions;
 using Behlog.Cms.Models;
+using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Handlers;
 
@@ -13,14 +13,15 @@ public class ContentTypeCommandHandler :
     IBehlogCommandHandler<SoftDeleteContentTypeCommand>
 {
     private readonly IBehlogManager _manager;
-    private readonly IContentTypeRepository _contentTypeRepository;
+    private readonly IContentTypeReadStore _readStore;
+    private readonly IContentTypeWriteStore _writeStore;
 
     public ContentTypeCommandHandler(
-        IBehlogManager manager, IContentTypeRepository contentTypeRepository)
+        IBehlogManager manager, IContentTypeReadStore readStore, IContentTypeWriteStore writeStore)
     {
         _manager = manager ?? throw new ArgumentNullException(nameof(manager));
-        _contentTypeRepository = contentTypeRepository 
-                                 ?? throw new ArgumentNullException(nameof(contentTypeRepository));
+        _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
+        _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
     }
 
 
@@ -31,7 +32,7 @@ public class ContentTypeCommandHandler :
         cancellationToken.ThrowIfCancellationRequested();
 
         var contentType = await ContentType.CreateAsync(command, _manager);
-        await _contentTypeRepository.AddAsync(contentType, cancellationToken).ConfigureAwait(false);
+        await _writeStore.AddAsync(contentType, cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(contentType.ToResult());
     }
@@ -42,10 +43,10 @@ public class ContentTypeCommandHandler :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         cancellationToken.ThrowIfCancellationRequested();
 
-        var contentType = await _contentTypeRepository.FindAsync(command.Id).ConfigureAwait(false);
+        var contentType = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         await contentType.UpdateAsync(command, _manager);
-        _contentTypeRepository.MarkForUpdate(contentType);
-        await _contentTypeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        _writeStore.MarkForUpdate(contentType);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task HandleAsync(
@@ -54,9 +55,9 @@ public class ContentTypeCommandHandler :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         cancellationToken.ThrowIfCancellationRequested();
 
-        var contentType = await _contentTypeRepository.FindAsync(command.Id).ConfigureAwait(false);
+        var contentType = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         await contentType.SoftDeleteAsync(_manager);
-        await _contentTypeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
     
 }
