@@ -73,6 +73,31 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         AddUpdatedEvent();
     }
 
+    public void SoftDelete()
+    {
+        ChangeStatus(FileUploadStatus.Deleted);
+        AddSoftDeletedEvent();
+    }
+
+    public void Archive()
+    {
+        ChangeStatus(FileUploadStatus.Archived);
+        AddArchivedEvent();
+    }
+
+    public void Attach(Guid contentId)
+    {
+        throw new NotImplementedException();
+        AddAttachedEvent(contentId);
+    }
+
+    public void Remove()
+    {
+        //TODO : check can be removed
+        AddRemovedEvent();
+    }
+    
+
     #endregion
 
     #region Events
@@ -96,7 +121,30 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             CreatedByIp, LastUpdatedByIp, LastStatusChangedOn, CreatedDate);
         Enqueue(e);
     }
-    
+
+    private void AddArchivedEvent()
+    {
+        var e = new FileUploadArchivedEvent(Id, FileName, FilePath);
+        Enqueue(e);
+    }
+
+    private void AddAttachedEvent(Guid contentId)
+    {
+        var e = new FileUploadAttachedEvent(Id, contentId, FileName, FilePath);
+        Enqueue(e);
+    }
+
+    private void AddSoftDeletedEvent()
+    {
+        var e = new FileUploadSoftDeletedEvent(Id);
+        Enqueue(e);
+    }
+
+    private void AddRemovedEvent()
+    {
+        var e = new FileUploadRemovedEvent(Id, FileName, FilePath);
+        Enqueue(e);
+    }
 
     #endregion
 
