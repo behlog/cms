@@ -5,7 +5,7 @@ using Behlog.Extensions;
 
 namespace Behlog.Core;
 
-public class ContentType : BehlogEntity<Guid> {
+public class ContentType : AggregateRoot<Guid> {
     
     private ContentType()
     {

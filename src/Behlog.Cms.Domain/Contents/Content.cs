@@ -8,7 +8,7 @@ using Behlog.Cms.Exceptions;
 
 namespace Behlog.Cms.Domain;
 
-public class Content : BehlogEntity<Guid>, IHasMetadata
+public class Content : AggregateRoot<Guid>, IHasMetadata
 {
     protected AggregateCompletionTask CompletionTask = new();
 
