@@ -101,8 +101,6 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     #endregion
 
     #region Events
-
-    
     
     private void AddCreatedEvent()
     {
