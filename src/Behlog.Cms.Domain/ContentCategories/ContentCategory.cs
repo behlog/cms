@@ -7,7 +7,7 @@ using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Domain;
 
-public partial class ContentCategory : BehlogEntity<Guid> 
+public partial class ContentCategory : AggregateRoot<Guid> 
 {
 
     private ContentCategory()
@@ -17,10 +17,9 @@ public partial class ContentCategory : BehlogEntity<Guid>
 
     #region Methods
 
-    public static async Task<ContentCategory> CreateAsync(
-        CreateContentCategoryCommand command, IBehlogManager manager)
+    public static ContentCategory Create(CreateContentCategoryCommand command)
     {
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
         checkRequiredFields(command);
         
         var category = new ContentCategory
@@ -35,13 +34,13 @@ public partial class ContentCategory : BehlogEntity<Guid>
             Description = command.Description,
             CreatedDate = DateTime.UtcNow
         };
-        await category.PublishCreatedEvent(manager);
-        return await Task.FromResult(category);
+        
+        category.AddCreatedEvent();
+        return category;
     }
 
-    public async Task UpdateAsync(
-        UpdateContentCategoryCommand command, IBehlogManager manager) {
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+    public void Update(UpdateContentCategoryCommand command) {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
         checkRequiredFields(command);
         
         Title = command.Title?.Trim().CorrectYeKe()!;
@@ -57,16 +56,22 @@ public partial class ContentCategory : BehlogEntity<Guid>
         }
         Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
 
-        await PublishUpdatedEvent(manager);
+        AddUpdatedEvent();
     }
 
-    public async Task SoftDeleteAsync(IBehlogManager manager)
+    public void SoftDelete()
     {
         Status = EntityStatus.Deleted;
         LastStatusChangedOn = DateTime.UtcNow;
 
-        var e = new ContentCategorySoftDeletedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        AddSoftDeletedEvent();
+    }
+
+
+    public void Remove()
+    {
+        //TODO : check if can be removed
+        AddRemovedEvent();
     }
 
     #endregion
@@ -94,6 +99,22 @@ public partial class ContentCategory : BehlogEntity<Guid>
 
     #region Events
 
+    private void AddCreatedEvent()
+    {
+        var e = new ContentCategoryCreatedEvent(
+            id: Id,
+            title: Title,
+            altTitle: AltTitle,
+            slug: Slug,
+            parentId: ParentId,
+            description: Description,
+            contentTypeId: ContentTypeId,
+            status: Status
+        );
+        
+        Enqueue(e);
+    }
+    
     protected async Task PublishCreatedEvent(IBehlogManager manager)
     {
         var e = new ContentCategoryCreatedEvent(
@@ -109,6 +130,23 @@ public partial class ContentCategory : BehlogEntity<Guid>
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+
+    private void AddUpdatedEvent()
+    {
+        var e = new ContentCategoryUpdatedEvent(
+            id: Id,
+            title: Title,
+            altTitle: AltTitle,
+            slug: Slug,
+            parentId: ParentId,
+            description: Description,
+            contentTypeId: ContentTypeId,
+            status: Status
+        );
+        
+        Enqueue(e);
+    }
+    
     protected async Task PublishUpdatedEvent(IBehlogManager manager) 
     {
         var e = new ContentCategoryUpdatedEvent(
@@ -124,5 +162,17 @@ public partial class ContentCategory : BehlogEntity<Guid>
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+
+    private void AddSoftDeletedEvent()
+    {
+        var e = new ContentCategorySoftDeletedEvent(Id);
+        Enqueue(e);
+    }
+
+    private void AddRemovedEvent()
+    {
+        var e = new ContentCategoryRemovedEvent(Id);
+        Enqueue(e);
+    }
     #endregion
 }
