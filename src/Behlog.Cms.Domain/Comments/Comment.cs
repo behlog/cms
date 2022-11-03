@@ -6,7 +6,7 @@ using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Domain;
 
-public class Comment : BehlogEntity<Guid>, IHasMetadata
+public class Comment : AggregateRoot<Guid>, IHasMetadata
 {
     private Comment()
     {
@@ -40,11 +40,9 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
 
     #region Builders
 
-    public static async Task<Comment> CreateAsync(
-        CreateCommentCommand command, IBehlogManager manager)
+    public static async Task<Comment> Create(CreateCommentCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
         var comment = new Comment
         {
@@ -63,16 +61,14 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
             CreatedByUserId = ""
         };
         
-        await comment.PublishCreatedEvent(manager);
-        return await Task.FromResult(comment);
+        comment.AddCreatedEvent();
+        return comment;
     }
 
 
-    public async Task UpdateAsync(
-        UpdateCommentCommand command, IBehlogManager manager)
+    public void Update(UpdateCommentCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
         Title = command.Title?.Trim().CorrectYeKe()!;
         Body = command.Body?.CorrectYeKe()!;
@@ -83,69 +79,76 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         LastUpdatedByIp = ""; //TODO : read from Context
         LastUpdatedByUserId = ""; //TODO : read from context
 
-        await PublishUpdatedEvent(manager);
+        AddUpdatedEvent();
     }
     
-    public async Task SoftDeleteAsync(IBehlogManager manager)
+    public void SoftDelete()
     {
         //TODO : Check if comment can be soft deleted
         ChangeStatus(CommentStatus.Deleted);
 
-        await PublishSoftDeletedEvent(manager);
+        AddSoftDeletedEvent();
     }
 
-
-    public async Task RemoveAsync(IBehlogManager manager)
+    public void Remove()
     {
-        await PublishRemovedEvent(manager);
+        AddRemovedEvent();
     }
 
     /// <summary>
     /// Approve the <see cref="Comment"/>
     /// </summary>
     /// <param name="manager"></param>
-    public async Task ApproveAsync(IBehlogManager manager)
+    public void Approve()
     {
         if(Status == CommentStatus.Approved) return;
         
         ChangeStatus(CommentStatus.Approved);
-        await PublishApprovedEvent(manager);
+        AddApprovedEvent();
     }
 
     /// <summary>
     /// Reject the <see cref="Comment"/>
     /// </summary>
     /// <param name="manager"></param>
-    public async Task RejectAsync(IBehlogManager manager)
+    public void Reject()
     {
         if(Status == CommentStatus.Rejected) return;
         
         ChangeStatus(CommentStatus.Rejected);
-        await PublishRejectedEvent(manager);
+        AddRejectedEvent();
     }
 
 
-    public async Task BlockAsync(IBehlogManager manager)
+    public void Block()
     {
         if(Status == CommentStatus.Blocked) return;
         
         ChangeStatus(CommentStatus.Blocked);
-        await PublishBlockedEvent(manager);
+        AddBlockedEvent();
     }
 
 
-    public async Task MarkAsSpamAsync(IBehlogManager manager)
+    public void MarkAsSpam()
     {
         if(Status == CommentStatus.Spam) return;
         
         ChangeStatus(CommentStatus.Spam);
-        await PublishSpammedEvent(manager);
+        AddSpammedEvent();
     }
 
     #endregion
 
     #region Event Publishers
 
+    private void AddCreatedEvent()
+    {
+        var e = new CommentCreatedEvent(
+            Id, Title, Body, BodyType, Email, WebUrl, AuthorUserId,
+            AuthorName, CreatedByUserId, CreatedByIp, CreatedDate);
+        Enqueue(e);
+    }
+    
     private async Task PublishCreatedEvent(IBehlogManager manager)
     {
         var e = new CommentCreatedEvent(
@@ -155,6 +158,15 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
     }
 
 
+    private void AddUpdatedEvent()
+    {
+        var e = new CommentUpdatedEvent(
+            Id, Title, Body, BodyType, Email, WebUrl, AuthorUserId,
+            AuthorName, CreatedByUserId, LastUpdatedByUserId,
+            CreatedByIp, LastUpdatedByIp, CreatedDate, LastUpdated);
+        Enqueue(e);
+    }
+    
     private async Task PublishUpdatedEvent(IBehlogManager manager)
     {
         var e = new CommentUpdatedEvent(
@@ -164,16 +176,35 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+    public void AddRemovedEvent()
+    {
+        var e = new CommentRemovedEvent(Id);
+        Enqueue(e);
+    }
+    
     private async Task PublishRemovedEvent(IBehlogManager manager)
     {
         var e = new CommentRemovedEvent(Id);
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+
+    private void AddApprovedEvent()
+    {
+        var e = new CommentApprovedEvent(Id);
+        Enqueue(e);
+    }
+    
     private async Task PublishApprovedEvent(IBehlogManager manager)
     {
         var e = new CommentApprovedEvent(Id);
         await manager.PublishAsync(e).ConfigureAwait(false); 
+    }
+
+    private void AddBlockedEvent()
+    {
+        var e = new CommentBlockedEvent(Id);
+        Enqueue(e);
     }
 
     private async Task PublishBlockedEvent(IBehlogManager manager)
@@ -182,10 +213,22 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+    private void AddRejectedEvent()
+    {
+        var e = new CommentRejectedEvent(Id);
+        Enqueue(e);
+    }
+
     private async Task PublishRejectedEvent(IBehlogManager manager)
     {
         var e = new CommentRejectedEvent(Id);
         await manager.PublishAsync(e).ConfigureAwait(false);
+    }
+
+    private void AddSoftDeletedEvent()
+    {
+        var e = new CommentSoftDeletedEvent(Id);
+        Enqueue(e);
     }
 
     private async Task PublishSoftDeletedEvent(IBehlogManager manager)
@@ -194,6 +237,13 @@ public class Comment : BehlogEntity<Guid>, IHasMetadata
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
+
+    private void AddSpammedEvent()
+    {
+        var e = new CommentSpammedEvent(Id);
+        Enqueue(e);
+    }
+    
     private async Task PublishSpammedEvent(IBehlogManager manager)
     {
         var e = new CommentSpammedEvent(Id);

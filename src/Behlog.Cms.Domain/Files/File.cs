@@ -71,6 +71,7 @@ public class File : BehlogEntity<Guid>, IHasMetadata
         {
             ChangeStatus(FileStatus.Hidden);
         }
+        
 
         await PublishUpdatedEvent(manager);
     }
