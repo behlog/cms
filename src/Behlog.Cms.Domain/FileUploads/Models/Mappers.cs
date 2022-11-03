@@ -40,6 +40,6 @@ public static class FileUploadMappers
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors));
 
-        var result = fileUpload.ToResult().WithValidationErrors(errors);
+        return fileUpload;
     }
 }

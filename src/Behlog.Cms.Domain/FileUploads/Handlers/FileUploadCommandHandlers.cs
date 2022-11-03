@@ -36,9 +36,16 @@ public class FileUploadCommandHandlers :
         return fileUpload.ToResult();
     }
 
-    public async Task HandleAsync(UpdateFileUploadCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task HandleAsync(UpdateFileUploadCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
+
+        fileUpload.Update(command);
+        _writeStore.MarkForUpdate(fileUpload);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public Task HandleAsync(SoftDeleteFileUploadCommand message, CancellationToken cancellationToken = new CancellationToken())
