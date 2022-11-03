@@ -6,16 +6,18 @@ namespace Behlog.Cms.Events;
 public class FileUpdatedEvent : BehlogDomainEvent
 {
     public FileUpdatedEvent(
-        Guid id, string title, string filePath, string alternateFilePath, 
-        string extension, string altTitle, string url, FileUploadStatus status, 
+        Guid id, string title, string filePath, string fileName, string alternateFilePath, 
+        string extension, long fileSize, string altTitle, string url, FileUploadStatus status, 
         string description, string createdByUserId, string updatedByUserId, 
         string createdByIp, string updatedByIp, DateTime? lastStatusChangedOn, 
         DateTime createdDate)
     {
         Title = title;
         FilePath = filePath;
+        FileName = fileName;
         AlternateFilePath = alternateFilePath;
         Extension = extension;
+        FileSize = fileSize;
         AltTitle = altTitle;
         Url = url;
         Status = status;
@@ -33,8 +35,10 @@ public class FileUpdatedEvent : BehlogDomainEvent
     public Guid Id { get; }
     public string Title { get; }
     public string FilePath { get; }
+    public string FileName { get; }
     public string AlternateFilePath { get; }
     public string Extension { get; }
+    public long FileSize { get; }
     public string AltTitle { get; }
     public string Url { get; }
     public FileUploadStatus Status { get; }

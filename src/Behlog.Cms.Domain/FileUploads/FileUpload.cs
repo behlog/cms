@@ -15,8 +15,10 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     
     public string Title { get; protected set; }
     public string FilePath { get; protected set; }
+    public string FileName { get; protected set; }
     public string AlternateFilePath { get; protected set; }
     public string Extension { get; protected set; }
+    public long FileSize { get; protected set; }
     public string AltTitle { get; protected set; }
     public string Url { get; protected set; }
     public FileUploadStatus Status { get; protected set; }
@@ -33,11 +35,9 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     #region Builders
     
     
-    public static async Task<FileUpload> CreateAsync(
-        CreateFileUploadCommand command, IBehlogManager manager)
+    public static FileUpload Create(CreateFileUploadCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
         var file = new FileUpload
         {
@@ -52,16 +52,14 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             CreatedByUserId = "", //TODO : from UserContext
         };
 
-        await file.PublishCreatedEvent(manager);
-        return await Task.FromResult(file);
+        file.AddCreatedEvent();
+        return file;
     }
 
 
-    public async Task UpdateAsync(
-        UpdateFileUploadCommand command, IBehlogManager manager)
+    public void Update(UpdateFileUploadCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
         Title = command.Title;
         AltTitle = command.AltTitle;
@@ -72,30 +70,33 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             ChangeStatus(FileUploadStatus.Hidden);
         }
         
-
-        await PublishUpdatedEvent(manager);
+        AddUpdatedEvent();
     }
 
     #endregion
 
-    #region Event publisher
+    #region Events
 
-    private async Task PublishCreatedEvent(IBehlogManager manager)
+    
+    
+    private void AddCreatedEvent()
     {
         var e = new FileUploadCreatedEvent(
-            Id, Title, FilePath, AlternateFilePath, Extension, AltTitle,
+            Id, Title, FilePath, FileName, AlternateFilePath, Extension, FileSize, AltTitle,
             Url, Status, Description, CreatedDate, CreatedByUserId, CreatedByIp);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
-    private async Task PublishUpdatedEvent(IBehlogManager manager)
+
+    private void AddUpdatedEvent()
     {
         var e = new FileUpdatedEvent(
-            Id, Title, FilePath, AlternateFilePath, Extension, AltTitle,
+            Id, Title, FilePath, FileName, AlternateFilePath, Extension, FileSize, AltTitle,
             Url, Status, Description, CreatedByUserId, LastUpdatedByUserId,
             CreatedByIp, LastUpdatedByIp, LastStatusChangedOn, CreatedDate);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
+    
 
     #endregion
 
