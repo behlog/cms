@@ -53,16 +53,22 @@ public class FileUploadCommandHandlers :
         SoftDeleteFileUploadCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        var fileUpload = await _readStore.FindAsync(command.Id).ConfigureAwait(false);
+        var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
         
         fileUpload.SoftDelete();
         await _writeStore.SaveChangesAsync(cancellationToken);
     }
 
-    public Task HandleAsync(
+    public async Task HandleAsync(
         RemoveFileUploadCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
+        
+        fileUpload.Remove();
+        _writeStore.MarkForDelete(fileUpload);
+        await _writeStore.SaveChangesAsync(cancellationToken);
     }
 }
