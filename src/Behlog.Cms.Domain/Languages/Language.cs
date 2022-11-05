@@ -16,6 +16,7 @@ public class Language : BehlogEntity<Guid>
     public string Title { get; protected set; }
     public string Name { get; protected set; }
     public string Code { get; protected set; }
+    public string IsoCode { get; protected set; }
     public EntityStatus Status { get; protected set; }
 
     #endregion
