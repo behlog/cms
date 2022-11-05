@@ -31,8 +31,8 @@ public static class FileUploadMappers
             LastUpdatedByUserId = fileUpload.LastUpdatedByUserId
         };
     }
-
-
+    
+    
     public static FileUploadResult WithValidationErrors(
         this FileUpload fileUpload, IEnumerable<ValidationError> errors)
     {
@@ -40,6 +40,7 @@ public static class FileUploadMappers
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors));
 
-        return fileUpload;
+        var result = fileUpload.ToResult();
+        return (FileUploadResult)result.WithValidationErrors(errors);
     }
 }
