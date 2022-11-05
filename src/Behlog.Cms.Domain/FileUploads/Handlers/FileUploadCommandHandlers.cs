@@ -36,7 +36,8 @@ public class FileUploadCommandHandlers :
         return fileUpload.ToResult();
     }
 
-    public async Task HandleAsync(UpdateFileUploadCommand command, CancellationToken cancellationToken = default)
+    public async Task HandleAsync(
+        UpdateFileUploadCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
@@ -48,12 +49,19 @@ public class FileUploadCommandHandlers :
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public Task HandleAsync(SoftDeleteFileUploadCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task HandleAsync(
+        SoftDeleteFileUploadCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var fileUpload = await _readStore.FindAsync(command.Id).ConfigureAwait(false);
+        fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
+        
+        fileUpload.SoftDelete();
+        await _writeStore.SaveChangesAsync(cancellationToken);
     }
 
-    public Task HandleAsync(RemoveFileUploadCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public Task HandleAsync(
+        RemoveFileUploadCommand command, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
