@@ -27,6 +27,7 @@ public partial class ContentCategory : AggregateRoot<Guid>
             Id = Guid.NewGuid(),
             Title = command.Title?.Trim().CorrectYeKe()!,
             Slug = command.Slug?.Trim().CorrectYeKe().MakeSlug()!,
+            LangId = command.LangId,
             Status = EntityStatus.Enabled,
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             ParentId = command.ParentId,
@@ -44,7 +45,9 @@ public partial class ContentCategory : AggregateRoot<Guid>
         checkRequiredFields(command);
         
         Title = command.Title?.Trim().CorrectYeKe()!;
+        AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         Slug = command.Slug?.Trim().CorrectYeKe().MakeSlug()!;
+        LangId = command.LangId;
         ParentId = command.ParentId;
         Description = command.Description?.CorrectYeKe()!;
         ContentTypeId = command.ContentTypeId;
@@ -80,6 +83,7 @@ public partial class ContentCategory : AggregateRoot<Guid>
     public string Title { get; protected set; }
     public string AltTitle { get; protected set; }
     public string Slug { get; protected set; }
+    public Guid LangId { get; protected set; }
     public Guid? ParentId { get; protected set; }
     public string Description { get; protected set; }
     public Guid? ContentTypeId { get; protected set; }
