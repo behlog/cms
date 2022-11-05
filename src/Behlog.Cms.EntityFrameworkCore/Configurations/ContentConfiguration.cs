@@ -32,11 +32,11 @@ public static partial class EntityConfigurations
             content.Property(_ => _.CreatedByUserId).HasMaxLength(100);
             content.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100);
 
-            content.OwnsMany(_ => _.Meta);
+            content.OwnsMany(_ => _.Meta).HasKey(_=> _.OwnerId);
             content.OwnsMany(_ => _.Meta)
                 .Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
             content.OwnsMany(_ => _.Meta)
-                .Property(_ => _.Value).HasMaxLength(4000).IsUnicode();
+                .Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode();
             content.OwnsMany(_ => _.Meta)
                 .Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
                 .HasConversion<int>(c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));

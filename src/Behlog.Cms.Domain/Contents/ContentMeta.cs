@@ -5,27 +5,86 @@ namespace Behlog.Cms.Domain;
 
 public class ContentMeta : MetaBase<Guid>
 {
-    public ContentMeta() { }
+    public ContentMeta() : base() { }
 
-    public ContentMeta(
-        Guid ownerId, string metaKey, string metaValue, 
-        EntityStatus status, string description, string category, 
-        int orderNum)
+    public ContentMeta WithOwnerId(Guid categoryId)
     {
-        OwnerId = ownerId;
-        MetaKey = metaKey;
-        Value = metaValue;
-        Status = status;
-        Description = description;
-        Category = category;
-        OrderNum = orderNum;
+        OwnerId = categoryId;
+        return this;
+    }
+
+    public static ContentMeta New()
+    {
+        return new ContentMeta();
+    }
+
+    public static ContentMeta New(string metaKey)
+    {
+        return new ContentMeta { MetaKey = metaKey };
+    }
+
+    public static ContentMeta New(string metaKey, string metaValue)
+    {
+        return new ContentMeta
+        {
+            MetaKey = metaKey,
+            MetaValue = metaValue
+        };
     }
     
-    public string MetaKey { get; private set; }
-    public string Value { get; private set; }
-    public EntityStatus Status { get; private set; }
-    public string Description { get; private set; }
-    public string Category { get; private set; }
-    public int OrderNum { get; private set; }
-    
+    public ContentMeta WithKey(string metaKey)
+    {
+        MetaKey = metaKey;
+        return this;
+    }
+
+    public ContentMeta WithValue(string value)
+    {
+        MetaValue = value;
+        return this;
+    }
+
+    public ContentMeta WithCategory(string category)
+    {
+        Category = category;
+        return this;
+    }
+
+    public ContentMeta WithOrderNum(int orderNum)
+    {
+        OrderNum = orderNum;
+        return this;
+    }
+
+    public ContentMeta WithDescription(string description)
+    {
+        Description = description;
+        return this;
+    }
+
+    public ContentMeta WithTitle(string title)
+    {
+        Title = title;
+        return this;
+    }
+
+    public ContentMeta WithStatus(EntityStatus status)
+    {
+        Status = status;
+        return this;
+    }
+
+    public ContentMeta WithLangId(Guid? langId)
+    {
+        LangId = langId;
+        return this;
+    }
+
+    public ContentMeta WithLangCode(string langCode)
+    {
+        LangCode = langCode;
+        return this;
+    }
+
+    public ContentMeta Build() => this;
 }
