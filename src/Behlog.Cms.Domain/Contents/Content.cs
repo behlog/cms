@@ -27,9 +27,10 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     public DateTime? LastStatusChangedDate { get; protected set; }
     public DateTime? PublishDate { get; protected set; }
     public string AltTitle { get; protected set; }
+    public string Password { get; protected set; }
     public int OrderNum { get; protected set; }
     public string IconName { get; protected set; }
-    public DateTime CreatedDate { get; protected set; }
+    public DateTime CreatedDate { get; protected set; } 
     public DateTime? LastUpdated { get; protected set; }
     public string CreatedByUserId { get; protected set; }
     public string LastUpdatedByUserId { get; protected set; }
@@ -41,10 +42,14 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
 
     public ContentType ContentType { get; protected set; }
     
-    public ICollection<ContentCategoryItem> Categories { get; protected set; } = new HashSet<ContentCategoryItem>();
+    public ICollection<ContentCategoryItem> Categories { get; protected set; } 
+        = new HashSet<ContentCategoryItem>();
 
     public ICollection<ContentMeta> Meta { get; protected set; }
         = new HashSet<ContentMeta>();
+
+    public ICollection<ContentFile> Files { get; protected set; } 
+        = new HashSet<ContentFile>();
 
     #endregion
 
