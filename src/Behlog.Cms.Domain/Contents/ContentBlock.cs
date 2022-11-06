@@ -36,6 +36,8 @@ public class ContentBlock : ValueObject
     
     public string TextContent { get; private set; }
     
+    public int OrderNum { get; private set; }
+    
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return ContentId;
