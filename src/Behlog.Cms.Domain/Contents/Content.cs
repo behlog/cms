@@ -30,6 +30,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     public string Password { get; protected set; }
     public int OrderNum { get; protected set; }
     public string IconName { get; protected set; }
+    public string ViewPath { get; protected set; }
     public DateTime CreatedDate { get; protected set; } 
     public DateTime? LastUpdated { get; protected set; }
     public string CreatedByUserId { get; protected set; }
