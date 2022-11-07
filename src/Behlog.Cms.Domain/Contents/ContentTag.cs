@@ -10,9 +10,9 @@ public class ContentTag
         TagId = tagId;
     }
     
-    public Guid ContentId { get; }
-    public Content Content { get; }
+    public Guid ContentId { get; set; }
+    public Content Content { get; set; }
     
-    public Guid TagId { get; }
-    public Tag Tag { get; }
+    public Guid TagId { get; set; }
+    public Tag Tag { get; set; }
 }

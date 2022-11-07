@@ -7,8 +7,7 @@ namespace Behlog.Cms.EntityFrameworkCore.Configurations;
 
 public static partial class EntityConfigurations
 {
-
-
+    
     public static void AddTagConfiguration(this ModelBuilder builder)
     {
         builder.Entity<Tag>(tag =>
@@ -27,6 +26,26 @@ public static partial class EntityConfigurations
             tag.HasOne(_ => _.Language)
                 .WithMany()
                 .HasForeignKey(_ => _.LangId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<ContentTag>(tag =>
+        {
+            tag.ToTable(ContentTagTableName)
+                .HasKey(_ => new
+                {
+                    _.ContentId,
+                    _.TagId
+                });
+            
+            tag.HasOne(_ => _.Content)
+                .WithMany()
+                .HasForeignKey(_ => _.ContentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            tag.HasOne(_ => _.Tag)
+                .WithMany()
+                .HasForeignKey(_ => _.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

@@ -28,4 +28,6 @@ public static partial class EntityConfigurations
     public const string ContentLikeTableName = nameof(ContentLike);
 
     public const string TagTableName = nameof(Tag);
+
+    public const string ContentTagTableName = nameof(ContentTag);
 }
