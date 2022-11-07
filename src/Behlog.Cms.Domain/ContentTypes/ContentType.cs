@@ -1,4 +1,5 @@
 using Behlog.Cms.Commands;
+using Behlog.Cms.Domain;
 using Behlog.Cms.Events;
 using Behlog.Core.Domain;
 using Behlog.Extensions;
@@ -19,10 +20,17 @@ public class ContentType : AggregateRoot<Guid> {
     public string Slug { get; protected set; }
     public string Description { get; protected set; }
     public Guid LangId { get; protected set; }
+    public string LangCode { get; protected set; }
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
+
+    #endregion
+
+    #region Navigations
+
+    public Language Language { get; protected set; }
 
     #endregion
     

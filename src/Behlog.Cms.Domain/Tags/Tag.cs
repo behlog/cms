@@ -16,12 +16,17 @@ public class Tag : AggregateRoot<Guid>
     public string Title { get; protected set; }
     public string Slug { get; protected set; }
     public Guid LangId { get; protected set; }
-    public string LangCode { get; protected set; }
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public string CreatedByUserId { get; protected set; }
-    public string CreatedByUserIp { get; protected set; }
+    public string CreatedByIp { get; protected set; }
 
+    #endregion
+
+    #region Navigations
+
+    public Language Language { get; protected set; }
+    
     #endregion
 
     #region Builders
@@ -37,7 +42,7 @@ public class Tag : AggregateRoot<Guid>
         tag.Status = EntityStatus.Enabled;
         tag.CreatedDate = DateTime.UtcNow;
         tag.CreatedByUserId = null; //read from UserContext
-        tag.CreatedByUserIp = null; //TODO : read from HttpContext
+        tag.CreatedByIp = null; //TODO : read from HttpContext
         tag.LangId = command.LangId;
         tag.LangCode = ""; //TODO :
         
@@ -48,8 +53,7 @@ public class Tag : AggregateRoot<Guid>
         
         return tag;
     }
-
-
+    
     public void SoftDelete(SoftDeleteTagCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
@@ -57,8 +61,7 @@ public class Tag : AggregateRoot<Guid>
         Status = EntityStatus.Deleted;
         Enqueue(new TagSoftDeletedEvent(Id, Title, Slug));
     }
-
-
+    
     public void Remove()
     {
         Enqueue(new TagRemovedEvent(Id, Title));

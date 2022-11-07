@@ -26,4 +26,6 @@ public static partial class EntityConfigurations
     public const string ContentMetaTableName = nameof(ContentMeta);
 
     public const string ContentLikeTableName = nameof(ContentLike);
+
+    public const string TagTableName = nameof(Tag);
 }
