@@ -44,12 +44,11 @@ public class Tag : AggregateRoot<Guid>
         tag.CreatedByUserId = null; //read from UserContext
         tag.CreatedByIp = null; //TODO : read from HttpContext
         tag.LangId = command.LangId;
-        tag.LangCode = ""; //TODO :
         
         //TODO : add CreatedEvent
         
         tag.Enqueue(new TagCreatedEvent(
-            tag.Id, tag.Title!, tag.Slug, tag.LangId, tag.LangCode));
+            tag.Id, tag.Title!, tag.Slug, tag.LangId));
         
         return tag;
     }
