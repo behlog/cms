@@ -1,8 +1,8 @@
-using System.Data;
-using Behlog.Cms.Commands;
 using Behlog.Core;
-using Behlog.Core.Domain;
+using Behlog.Cms.Events;
 using Behlog.Extensions;
+using Behlog.Core.Domain;
+using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Domain;
 
@@ -40,9 +40,28 @@ public class Tag : AggregateRoot<Guid>
         tag.CreatedByUserIp = null; //TODO : read from HttpContext
         tag.LangId = command.LangId;
         tag.LangCode = ""; //TODO :
-
+        
         //TODO : add CreatedEvent
+        
+        tag.Enqueue(new TagCreatedEvent(
+            tag.Id, tag.Title!, tag.Slug, tag.LangId, tag.LangCode));
+        
         return tag;
+    }
+
+
+    public void SoftDelete(SoftDeleteTagCommand command)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        
+        Status = EntityStatus.Deleted;
+        Enqueue(new TagSoftDeletedEvent(Id, Title, Slug));
+    }
+
+
+    public void Remove()
+    {
+        Enqueue(new TagRemovedEvent(Id, Title));
     }
     
     #endregion
