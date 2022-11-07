@@ -51,6 +51,9 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
 
     public ICollection<ContentFile> Files { get; protected set; } 
         = new HashSet<ContentFile>();
+    
+    public ICollection<ContentLike> Likes { get; protected set; }
+        = new HashSet<ContentLike>();
 
     #endregion
 

@@ -14,6 +14,8 @@ public class ContentLike : ValueObject
         CreatedDate = DateTime.UtcNow;
     }
     
+    public long Id { get; protected set; }
+    
     public Guid ContentId { get; protected set; }
     
     public string UserId { get; protected set; }

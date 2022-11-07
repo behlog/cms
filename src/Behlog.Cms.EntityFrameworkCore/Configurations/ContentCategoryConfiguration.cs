@@ -21,7 +21,11 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     c => c.Id,
                     c => EntityStatus.FromValue<EntityStatus>(c));
-            
+
+            category.HasOne<ContentType>()
+                .WithMany()
+                .HasForeignKey(_ => _.ContentTypeId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         builder.Entity<ContentCategoryItem>(item =>
