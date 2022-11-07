@@ -6,8 +6,7 @@ namespace Behlog.Cms.EntityFrameworkCore.Configurations;
 
 public static partial class EntityConfigurations
 {
-
-
+    
     public static void AddLanguageConfiguration(this ModelBuilder builder)
     {
         builder.Entity<Language>(lang =>

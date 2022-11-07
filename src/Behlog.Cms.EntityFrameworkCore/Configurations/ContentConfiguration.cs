@@ -34,7 +34,8 @@ public static partial class EntityConfigurations
             content.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode();
             content.Property(_ => _.CreatedByUserId).HasMaxLength(100);
             content.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100);
-
+            content.Property(_ => _.LangCode).HasMaxLength(10).IsUnicode();
+            
             content.OwnsMany(_ => _.Meta)
                 .ToTable(ContentMetaTableName).HasKey(_=> _.OwnerId);
             content.OwnsMany(_ => _.Meta)
@@ -73,6 +74,11 @@ public static partial class EntityConfigurations
             content.HasOne(_ => _.ContentType)
                 .WithMany()
                 .HasForeignKey(_ => _.ContentTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            content.HasOne(_ => _.Language)
+                .WithMany()
+                .HasForeignKey(_ => _.LangId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

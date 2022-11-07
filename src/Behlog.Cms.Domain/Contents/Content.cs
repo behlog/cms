@@ -45,6 +45,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
 
     public ContentType ContentType { get; protected set; }
     
+    public Language Language { get; protected set; }
     
     public ICollection<ContentCategoryItem> Categories { get; protected set; } 
         = new HashSet<ContentCategoryItem>();

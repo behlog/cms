@@ -37,5 +37,9 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
     public string LastUpdatedByIp { get; protected set; }
     #endregion
 
-    
+    #region Navigations
+
+    public Language Language { get; protected set; }
+
+    #endregion
 }

@@ -44,5 +44,7 @@ public class ContentBlock : ValueObject
         yield return TextContent;
         yield return Source;
         yield return BodyType;
+        yield return OrderNum;
+        yield return Deleted;
     }
 }

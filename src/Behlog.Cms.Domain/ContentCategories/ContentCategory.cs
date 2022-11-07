@@ -96,6 +96,8 @@ public partial class ContentCategory : AggregateRoot<Guid>
 
     #region Navigations
 
+    public Language Language { get; protected set; }
+    
     public ICollection<ContentCategoryItem> Contents { get; protected set; } 
         = new HashSet<ContentCategoryItem>();
 
