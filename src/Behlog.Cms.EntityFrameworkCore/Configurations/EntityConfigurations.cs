@@ -30,4 +30,8 @@ public static partial class EntityConfigurations
     public const string TagTableName = nameof(Tag);
 
     public const string ContentTagTableName = nameof(ContentTag);
+
+    public const string BlockTableName = nameof(Block);
+
+    public const string ContentBlockTableName = nameof(ContentBlock);
 }
