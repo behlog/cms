@@ -15,6 +15,8 @@ public static partial class EntityConfigurations
 
     public const string FileTableName = nameof(FileUpload);
 
+    public const string LanguageTableName = nameof(Language);
+
     public const string ContentCategoryTableName = nameof(ContentCategory);
 
     public const string ContentCategoryItemTableName = nameof(ContentCategoryItem);

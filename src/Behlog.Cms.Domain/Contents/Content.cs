@@ -20,6 +20,8 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     public string Slug { get; protected set; }
     public Guid ContentTypeId { get; protected set; }
     public string Body { get; protected set; }
+    public Guid LangId { get; protected set; }
+    public string LangCode { get; protected set; }
     public ContentBodyType BodyType { get; protected set; }
     public string AuthorUserId { get; protected set; }
     public string Summary { get; protected set; }
@@ -42,6 +44,7 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     #region Navigations
 
     public ContentType ContentType { get; protected set; }
+    
     
     public ICollection<ContentCategoryItem> Categories { get; protected set; } 
         = new HashSet<ContentCategoryItem>();

@@ -1,5 +1,5 @@
-using Behlog.Cms.Domain.Languages.Models;
 using Behlog.Core;
+using Behlog.Cms.Models;
 
 namespace Behlog.Cms.Commands;
 

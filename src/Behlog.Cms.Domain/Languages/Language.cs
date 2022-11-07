@@ -4,7 +4,7 @@ using Behlog.Cms.Events;
 using Behlog.Extensions;
 using Behlog.Core.Domain;
 
-namespace Behlog.Cms.Domain.Languages;
+namespace Behlog.Cms.Domain;
 
 public class Language : BehlogEntity<Guid>
 {

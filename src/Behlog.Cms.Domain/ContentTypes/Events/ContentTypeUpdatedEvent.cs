@@ -7,13 +7,13 @@ public class ContentTypeUpdatedEvent : BehlogDomainEvent
 {
     public ContentTypeUpdatedEvent(
         Guid id, string systemName, string title, 
-        string lang, string slug, EntityStatus status,
+        Guid langId, string slug, EntityStatus status,
         string description, DateTime? lastStatusChangedOn)
     {
         Id = id;
         SystemName = systemName;
         Title = title;
-        Lang = lang;
+        LangId = langId;
         Slug = slug;
         Description = description;
         Status = status;
@@ -23,7 +23,7 @@ public class ContentTypeUpdatedEvent : BehlogDomainEvent
     public Guid Id { get; }
     public string SystemName { get; }
     public string Title { get; }
-    public string Lang { get; }
+    public Guid LangId { get; }
     public string Slug { get; }
     public string Description { get; }
     public EntityStatus Status { get; }

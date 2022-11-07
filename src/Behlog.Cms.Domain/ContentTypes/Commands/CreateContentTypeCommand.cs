@@ -10,7 +10,7 @@ namespace Behlog.Cms.Commands
         public CreateContentTypeCommand(
             string systemName,
             string title,
-            string lang,
+            Guid langId,
             string slug,
             string description = "") {
 
@@ -22,7 +22,7 @@ namespace Behlog.Cms.Commands
 
             SystemName = systemName.Trim()!;
             Title = title?.Trim().CorrectYeKe()!;
-            Lang = lang?.Trim()!;
+            LangId = langId;
             Slug = slug?.Trim()!;
             Description = description?.CorrectYeKe()!;
         }
@@ -31,6 +31,6 @@ namespace Behlog.Cms.Commands
         public string Title { get; }
         public string Slug { get; }
         public string Description { get; }
-        public string Lang { get; }
+        public Guid LangId { get; }
     }
 }

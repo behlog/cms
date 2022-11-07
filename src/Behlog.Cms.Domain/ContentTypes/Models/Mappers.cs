@@ -13,7 +13,7 @@ public static class ContentTypeMappers
         return new ContentTypeResult
         {
             Id = contentType.Id,
-            Lang = contentType.Lang,
+            LangId = contentType.LangId,
             Title = contentType.Title,
             Slug = contentType.Slug,
             Status = contentType.Status,

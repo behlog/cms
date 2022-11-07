@@ -1,6 +1,6 @@
 using Behlog.Core;
 
-namespace Behlog.Cms.Domain.Languages.Models;
+namespace Behlog.Cms.Models;
 
 public class LanguageResult : BehlogResult
 {

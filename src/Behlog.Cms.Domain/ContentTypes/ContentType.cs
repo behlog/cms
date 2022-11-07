@@ -18,7 +18,7 @@ public class ContentType : AggregateRoot<Guid> {
     public string Title { get; protected set; }
     public string Slug { get; protected set; }
     public string Description { get; protected set; }
-    public string Lang { get; protected set; }
+    public Guid LangId { get; protected set; }
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
@@ -38,7 +38,7 @@ public class ContentType : AggregateRoot<Guid> {
         {
             Id = Guid.NewGuid(),
             SystemName = command.SystemName.Trim(),
-            Lang = command.Lang,
+            LangId = command.LangId,
             Description = command.Description?.CorrectYeKe()!,
             Slug = command.Slug?.Trim().CorrectYeKe()!,
             Status = EntityStatus.Enabled,
@@ -61,7 +61,7 @@ public class ContentType : AggregateRoot<Guid> {
         Title = command.Title?.Trim().CorrectYeKe()!;
         Slug = command.Slug?.Trim().MakeSlug().CorrectYeKe()!;
         SystemName = command.SystemName?.Trim()!;
-        Lang = command.Lang;
+        LangId = command.LangId;
         if (command.Enabled && Status != EntityStatus.Enabled ||
             !command.Enabled && Status != EntityStatus.Disabled)
         {
@@ -93,14 +93,14 @@ public class ContentType : AggregateRoot<Guid> {
     protected async Task PublishCreatedEvent(IBehlogManager manager)
     {
         var e = new ContentTypeCreatedEvent(
-            Id, SystemName, Title, Lang, Slug, Description);
+            Id, SystemName, Title, LangId, Slug, Description);
         await manager.PublishAsync(e).ConfigureAwait(false);
     }
     
     protected async Task PublishUpdatedEvent(IBehlogManager manager)
     {
         var e = new ContentTypeUpdatedEvent(
-            Id, SystemName, Title, Lang, Slug, Status,
+            Id, SystemName, Title, LangId, Slug, Status,
             Description, LastStatusChangedOn);
         await manager.PublishAsync(e).ConfigureAwait(false);
     }

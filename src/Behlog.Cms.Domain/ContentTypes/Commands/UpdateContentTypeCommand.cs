@@ -9,7 +9,7 @@ namespace Behlog.Cms.Commands
 
         public UpdateContentTypeCommand(
             Guid id, string systemName, string title,
-            string lang, string slug, 
+            Guid langId, string slug, 
             bool enabled = true, string description = "") {
             
             id.ThrowIfGuidIsEmpty(
@@ -17,7 +17,7 @@ namespace Behlog.Cms.Commands
             Id = id;
             SystemName = systemName.Trim()!;
             Title = title?.Trim().CorrectYeKe()!;
-            Lang = lang?.Trim()!;
+            LangId = langId;
             Slug = slug?.Trim()!;
             Description = description?.CorrectYeKe()!;
             Enabled = enabled;
@@ -28,7 +28,7 @@ namespace Behlog.Cms.Commands
         public string Title { get; }
         public string Slug { get; }
         public string Description { get; }
-        public string Lang { get; }
+        public Guid LangId { get; }
         public bool Enabled { get; }
     }
 }
