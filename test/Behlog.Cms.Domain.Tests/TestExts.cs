@@ -27,4 +27,23 @@ public static class TestExtensions
                         .Excluding(_ => _.EventPublishedAt),
                 because, becauseArgs);
     }
+
+
+    public static void ShouldOnlyContainsExpectedDomainEvent<TId, TExpectation>(
+        this IAggregateRoot<TId> aggregateRoot,
+        TExpectation expectation,
+        string because,
+        params object[] becauseArgs) where TExpectation : BehlogDomainEvent
+    {
+        var events = aggregateRoot.GetAllEvents();
+        events.Should().ContainSingle()
+            .Subject.Should().BeOfType<TExpectation>();
+        events.Should().ContainEquivalentOf(
+            expectation, opt =>
+                opt.Excluding(_ => _.EventId)
+                    .Excluding(_ => _.EventVersion)
+                    .Excluding(_ => _.EventPublishedAt)
+                    .RespectingRuntimeTypes(),
+            because, becauseArgs);
+    }
 }
