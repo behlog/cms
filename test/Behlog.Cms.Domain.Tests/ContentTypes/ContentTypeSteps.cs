@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Behlog.Core;
@@ -10,12 +11,11 @@ using Behlog.Cms.Models;
 namespace Behlog.Cms.Domain.Tests.ContentTypes;
 
 
-public class ContentTypeSteps
+public class ContentTypeSteps : BaseTestSteps
 {
     private readonly Dictionary<string, ContentType> _contentTypes = new();
     private readonly IBehlogManager _manager;
-
-
+    
     public ContentTypeSteps()
     {
         _manager = Substitute.For<IBehlogManager>();
@@ -29,11 +29,12 @@ public class ContentTypeSteps
     }
 
 
-    public void ICanFinAContentTypeCreatedWithTitle(string title, ContentTypeResult result)
+    public void ICanFinAContentTypeCreatedWithTitle(string title)
     {
+        var contentType = _contentTypes[title];
         var expected = new ContentTypeCreatedEvent(
-            result.Id, result.SystemName, result.Title,
-            result.LangId, result.Slug, result.Description);
-        
+            contentType.Id, contentType.SystemName, contentType.Title,
+            contentType.LangId, contentType.Slug, contentType.Description);
+        _contentTypes[title].ShouldContainsExpectedDomainEvent(expected);
     }
 }
