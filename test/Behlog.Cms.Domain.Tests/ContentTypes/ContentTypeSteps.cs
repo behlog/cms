@@ -27,14 +27,31 @@ public class ContentTypeSteps : BaseTestSteps
         var contentType = ContentType.Create(command);
         _contentTypes[command.Title] = contentType;
     }
-
-
+    
+    public void ThereIsARegisteredContentTypeWithCommand(CreateContentTypeCommand command)
+    {
+        var contentType = ContentType.Create(command);
+        _contentTypes[command.Title] = contentType;
+    }
+    
     public void ICanFinAContentTypeCreatedWithTitle(string title)
     {
         var contentType = _contentTypes[title];
         var expected = new ContentTypeCreatedEvent(
             contentType.Id, contentType.SystemName, contentType.Title,
             contentType.LangId, contentType.Slug, contentType.Description);
+        _contentTypes[title].ShouldContainsExpectedDomainEvent(expected);
+    }
+
+    public void ISoftDeletedTheContentTypeWithTitle(string title)
+    {
+        _contentTypes[title].SoftDelete();
+    }
+
+    public void ICanSeeThatContentTypeSoftDeletedWithTitle(string title)
+    {
+        var contentType = _contentTypes[title];
+        var expected = new ContentTypeSoftDeletedEvent(contentType.Id);
         _contentTypes[title].ShouldContainsExpectedDomainEvent(expected);
     }
 }
