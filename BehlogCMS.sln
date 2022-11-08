@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behlog.Cms.EntityFrameworkC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behlog.Cms.EntityFrameworkCore.SQLite", "src\Behlog.Cms.EntityFrameworkCore.SQLite\Behlog.Cms.EntityFrameworkCore.SQLite.csproj", "{53B843E3-1FD9-443E-8FC7-6EDC663E0ADB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{61CA0EFF-DCEC-4CD9-B433-EB112AB12815}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behlog.Cms.Domain.Tests", "test\Behlog.Cms.Domain.Tests\Behlog.Cms.Domain.Tests.csproj", "{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,7 @@ Global
 		{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB} = {00436295-75B0-48C5-ABEA-5C18AD55D1ED}
 		{65689FBA-53FB-4EE5-8607-2BF00FC32383} = {00436295-75B0-48C5-ABEA-5C18AD55D1ED}
 		{53B843E3-1FD9-443E-8FC7-6EDC663E0ADB} = {00436295-75B0-48C5-ABEA-5C18AD55D1ED}
+		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC} = {61CA0EFF-DCEC-4CD9-B433-EB112AB12815}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,5 +43,9 @@ Global
 		{53B843E3-1FD9-443E-8FC7-6EDC663E0ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53B843E3-1FD9-443E-8FC7-6EDC663E0ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B843E3-1FD9-443E-8FC7-6EDC663E0ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

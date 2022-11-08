@@ -31,7 +31,7 @@ public class ContentTypeCommandHandler :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         cancellationToken.ThrowIfCancellationRequested();
 
-        var contentType = await ContentType.CreateAsync(command, _manager);
+        var contentType = ContentType.Create(command);
         await _writeStore.AddAsync(contentType, cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(contentType.ToResult());
@@ -44,7 +44,7 @@ public class ContentTypeCommandHandler :
         cancellationToken.ThrowIfCancellationRequested();
 
         var contentType = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
-        await contentType.UpdateAsync(command, _manager);
+        contentType.Update(command);
         _writeStore.MarkForUpdate(contentType);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -56,7 +56,8 @@ public class ContentTypeCommandHandler :
         cancellationToken.ThrowIfCancellationRequested();
 
         var contentType = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
-        await contentType.SoftDeleteAsync(_manager);
+        contentType.SoftDelete();
+        _writeStore.MarkForUpdate(contentType);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
     

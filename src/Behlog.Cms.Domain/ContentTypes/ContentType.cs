@@ -36,12 +36,10 @@ public class ContentType : AggregateRoot<Guid> {
     
     #region Builders
 
-    public static async Task<ContentType> CreateAsync(
-        CreateContentTypeCommand command, IBehlogManager manager)
+    public static ContentType Create(CreateContentTypeCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
-
+        
         var contentType = new ContentType
         {
             Id = Guid.NewGuid(),
@@ -54,17 +52,14 @@ public class ContentType : AggregateRoot<Guid> {
             CreatedDate = DateTime.UtcNow
         };
 
-        await contentType.PublishCreatedEvent(manager);
-
-        return await Task.FromResult(contentType);
+        contentType.AddCreatedEvent();
+        return contentType;
     }
 
 
-    public async Task UpdateAsync(
-        UpdateContentTypeCommand command, IBehlogManager manager)
+    public void Update(UpdateContentTypeCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
 
         Title = command.Title?.Trim().CorrectYeKe()!;
         Slug = command.Slug?.Trim().MakeSlug().CorrectYeKe()!;
@@ -78,39 +73,41 @@ public class ContentType : AggregateRoot<Guid> {
         Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
         Description = command.Description?.CorrectYeKe()!;
         LastUpdated = DateTime.UtcNow;
-
-        await PublishUpdatedEvent(manager);
-    }
-
-
-    public async Task SoftDeleteAsync(IBehlogManager manager)
-    {
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
         
-        Status = EntityStatus.Deleted;
-        LastStatusChangedOn = DateTime.UtcNow;
-
-        var e = new ContentTypeSoftDeletedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        AddUpdatedEvent();
     }
 
+
+    public void SoftDelete()
+    {
+        ChangeStatus(EntityStatus.Deleted);
+        var e = new ContentTypeSoftDeletedEvent(Id);
+        Enqueue(e);
+    }
+
+    private void ChangeStatus(EntityStatus status)
+    {
+        Status = status;
+        LastStatusChangedOn = DateTime.UtcNow;
+    }
+    
     #endregion
 
     #region Events
 
-    protected async Task PublishCreatedEvent(IBehlogManager manager)
+    private void AddCreatedEvent()
     {
         var e = new ContentTypeCreatedEvent(
             Id, SystemName, Title, LangId, Slug, Description);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
-    
-    protected async Task PublishUpdatedEvent(IBehlogManager manager)
+
+    private void AddUpdatedEvent()
     {
         var e = new ContentTypeUpdatedEvent(
             Id, SystemName, Title, LangId, Slug, Status,
             Description, LastStatusChangedOn);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
     #endregion
