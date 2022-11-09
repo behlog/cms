@@ -80,6 +80,7 @@ public partial class ContentCategory : AggregateRoot<Guid>
     #endregion
 
     #region Props
+    public Guid? WebsiteId { get; protected set; }
     public string Title { get; protected set; }
     public string AltTitle { get; protected set; }
     public string Slug { get; protected set; }

@@ -21,6 +21,10 @@ public class Website : AggregateRoot<Guid>
     public DateTime CreatedDate { get; protected set; }
     public string Password { get; protected set; }
     public bool IsReadOnly { get; protected set; }
-
+    public string Email { get; protected set; }
+    public string CopyrightText { get; protected set; }
+    
     #endregion
+    
+    
 }

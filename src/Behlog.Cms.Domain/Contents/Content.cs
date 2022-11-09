@@ -15,7 +15,8 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     private Content() { }
 
     #region Props
-
+    
+    public Guid WebsiteId { get; protected set; }
     public string Title { get; protected set; }
     public string Slug { get; protected set; }
     public Guid ContentTypeId { get; protected set; }
