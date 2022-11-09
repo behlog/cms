@@ -8,21 +8,30 @@ public static class ServiceProvider
 {
 
     /// <summary>
-    /// Adds EntityFramework providers for different Store contracts of Behlog.Cms
+    /// Adds EntityFramework providers for Read Store contracts of Behlog.Cms
     /// </summary>
-    /// <returns></returns>
-    public static IServiceCollection AddBehlogCmsEntityFrameworkCore(
+    public static IServiceCollection AddBehlogCmsEntityFrameworkCoreReadStores(
         this IServiceCollection services)
     {
         services.AddScoped<IContentTypeReadStore, ContentTypeReadStore>();
-        services.AddScoped<IContentTypeWriteStore, ContentTypeWriteStore>();
         services.AddScoped<IContentCategoryReadStore, ContentCategoryReadStore>();
-        services.AddScoped<IContentCategoryWriteStore, ContentCategoryWriteStore>();
         services.AddScoped<IContentReadStore, ContentReadStore>();
-        services.AddScoped<IContentWriteStore, ContentWriteStore>();
         services.AddScoped<ICommentReadStore, CommentReadStore>();
-        services.AddScoped<ICommentWriteStore, CommentWriteStore>();
         
+        return services;
+    }
+
+    /// <summary>
+    /// Adds EntityFramework providers for Write Store contracts of Behlog.Cms
+    /// </summary>
+    public static IServiceCollection AddBehlogCmsEntityFrameworkCoreWriteStores(
+        this IServiceCollection services)
+    {
+        services.AddScoped<IContentTypeWriteStore, ContentTypeWriteStore>();
+        services.AddScoped<IContentCategoryWriteStore, ContentCategoryWriteStore>();
+        services.AddScoped<IContentWriteStore, ContentWriteStore>();
+        services.AddScoped<ICommentWriteStore, CommentWriteStore>();
+
         return services;
     }
 }
