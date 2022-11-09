@@ -1,4 +1,5 @@
 using Behlog.Cms.Domain;
+using Behlog.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Configurations;
@@ -31,6 +32,30 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     s => s.Id,
                     s => BlockStatus.FromValue<BlockStatus>(s));
+            
+            block.OwnsMany(_=> _.Meta)
+                .ToTable(BlockMetaTableName)
+                .HasKey(_=> new
+                {
+                    _.OwnerId,
+                    _.MetaKey
+                });
+            block.OwnsMany(_ => _.Meta)
+                .Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
+            block.OwnsMany(_ => _.Meta)
+                .Property(_ => _.Category).HasMaxLength(256).IsUnicode();
+            block.OwnsMany(_ => _.Meta)
+                .Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode();
+            block.OwnsMany(_ => _.Meta)
+                .Property(_ => _.Title).HasMaxLength(500).IsUnicode();
+            block.OwnsMany(_ => _.Meta)
+                .Property(_ => _.Description).HasMaxLength(2000).IsUnicode();
+            block.OwnsMany(_ => _.Meta)
+                .Property(_ => _.MetaType).HasMaxLength(100).IsUnicode();
+            block.OwnsMany(_=> _.Meta)
+                .Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
+                .HasConversion<int>(
+                    c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));
 
             block.HasOne(_ => _.Language)
                 .WithMany()

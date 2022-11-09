@@ -41,5 +41,8 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
 
     public Language Language { get; protected set; }
 
+    public ICollection<BlockMeta> Meta { get; protected set; }
+        = new HashSet<BlockMeta>();
+
     #endregion
 }

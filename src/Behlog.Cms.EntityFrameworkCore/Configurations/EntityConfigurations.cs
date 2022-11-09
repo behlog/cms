@@ -34,4 +34,6 @@ public static partial class EntityConfigurations
     public const string BlockTableName = nameof(Block);
 
     public const string ContentBlockTableName = nameof(ContentBlock);
+
+    public const string BlockMetaTableName = nameof(BlockMeta);
 }
