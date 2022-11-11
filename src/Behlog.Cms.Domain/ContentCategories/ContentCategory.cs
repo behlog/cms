@@ -82,11 +82,11 @@ public partial class ContentCategory : AggregateRoot<Guid>
     #region Props
     public Guid? WebsiteId { get; protected set; }
     public string Title { get; protected set; }
-    public string AltTitle { get; protected set; }
+    public string? AltTitle { get; protected set; }
     public string Slug { get; protected set; }
     public Guid LangId { get; protected set; }
     public Guid? ParentId { get; protected set; }
-    public string Description { get; protected set; }
+    public string? Description { get; protected set; }
     public Guid? ContentTypeId { get; protected set; }
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }

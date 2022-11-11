@@ -15,5 +15,9 @@
   <ItemGroup>
     <Folder Include="Blocks\Commands" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
   
 </Project>

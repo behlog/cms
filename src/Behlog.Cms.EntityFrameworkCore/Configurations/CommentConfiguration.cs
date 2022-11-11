@@ -12,16 +12,20 @@ public static partial class EntityConfigurations
         {
             comment.ToTable(CommentTableName).HasKey(_ => _.Id);
 
-            comment.Property(_ => _.Title).HasMaxLength(500).IsUnicode();
+            comment.Property(_ => _.Title).HasMaxLength(500).IsUnicode().IsRequired(false);
             comment.Property(_ => _.Body).HasMaxLength(4000).IsUnicode().IsRequired();
-            comment.Property(_ => _.Email).HasMaxLength(1000).IsUnicode();
-            comment.Property(_ => _.WebUrl).HasMaxLength(2000).IsUnicode();
-            comment.Property(_ => _.AuthorUserId).HasMaxLength(100);
-            comment.Property(_ => _.AuthorName).HasMaxLength(256).IsUnicode().IsRequired();
-            comment.Property(_ => _.CreatedByUserId).HasMaxLength(100);
-            comment.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100);
-            comment.Property(_ => _.CreatedByIp).HasMaxLength(50);
-            comment.Property(_ => _.LastUpdatedByIp).HasMaxLength(50);
+            comment.Property(_ => _.Email).HasMaxLength(1000).IsUnicode().IsRequired(false);
+            comment.Property(_ => _.WebUrl).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            comment.Property(_ => _.AuthorUserId).HasMaxLength(100).IsRequired(false);
+            comment.Property(_ => _.AuthorName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            comment.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
+            comment.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
+            comment.Property(_ => _.CreatedByIp).HasMaxLength(50).IsRequired(false);
+            comment.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsRequired(false);
+            comment.Property(_ => _.Status).HasDefaultValue(CommentStatus.Created)
+                .HasConversion<int>(
+                    s => s.Id,
+                    s => CommentStatus.Find(s));
 
             comment.HasOne(_ => _.Content)
                 .WithMany()
