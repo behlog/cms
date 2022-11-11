@@ -45,8 +45,16 @@ public class CommentCommandHandlers :
         return comment.ToResult();
     }
 
-    public Task HandleAsync(UpdateCommentCommand command, CancellationToken cancellationToken = default)
+    public async Task HandleAsync(
+        UpdateCommentCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        comment.Update(command);
+        comment.SetIdentityOnUpdate(_userContext, _applicationContext);
+        
+        _writeStore.MarkForUpdate(comment);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }
