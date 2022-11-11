@@ -4,14 +4,14 @@ namespace Behlog.Cms.Domain;
 
 public class CommentStatus : Enumeration
 {
-    private CommentStatus(int id, string name, string title = "") 
+    private CommentStatus(int id, string  name, string title = "") 
         : base(id, name, title)
     {
-        if (id == Approved.Id && !CanApproved())
-            throw new Exception("Comment cannot be approved!");
+        //if (id == Approved.Id && !CanApproved())
+        //    throw new Exception("Comment cannot be approved!");
 
-        if (id == Rejected.Id && !CanRejected())
-            throw new Exception("Comment cannot be rejected!");
+        //if (id == Rejected.Id && !CanRejected())
+        //    throw new Exception("Comment cannot be rejected!");
     }
 
     public static CommentStatus Find(int id) => FromValue<CommentStatus>(id);

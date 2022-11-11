@@ -1,4 +1,5 @@
-﻿using Behlog.Cms.EntityFrameworkCore.Configurations;
+﻿using Behlog.Cms.Domain;
+using Behlog.Cms.EntityFrameworkCore.Configurations;
 using Behlog.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -138,6 +139,14 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Ignore<CommentStatus>();
+        modelBuilder.Ignore<BlockStatus>();
+        modelBuilder.Ignore<ContentStatus>();
+        modelBuilder.Ignore<EntityStatus>();
+        modelBuilder.Ignore<FileUploadStatus>();
+        modelBuilder.Ignore<WebsiteStatus>();
+        modelBuilder.Ignore<ContentBodyType>();
+
         modelBuilder.AddLanguageConfiguration();
         modelBuilder.AddContentTypeConfiguration();
         modelBuilder.AddContentConfiguration();
