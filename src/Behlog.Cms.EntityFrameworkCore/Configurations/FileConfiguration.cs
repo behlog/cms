@@ -6,7 +6,7 @@ namespace Behlog.Cms.EntityFrameworkCore.Configurations;
 public static partial class EntityConfigurations
 {
 
-    public static void AddFileConfiguration(this ModelBuilder builder)
+    public static void AddFileUploadConfiguration(this ModelBuilder builder)
     {
         builder.Entity<FileUpload>(file =>
         {
@@ -14,15 +14,20 @@ public static partial class EntityConfigurations
 
             file.Property(_ => _.Title).HasMaxLength(1000).IsUnicode();
             file.Property(_ => _.FilePath).HasMaxLength(2000).IsUnicode().IsRequired();
-            file.Property(_ => _.AlternateFilePath).HasMaxLength(2000).IsUnicode();
-            file.Property(_ => _.AltTitle).HasMaxLength(1000);
-            file.Property(_ => _.Extension).HasMaxLength(50).IsUnicode();
-            file.Property(_ => _.Url).HasMaxLength(4000).IsUnicode();
+            file.Property(_ => _.AlternateFilePath).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            file.Property(_ => _.AltTitle).HasMaxLength(1000).IsRequired(false);
+            file.Property(_ => _.Extension).HasMaxLength(50).IsUnicode().IsRequired(false);
+            file.Property(_ => _.Url).HasMaxLength(4000).IsUnicode().IsRequired(false);
             file.Property(_ => _.Status).HasDefaultValue(FileUploadStatus.Created)
                 .HasConversion<int>(
                     c => c.Id,
                     c => FileUploadStatus.Find(c));
-            file.Property(_ => _.Description).HasMaxLength(2000).IsUnicode();
+            file.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
+
+            file.HasOne(_ => _.Website)
+                .WithMany()
+                .HasForeignKey(_ => _.WebsiteId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

@@ -12,29 +12,34 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     private FileUpload() { }
 
     #region props
-    
-    public string Title { get; protected set; }
+    public Guid WebsiteId { get; protected set; }
+    public string? Title { get; protected set; }
     public string FilePath { get; protected set; }
     public string FileName { get; protected set; }
-    public string AlternateFilePath { get; protected set; }
-    public string Extension { get; protected set; }
+    public string? AlternateFilePath { get; protected set; }
+    public string? Extension { get; protected set; }
     public long FileSize { get; protected set; }
-    public string AltTitle { get; protected set; }
-    public string Url { get; protected set; }
+    public string? AltTitle { get; protected set; }
+    public string? Url { get; protected set; }
     public FileUploadStatus Status { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
-    public string Description { get; protected set; }
+    public string? Description { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
-    public string CreatedByUserId { get; protected set; }
-    public string LastUpdatedByUserId { get; protected set; }
-    public string CreatedByIp { get; protected set; }
-    public string LastUpdatedByIp { get; protected set; }
+    public string? CreatedByUserId { get; protected set; }
+    public string? LastUpdatedByUserId { get; protected set; }
+    public string? CreatedByIp { get; protected set; }
+    public string? LastUpdatedByIp { get; protected set; }
+    #endregion
+
+    #region Navigations
+    public Website Website { get; protected set; }
+
     #endregion
 
     #region Builders
-    
-    
+
+
     public static FileUpload Create(CreateFileUploadCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
