@@ -42,7 +42,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
 
     #region Builders
 
-    public static async Task<Comment> Create(CreateCommentCommand command)
+    public static Comment Create(CreateCommentCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
@@ -96,11 +96,11 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     {
         AddRemovedEvent();
     }
+    
 
     /// <summary>
     /// Approve the <see cref="Comment"/>
     /// </summary>
-    /// <param name="manager"></param>
     public void Approve()
     {
         if(Status == CommentStatus.Approved) return;
