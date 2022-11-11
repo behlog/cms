@@ -1,7 +1,6 @@
-using System.Runtime.InteropServices.ComTypes;
-using Behlog.Cms.Domain;
-using Behlog.Core;
 using Microsoft.EntityFrameworkCore;
+using Behlog.Core;
+using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.EntityFrameworkCore.Configurations;
 
