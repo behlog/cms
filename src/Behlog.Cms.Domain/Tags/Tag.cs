@@ -18,8 +18,8 @@ public class Tag : AggregateRoot<Guid>
     public Guid LangId { get; protected set; }
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
-    public string CreatedByUserId { get; protected set; }
-    public string CreatedByIp { get; protected set; }
+    public string? CreatedByUserId { get; protected set; }
+    public string? CreatedByIp { get; protected set; }
 
     #endregion
 

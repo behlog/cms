@@ -20,8 +20,8 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     s => s.Id,
                     s => EntityStatus.FromValue<EntityStatus>(s));
-            tag.Property(_ => _.CreatedByUserId).HasMaxLength(100);
-            tag.Property(_ => _.CreatedByIp).HasMaxLength(50);
+            tag.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
+            tag.Property(_ => _.CreatedByIp).HasMaxLength(50).IsRequired(false);
 
             tag.HasOne(_ => _.Language)
                 .WithMany()
