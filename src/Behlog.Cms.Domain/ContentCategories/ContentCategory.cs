@@ -3,11 +3,13 @@ using Behlog.Cms.Commands;
 using Behlog.Core;
 using Behlog.Extensions;
 using Behlog.Cms.Events;
+using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
+using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
-public partial class ContentCategory : AggregateRoot<Guid> 
+public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata 
 {
 
     private ContentCategory()
@@ -77,6 +79,22 @@ public partial class ContentCategory : AggregateRoot<Guid>
         AddRemovedEvent();
     }
 
+    public void SetIdentityOnAdd(
+        IIdyfaUserContext userContext, 
+        IBehlogApplicationContext applicationContext)
+    {
+        CreatedByUserId = userContext.UserId;
+        CreatedByIp = applicationContext.IpAddress;
+    }
+
+    public void SetIdentityOnUpdate(
+        IIdyfaUserContext userContext,
+        IBehlogApplicationContext applicationContext)
+    {
+        LastUpdatedByUserId = userContext.UserId;
+        LastUpdatedByIp = applicationContext.IpAddress;
+    }
+    
     #endregion
 
     #region Props
@@ -91,6 +109,11 @@ public partial class ContentCategory : AggregateRoot<Guid>
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
+    
+    public string? CreatedByUserId { get; protected set; }
+    public string? LastUpdatedByUserId { get; protected set; }
+    public string? CreatedByIp { get; protected set; }
+    public string? LastUpdatedByIp { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
 
     #endregion

@@ -3,6 +3,8 @@ using Behlog.Extensions;
 using Behlog.Cms.Events;
 using Behlog.Core.Domain;
 using Behlog.Cms.Commands;
+using Behlog.Core.Contracts;
+using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
@@ -135,6 +137,25 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         
         ChangeStatus(CommentStatus.Spam);
         AddSpammedEvent();
+    }
+
+    #endregion
+
+    #region Methods
+
+    public void SetIdentityOnAdd(
+        IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
+    {
+        CreatedByUserId = userContext.UserId;
+        AuthorUserId = userContext.UserId;
+        CreatedByIp = applicationContext.IpAddress;
+    }
+
+    public void SetIdentityOnUpdate(
+        IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
+    {
+        LastUpdatedByUserId = userContext.UserId;
+        LastUpdatedByIp = applicationContext.IpAddress;
     }
 
     #endregion
