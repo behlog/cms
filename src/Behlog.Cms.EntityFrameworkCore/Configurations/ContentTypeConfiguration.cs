@@ -21,7 +21,7 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     c => c.Id,
                     c => EntityStatus.FromValue<EntityStatus>(c));
-            type.Property(_ => _.Description).HasMaxLength(2000).IsUnicode();
+            type.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
 
             type.HasOne(_ => _.Language)
                 .WithMany()

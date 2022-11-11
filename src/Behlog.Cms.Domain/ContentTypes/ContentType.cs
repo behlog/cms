@@ -18,7 +18,7 @@ public class ContentType : AggregateRoot<Guid> {
     public string SystemName { get; protected set; }
     public string Title { get; protected set; }
     public string Slug { get; protected set; }
-    public string Description { get; protected set; }
+    public string? Description { get; protected set; }
     public Guid LangId { get; protected set; }
     public string LangCode { get; protected set; }
     public EntityStatus Status { get; protected set; }
