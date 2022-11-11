@@ -27,14 +27,10 @@ public class ContentFile : ValueObject
     }
     
     public Guid ContentId { get; }
-    
     public Guid FileId { get; }
-    
-    public string Title { get; protected set; }
-    
+    public string? Title { get; protected set; }
     public string FileName { get; protected set; }
-    
-    public string Description { get; protected set; }
+    public string? Description { get; protected set; }
 
     #region Builders
 

@@ -20,26 +20,26 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     public string Title { get; protected set; }
     public string Slug { get; protected set; }
     public Guid ContentTypeId { get; protected set; }
-    public string Body { get; protected set; }
+    public string? Body { get; protected set; }
     public Guid LangId { get; protected set; }
-    public string LangCode { get; protected set; }
+    public string? LangCode { get; protected set; }
     public ContentBodyType BodyType { get; protected set; }
     public string AuthorUserId { get; protected set; }
-    public string Summary { get; protected set; }
+    public string? Summary { get; protected set; }
     public ContentStatus Status { get; protected set; }
     public DateTime? LastStatusChangedDate { get; protected set; }
     public DateTime? PublishDate { get; protected set; }
-    public string AltTitle { get; protected set; }
-    public string Password { get; protected set; }
+    public string? AltTitle { get; protected set; }
+    public string? Password { get; protected set; }
     public int OrderNum { get; protected set; }
-    public string IconName { get; protected set; }
-    public string ViewPath { get; protected set; }
+    public string? IconName { get; protected set; }
+    public string? ViewPath { get; protected set; }
     public DateTime CreatedDate { get; protected set; } 
     public DateTime? LastUpdated { get; protected set; }
-    public string CreatedByUserId { get; protected set; }
-    public string LastUpdatedByUserId { get; protected set; }
-    public string CreatedByIp { get; protected set; }
-    public string LastUpdatedByIp { get; protected set; }
+    public string? CreatedByUserId { get; protected set; }
+    public string? LastUpdatedByUserId { get; protected set; }
+    public string? CreatedByIp { get; protected set; }
+    public string? LastUpdatedByIp { get; protected set; }
     #endregion
 
     #region Navigations

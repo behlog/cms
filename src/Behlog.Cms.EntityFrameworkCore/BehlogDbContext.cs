@@ -145,6 +145,7 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         modelBuilder.AddCommentConfiguration();
         modelBuilder.AddFileConfiguration();
         modelBuilder.AddTagConfiguration();
+        modelBuilder.AddBlockConfiguration();
         
         base.OnModelCreating(modelBuilder);
     }

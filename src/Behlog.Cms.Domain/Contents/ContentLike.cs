@@ -18,11 +18,11 @@ public class ContentLike : ValueObject
     
     public Guid ContentId { get; protected set; }
     
-    public string UserId { get; protected set; }
+    public string? UserId { get; protected set; }
     
-    public string SessionId { get; protected set; }
+    public string? SessionId { get; protected set; }
     
-    public string IpAddress { get; protected set; }
+    public string? IpAddress { get; protected set; }
     
     public DateTime CreatedDate { get; protected set; }
 
