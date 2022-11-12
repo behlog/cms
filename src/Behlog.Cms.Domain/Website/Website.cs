@@ -1,4 +1,6 @@
+using Behlog.Cms.Commands;
 using Behlog.Core.Domain;
+using Behlog.Extensions;
 
 namespace Behlog.Cms.Domain;
 
@@ -25,6 +27,38 @@ public class Website : AggregateRoot<Guid>
     public string CopyrightText { get; protected set; }
     
     #endregion
-    
-    
+
+
+
+    #region Builders
+
+
+    public static Website Create(CreateWebsiteCommand command)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var website = new Website
+        {
+            Id = Guid.NewGuid(),
+            Name = command.Name?.Trim().CorrectYeKe(),
+            Email = command.Email?.Trim(),
+            Title = command.Title?.Trim().CorrectYeKe(),
+            Password = command.Password,
+            Status = WebsiteStatus.Online,
+            Description = command.Description,
+            Keywords = command.Keywords,
+            Url = command.Url,
+            CopyrightText = command.CopyrightText,
+            CreatedDate = DateTime.UtcNow,
+            DefaultLangId = command.DefaultLangId,
+            IsReadOnly = command.IsReadOnly,
+            OwnerUserId = "", //TODO : Set UserId
+        };
+        
+        
+        //Add WebsiteCreatedEvent
+        return website;
+    }
+
+    #endregion
 }
