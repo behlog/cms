@@ -1,3 +1,4 @@
+using Behlog.Cms.Exceptions;
 using Idyfa.Core;
 using Idyfa.Core.Contracts;
 
@@ -21,12 +22,35 @@ public class UserSeed
     
     public async Task SeedAdminUserAsync()
     {
-        var adminUser = User.RegisterUser(
-            defaultAdminUserName, defaultAdminPassword, defaultAdminEmail,
-            "", "admin", "admin");
         var adminRole = Role.New()
             .WithName("Admin")
             .WithTitle("Administrator");
+
+        var roleResult = await _roleManager.CreateAsync(adminRole).ConfigureAwait(false);
+        if (!roleResult.Succeeded)
+        {
+            Console.WriteLine($"Error : Adding AdminRole {roleResult.Errors.ToList()}");
+            //TODO : made an extension method to convert identity errors to string in Idyfa
+            throw new BehlogSeedingException(nameof(Role));
+        }
+        
+        var adminUser = User.RegisterUser(
+            defaultAdminUserName, defaultAdminPassword, defaultAdminEmail,
+            "", "admin", "admin");
+        var userResult = await _userManager.CreateAsync(adminUser).ConfigureAwait(false);
+        if (!userResult.Succeeded)
+        {
+            throw new BehlogSeedingException(nameof(adminUser));
+        } 
+        
+        var addToRoleResult = await _userManager
+             .AddToRoleAsync(adminUser, adminRole.Name).ConfigureAwait(false);
+        if (!addToRoleResult.Succeeded)
+        {
+            throw new BehlogSeedingException(nameof(addToRoleResult));
+        }
+        
+        
     } 
     
 }
