@@ -50,7 +50,9 @@ public class UserSeed
             throw new BehlogSeedingException(nameof(addToRoleResult));
         }
         
-        
-    } 
+        Console.WriteLine($"[Seed]: User '{adminUser.UserName}' has successfully created.");
+    }
+    
+    
     
 }
