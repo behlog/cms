@@ -6,7 +6,7 @@ using Behlog.Core.Domain;
 
 namespace Behlog.Cms.Domain;
 
-public class Language : BehlogEntity<Guid>
+public class Language : AggregateRoot<Guid>
 {
     
     private Language() { }
@@ -23,26 +23,41 @@ public class Language : BehlogEntity<Guid>
 
     #region Builders
 
-    public static async Task<Language> CreateAsync(
-        CreateLanguageCommand command, IBehlogManager manager)
+
+    public static Language Create(Guid id, CreateLanguageCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
-
+        
         var lang = new Language
         {
-            Id = Guid.NewGuid(),
+            Id = id,
             Code = command.Code,
             Name = command.Name.Trim(),
             Title = command.Title?.Trim().CorrectYeKe()!,
             Status = EntityStatus.Enabled
         };
-
-        var e = new LanguageCreatedEvent(
-            lang.Id, lang.Title, lang.Name, lang.Code, lang.Status);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-
+        lang.AddCreatedEvent();
+        
         return lang;
+    }
+
+
+    public static Language Create(CreateLanguageCommand command)
+    {
+        return Create(id: Guid.NewGuid(), command);
+    }
+
+    #endregion
+
+
+    #region Events
+
+
+    private void AddCreatedEvent()
+    {
+        var e = new LanguageCreatedEvent(
+            Id, Title, Name, Code, Status);
+        Enqueue(e);
     }
 
     #endregion
