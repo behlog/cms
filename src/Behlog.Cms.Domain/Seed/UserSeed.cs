@@ -4,7 +4,7 @@ using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Seed;
 
-public class UserSeed
+internal class UserSeed
 {
     private readonly IIdyfaUserManager _userManager;
     private readonly IIdyfaRoleManager _roleManager;
