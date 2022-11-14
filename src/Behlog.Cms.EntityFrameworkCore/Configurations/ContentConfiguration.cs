@@ -11,8 +11,10 @@ public static partial class EntityConfigurations
     {
         builder.Entity<Content>(content =>
         {
-            content.ToTable(ContentTableName).HasKey(_ => _.Id);
-
+            content.ToTable(ContentTableName)
+                    .HasKey(_ => _.Id);
+            
+            content.Property(_ => _.Id).ValueGeneratedNever();
             content.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired();
             content.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
             content.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false); //TODO : It's for SQL Server, what about other RBDMSes?
@@ -37,9 +39,9 @@ public static partial class EntityConfigurations
             content.Property(_ => _.LangCode).HasMaxLength(10).IsUnicode().IsRequired(false);
 
             content.OwnsMany(_ => _.Meta, m => {
-                m.ToTable(ContentMetaTableName);
+                m.ToTable(ContentMetaTableName).HasKey("Id");
+                m.Property<long>("Id").ValueGeneratedOnAdd();
                 m.WithOwner().HasForeignKey(_ => _.OwnerId);
-                m.Property<int>("Id");
                 m.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
                 m.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
@@ -50,7 +52,8 @@ public static partial class EntityConfigurations
             });
 
             content.OwnsMany(_ => _.Likes, l => {
-                l.ToTable(ContentLikeTableName);
+                l.ToTable(ContentLikeTableName).HasKey("Id");
+                l.Property<long>("Id").ValueGeneratedOnAdd();
                 l.WithOwner().HasForeignKey(_ => _.ContentId);
                 l.Property(_ => _.SessionId).HasMaxLength(256).IsRequired(false);
                 l.Property(_ => _.UserId).HasMaxLength(100).IsRequired(false);
@@ -58,16 +61,16 @@ public static partial class EntityConfigurations
             });
 
             content.OwnsMany(_ => _.Files, f => {
+                f.ToTable(ContentFileTableName)
+                    .HasKey(_ => new {
+                        _.ContentId, 
+                        _.FileId
+                    });
                 f.WithOwner().HasForeignKey(_ => _.ContentId);
-                f.WithOwner().HasForeignKey(_ => _.FileId);
-                f.ToTable(ContentFileTableName);
+                f.HasOne(_ => _.File).WithMany().HasForeignKey(_ => _.FileId);
                 f.Property(_ => _.FileName).HasMaxLength(2000).IsUnicode().IsRequired();
                 f.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired(false);
                 f.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
-                f.HasKey(_ => new {
-                    _.ContentId, 
-                    _.FileId
-                });
             });
             
             content.HasOne(_ => _.ContentType)

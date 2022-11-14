@@ -12,7 +12,8 @@ public static partial class EntityConfigurations
         builder.Entity<ContentCategory>(category =>
         {
             category.ToTable(ContentCategoryTableName).HasKey(_ => _.Id);
-
+            
+            category.Property(_ => _.Id).ValueGeneratedNever();
             category.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired();
             category.Property(_ => _.AltTitle).HasMaxLength(500).IsUnicode().IsRequired(false);
             category.Property(_ => _.Slug).HasMaxLength(256).IsUnicode().IsRequired();

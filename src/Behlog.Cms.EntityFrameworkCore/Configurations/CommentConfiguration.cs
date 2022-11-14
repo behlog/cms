@@ -11,7 +11,8 @@ public static partial class EntityConfigurations
         builder.Entity<Comment>(comment =>
         {
             comment.ToTable(CommentTableName).HasKey(_ => _.Id);
-
+            
+            comment.Property(_ => _.Id).ValueGeneratedNever();
             comment.Property(_ => _.Title).HasMaxLength(500).IsUnicode().IsRequired(false);
             comment.Property(_ => _.Body).HasMaxLength(4000).IsUnicode().IsRequired();
             comment.Property(_ => _.Email).HasMaxLength(1000).IsUnicode().IsRequired(false);
