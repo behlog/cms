@@ -7,7 +7,7 @@ public class UpdateWebsiteCommand : IBehlogCommand
     public UpdateWebsiteCommand(
         Guid id, string name, string title, string description,
         string keywords, string url, string password, bool isReadOnly,
-        string email, string copyrightText)
+        string email, string copyrightText, Guid? defaultLangId = null)
     {
         Id = id;
         Name = name;
@@ -19,6 +19,7 @@ public class UpdateWebsiteCommand : IBehlogCommand
         IsReadOnly = isReadOnly;
         Email = email;
         CopyrightText = copyrightText;
+        DefaultLangId = defaultLangId;
     }
     
     public Guid Id { get; }
@@ -31,4 +32,6 @@ public class UpdateWebsiteCommand : IBehlogCommand
     public bool IsReadOnly { get; }
     public string Email { get; }
     public string CopyrightText { get; }
+    public Guid? DefaultLangId { get; }
+    
 }
