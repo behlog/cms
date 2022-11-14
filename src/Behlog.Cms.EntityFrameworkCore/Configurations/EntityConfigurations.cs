@@ -8,6 +8,8 @@ public static partial class EntityConfigurations
     public const string Schema = "Behlog";
 
     public const string WebsiteTableName = nameof(Website);
+
+    public const string WebsiteMetaTableName = nameof(WebsiteMeta);
     
     public const string ContentTableName = nameof(Content);
 

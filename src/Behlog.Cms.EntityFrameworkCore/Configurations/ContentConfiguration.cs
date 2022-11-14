@@ -42,6 +42,7 @@ public static partial class EntityConfigurations
                 m.ToTable(ContentMetaTableName).HasKey("Id");
                 m.Property<long>("Id").ValueGeneratedOnAdd();
                 m.WithOwner().HasForeignKey(_ => _.OwnerId);
+                m.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
                 m.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)

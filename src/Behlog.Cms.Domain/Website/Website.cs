@@ -28,7 +28,11 @@ public class Website : AggregateRoot<Guid>
     
     #endregion
 
+    #region Navigations
 
+    public ICollection<WebsiteMeta> Meta { get; protected set; }
+
+    #endregion
 
     #region Builders
 
