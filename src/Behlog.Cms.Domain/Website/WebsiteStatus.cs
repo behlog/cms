@@ -9,6 +9,9 @@ public class WebsiteStatus : Enumeration
     {
     }
 
+
+    public static WebsiteStatus Find(int id) => FromValue<WebsiteStatus>(id);
+
     public static WebsiteStatus Deleted
         => new WebsiteStatus(-1, nameof(Deleted));
 
