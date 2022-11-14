@@ -11,8 +11,10 @@ public static partial class EntityConfigurations
     {
         builder.Entity<ContentType>(type =>
         {
-            type.ToTable(ContentTypeTableName).HasKey(_ => _.Id);
+            type.ToTable(ContentTypeTableName)
+                    .HasKey(_ => _.Id);
 
+            type.Property(_ => _.Id).ValueGeneratedNever();
             type.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired();
             type.Property(_ => _.SystemName).HasMaxLength(50).IsUnicode().IsRequired();
             type.Property(_ => _.Slug).HasMaxLength(256).IsUnicode().IsRequired();
