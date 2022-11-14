@@ -11,7 +11,8 @@ public static partial class EntityConfigurations
         builder.Entity<FileUpload>(file =>
         {
             file.ToTable(FileTableName).HasKey(_ => _.Id);
-
+            
+            file.Property(_=> _.Id).ValueGeneratedNever();
             file.Property(_ => _.Title).HasMaxLength(1000).IsUnicode();
             file.Property(_ => _.FilePath).HasMaxLength(2000).IsUnicode().IsRequired();
             file.Property(_ => _.AlternateFilePath).HasMaxLength(2000).IsUnicode().IsRequired(false);
