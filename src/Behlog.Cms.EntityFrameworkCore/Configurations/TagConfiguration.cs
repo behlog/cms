@@ -13,6 +13,7 @@ public static partial class EntityConfigurations
         {
             tag.ToTable(TagTableName).HasKey(_ => _.Id);
 
+            tag.Property(_ => _.Id).ValueGeneratedNever();
             tag.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired();
             tag.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
             tag.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
