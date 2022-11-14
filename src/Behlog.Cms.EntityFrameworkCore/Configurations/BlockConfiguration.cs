@@ -13,7 +13,8 @@ public static partial class EntityConfigurations
         builder.Entity<Block>(block =>
         {
             block.ToTable(BlockTableName).HasKey(_ => _.Id);
-
+            
+            block.Property(_ => _.Id).ValueGeneratedNever();
             block.Property(_ => _.Name).HasMaxLength(256).IsUnicode().IsRequired();
             block.Property(_ => _.Title).HasMaxLength(500).IsUnicode().IsRequired();
             block.Property(_ => _.Category).HasMaxLength(256).IsUnicode();
@@ -32,30 +33,22 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     s => s.Id,
                     s => BlockStatus.FromValue<BlockStatus>(s));
-            
-            block.OwnsMany(_=> _.Meta)
-                .ToTable(BlockMetaTableName)
-                .HasKey(_=> new
-                {
-                    _.OwnerId,
-                    _.MetaKey
-                });
-            block.OwnsMany(_ => _.Meta)
-                .Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
-            block.OwnsMany(_ => _.Meta)
-                .Property(_ => _.Category).HasMaxLength(256).IsUnicode();
-            block.OwnsMany(_ => _.Meta)
-                .Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode();
-            block.OwnsMany(_ => _.Meta)
-                .Property(_ => _.Title).HasMaxLength(500).IsUnicode();
-            block.OwnsMany(_ => _.Meta)
-                .Property(_ => _.Description).HasMaxLength(2000).IsUnicode();
-            block.OwnsMany(_ => _.Meta)
-                .Property(_ => _.MetaType).HasMaxLength(100).IsUnicode();
-            block.OwnsMany(_=> _.Meta)
-                .Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
-                .HasConversion<int>(
-                    c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));
+
+            block.OwnsMany(_ => _.Meta, meta =>
+            {
+                meta.ToTable(BlockMetaTableName).HasKey("Id");
+                meta.Property<long>("Id").ValueGeneratedOnAdd();
+                meta.WithOwner().HasForeignKey(_ => _.OwnerId);
+                meta.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
+                meta.Property(_ => _.Category).HasMaxLength(256).IsUnicode();
+                meta.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode();
+                meta.Property(_ => _.Title).HasMaxLength(500).IsUnicode();
+                meta.Property(_ => _.Description).HasMaxLength(2000).IsUnicode();
+                meta.Property(_ => _.MetaType).HasMaxLength(100).IsUnicode();
+                meta.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
+                    .HasConversion<int>(
+                        c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));
+            });
 
             block.HasOne(_ => _.Language)
                 .WithMany()
