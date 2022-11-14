@@ -94,6 +94,23 @@ public class Website : AggregateRoot<Guid>
         LastUpdatedByIp = applicationContext.IpAddress;
     }
 
+
+    public void SoftDelete(IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
+    {
+        //TODO : check if can softdelete
+        ChangeStatus(WebsiteStatus.Deleted, userContext.UserId, applicationContext.IpAddress);
+    }
+
+
+    public void SetStatus(
+        WebsiteStatus status, IIdyfaUserContext userContext, 
+        IBehlogApplicationContext applicationContext)
+    {
+        if (Equals(status, WebsiteStatus.Deleted))
+            throw new BehlogException("Use SoftDeleteWebsiteCommand instead.");
+        
+        ChangeStatus(status, userContext.UserId, applicationContext.IpAddress);
+    }
     
     
     private void ChangeStatus(
