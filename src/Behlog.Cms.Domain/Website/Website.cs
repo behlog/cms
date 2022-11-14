@@ -1,4 +1,7 @@
+using System.Runtime.CompilerServices;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Events;
+using Behlog.Cms.Models;
 using Behlog.Core;
 using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
@@ -65,9 +68,10 @@ public class Website : AggregateRoot<Guid>
             IsReadOnly = command.IsReadOnly,
             OwnerUserId = "", //TODO : Set UserId
         };
+
+        var createdEvent = website.GetCreatedEvent();
+        website.Enqueue(createdEvent);
         
-        
-        //Add WebsiteCreatedEvent
         return website;
     }
 
@@ -92,6 +96,9 @@ public class Website : AggregateRoot<Guid>
         Keywords = command.Keywords?.CorrectYeKe();
         LastUpdated = DateTime.UtcNow;
         LastUpdatedByIp = applicationContext.IpAddress;
+
+        var updatedEvent = this.GetUpdatedEvent();
+        Enqueue(updatedEvent);
     }
 
 
@@ -99,6 +106,8 @@ public class Website : AggregateRoot<Guid>
     {
         //TODO : check if can softdelete
         ChangeStatus(WebsiteStatus.Deleted, userContext.UserId, applicationContext.IpAddress);
+        var e = new WebsiteSoftDeletedEvent(Id);
+        Enqueue(e);
     }
 
 
