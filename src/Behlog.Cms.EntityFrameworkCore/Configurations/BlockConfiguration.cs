@@ -39,12 +39,12 @@ public static partial class EntityConfigurations
                 meta.ToTable(BlockMetaTableName).HasKey("Id");
                 meta.Property<long>("Id").ValueGeneratedOnAdd();
                 meta.WithOwner().HasForeignKey(_ => _.OwnerId);
+                meta.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);
                 meta.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
-                meta.Property(_ => _.Category).HasMaxLength(256).IsUnicode();
-                meta.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode();
-                meta.Property(_ => _.Title).HasMaxLength(500).IsUnicode();
+                meta.Property(_ => _.MetaType).HasMaxLength(100).IsUnicode().IsRequired(false);
+                meta.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired(false);
+                meta.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode().IsRequired(false);
                 meta.Property(_ => _.Description).HasMaxLength(2000).IsUnicode();
-                meta.Property(_ => _.MetaType).HasMaxLength(100).IsUnicode();
                 meta.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
                     .HasConversion<int>(
                         c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));
