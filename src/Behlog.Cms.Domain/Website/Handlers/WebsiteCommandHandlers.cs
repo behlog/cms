@@ -43,7 +43,7 @@ public class WebsiteCommandHandlers :
         var validation = CreateWebsiteCommandValidator.Run(command);
         if (validation.HasError)
         {
-            
+            return CommandResult<WebsiteResult>.WithValidations(validation.Items);
         }
 
         var website = Website.Create(command);
@@ -51,7 +51,8 @@ public class WebsiteCommandHandlers :
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(
-            new CommandResult<WebsiteResult>(website.ToResult()));
+            CommandResult<WebsiteResult>.With(website.ToResult())
+            );
     }
 
 
