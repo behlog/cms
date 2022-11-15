@@ -120,7 +120,13 @@ public class Website : AggregateRoot<Guid>
         
         ChangeStatus(status, userContext.UserId, applicationContext.IpAddress);
     }
-    
+
+
+    public void Remove()
+    {
+        var e = new WebsiteRemovedEvent(Id);
+        Enqueue(e);
+    }
     
     private void ChangeStatus(
         WebsiteStatus status, string? userId, string? ipAddress = null)

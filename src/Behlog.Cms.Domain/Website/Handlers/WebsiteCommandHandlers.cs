@@ -51,7 +51,13 @@ public class WebsiteCommandHandlers :
     public async Task HandleAsync(
         UpdateWebsiteCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var website = await GetByIdAsync(command.Id, cancellationToken);
+        website.ThrowExceptionIfReferenceIsNull(nameof(website));
+        website.Update(command, _userContext, _applicationContext);
+
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task HandleAsync(
@@ -59,7 +65,7 @@ public class WebsiteCommandHandlers :
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
-        var website = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        var website = await GetByIdAsync(command.Id, cancellationToken);
         website.ThrowExceptionIfReferenceIsNull(nameof(website));
         
         website.SoftDelete(_userContext, _applicationContext);
@@ -71,12 +77,33 @@ public class WebsiteCommandHandlers :
     public async Task HandleAsync(
         RemoveWebsiteCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var website = await GetByIdAsync(command.Id, cancellationToken);
+        website.Remove();
+        _writeStore.MarkForDelete(website);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task HandleAsync(
         SetWebsiteStatusCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var website = await GetByIdAsync(command.Id, cancellationToken);
+        website.ThrowExceptionIfReferenceIsNull(nameof(website));
+        
+        website.SetStatus(command.Status, _userContext, _applicationContext);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
+
+
+    #region private helpers
+
+    private async Task<Website> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _readStore.FindAsync(id, cancellationToken).ConfigureAwait(false);
+    }
+
+    #endregion
 }
