@@ -4,6 +4,7 @@ using Behlog.Cms.Models;
 using Behlog.Cms.Store;
 using Behlog.Core;
 using Behlog.Core.Contracts;
+using Behlog.Core.Models;
 using Behlog.Extensions;
 using Idyfa.Core.Contracts;
 
@@ -11,7 +12,7 @@ namespace Behlog.Cms.Handlers;
 
 
 public class WebsiteCommandHandlers :
-    IBehlogCommandHandler<CreateWebsiteCommand, WebsiteResult>,
+    IBehlogCommandHandler<CreateWebsiteCommand, CommandResult<WebsiteResult>>,
     IBehlogCommandHandler<UpdateWebsiteCommand>,
     IBehlogCommandHandler<SoftDeleteWebsiteCommand>,
     IBehlogCommandHandler<RemoveWebsiteCommand>,
@@ -35,16 +36,22 @@ public class WebsiteCommandHandlers :
     }
 
 
-    public async Task<WebsiteResult> HandleAsync(
+    public async Task<CommandResult<WebsiteResult>> HandleAsync(
         CreateWebsiteCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var validation = CreateWebsiteCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            
+        }
 
         var website = Website.Create(command);
         _writeStore.MarkForAdd(website);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        return await Task.FromResult(website.ToResult());
+        return await Task.FromResult(
+            new CommandResult<WebsiteResult>(website.ToResult()));
     }
 
 

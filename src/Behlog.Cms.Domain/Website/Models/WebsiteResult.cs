@@ -1,10 +1,11 @@
 using System.Runtime.CompilerServices;
 using Behlog.Cms.Domain;
 using Behlog.Core;
+using Behlog.Core.Validations;
 
 namespace Behlog.Cms.Models;
 
-public class WebsiteResult : BehlogResult
+public class WebsiteResult
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -24,21 +25,4 @@ public class WebsiteResult : BehlogResult
     public DateTime? LastStatusChangedOn { get; set; }
     public string? LastUpdatedByUserId { get; set; }
     public string? LastUpdatedByIp { get; set; }
-
-    public static WebsiteResult Success()
-        => new WebsiteResult();
-
-    public WebsiteResult WithValidationErrors(IReadOnlyCollection<ValidationError> errors)
-    {
-        if (errors is null || !errors.Any())
-            return this;
-        
-        foreach (var error in errors)
-        {
-            AddValidationError(error);
-        }
-
-        return this;
-    }
-    
 }

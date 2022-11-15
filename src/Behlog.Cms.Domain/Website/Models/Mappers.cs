@@ -1,6 +1,7 @@
 using Behlog.Cms.Domain;
 using Behlog.Cms.Events;
 using Behlog.Core;
+using Behlog.Core.Validations;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Models;
@@ -34,16 +35,7 @@ public static class WebsiteMappers
             LastUpdatedByUserId = website.LastUpdatedByUserId
         };
     }
-
-    public static WebsiteResult WithValidationErrors(
-        this Website website,
-        IReadOnlyCollection<ValidationError> errors)
-    {
-        website.ThrowExceptionIfArgumentIsNull(nameof(website));
-        var result = website.ToResult();
-        return result.WithValidationErrors(errors);
-    }
-
+    
     public static WebsiteCreatedEvent GetCreatedEvent(this Website website)
     {
         return new WebsiteCreatedEvent

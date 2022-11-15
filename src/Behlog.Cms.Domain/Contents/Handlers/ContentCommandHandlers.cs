@@ -1,6 +1,7 @@
 using Behlog.Cms.Commands;
 using Behlog.Cms.Models;
 using Behlog.Core;
+using Behlog.Core.Validations;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Domain.Handlers;
@@ -10,7 +11,7 @@ public class ContentCommandHandlers :
     IBehlogCommandHandler<CreateContentCommand, ContentResult>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
-    IBehlogCommandHandler<PublishContentCommand, BehlogResult>,
+    IBehlogCommandHandler<PublishContentCommand, ValidationResult>,
     IBehlogCommandHandler<RemoveContentCommand>
 {
     private readonly IBehlogManager _manager;
@@ -58,7 +59,7 @@ public class ContentCommandHandlers :
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
     
-    public async Task<BehlogResult> HandleAsync(
+    public async Task<ValidationResult> HandleAsync(
         PublishContentCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
@@ -69,7 +70,9 @@ public class ContentCommandHandlers :
 
         await _writeStore.SaveChangesAsync(cancellationToken);
 
-        return BehlogResult.Create();
+        // return BehlogResult.Create();
+        
+        return ValidationResult.Create().Build();
     }
 
     public async Task HandleAsync(

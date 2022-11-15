@@ -1,5 +1,6 @@
 using Behlog.Cms.Domain;
 using Behlog.Core;
+using Behlog.Core.Validations;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Models;
