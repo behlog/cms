@@ -1,14 +1,13 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Domain;
 using Behlog.Cms.Store;
+using Behlog.Cms.Domain;
+using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Seed;
 
 internal class LanguageSeed
 {
     private readonly ILanguageWriteStore _writeStore;
-
-
+    
     public LanguageSeed(ILanguageWriteStore writeStore)
     {
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
