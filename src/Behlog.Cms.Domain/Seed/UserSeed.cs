@@ -20,7 +20,7 @@ internal class UserSeed
     }
 
     
-    public async Task SeedAdminUserAsync()
+    public async Task<User> SeedAdminUserAsync()
     {
         var adminRole = Role.New()
             .WithName("Admin")
@@ -51,6 +51,7 @@ internal class UserSeed
         }
         
         Console.WriteLine($"[Seed]: User '{adminUser.UserName}' has successfully created.");
+        return adminUser;
     }
     
     

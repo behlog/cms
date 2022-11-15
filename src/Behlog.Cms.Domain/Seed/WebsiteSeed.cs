@@ -35,8 +35,10 @@ internal class WebsiteSeed
         var website = Website.Create(new CreateWebsiteCommand(
             seedData.Name, seedData.Title, seedData.Description, seedData.Keywords,
             seedData.Url, ownerUserId, langId, null, false, seedData.Email, seedData.CopyrightText));
+        
         _writeStore.MarkForAdd(website);
         await _writeStore.SaveChangesAsync(CancellationToken.None).ConfigureAwait(false);
+        
         return website;
     }
 }

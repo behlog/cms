@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behlog.Cms.Resources", "src\Behlog.Cms.Resources\Behlog.Cms.Resources.csproj", "{E4E7C58F-432B-4F01-AA6E-9CE04B1BE813}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E7C58F-432B-4F01-AA6E-9CE04B1BE813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E7C58F-432B-4F01-AA6E-9CE04B1BE813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E7C58F-432B-4F01-AA6E-9CE04B1BE813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E7C58F-432B-4F01-AA6E-9CE04B1BE813}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{65689FBA-53FB-4EE5-8607-2BF00FC32383} = {00436295-75B0-48C5-ABEA-5C18AD55D1ED}
 		{53B843E3-1FD9-443E-8FC7-6EDC663E0ADB} = {00436295-75B0-48C5-ABEA-5C18AD55D1ED}
 		{C7944F6E-B34F-4F86-ADEA-2C090F7390EC} = {61CA0EFF-DCEC-4CD9-B433-EB112AB12815}
+		{E4E7C58F-432B-4F01-AA6E-9CE04B1BE813} = {00436295-75B0-48C5-ABEA-5C18AD55D1ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5D38175-585D-4159-BB34-BE0C0A99414E}

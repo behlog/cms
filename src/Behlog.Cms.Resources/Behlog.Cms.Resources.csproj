@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="SeedText.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SeedText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="PostTypeStrings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>PostTypeStrings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="SeedText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SeedText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="PostTypeStrings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PostTypeStrings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>
