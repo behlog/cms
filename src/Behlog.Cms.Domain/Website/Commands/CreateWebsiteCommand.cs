@@ -1,6 +1,9 @@
+using Behlog.Cms.Models;
+using Behlog.Core;
+
 namespace Behlog.Cms.Commands;
     
-public class CreateWebsiteCommand
+public class CreateWebsiteCommand : IBehlogCommand<WebsiteResult>
 {
     
     public string Name { get; }

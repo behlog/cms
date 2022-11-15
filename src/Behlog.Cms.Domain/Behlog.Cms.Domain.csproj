@@ -13,9 +13,6 @@
     <Reference Include="Idyfa.Core">
       <HintPath>..\..\..\..\..\personal\Idyfa\src\Idyfa.Core\bin\Debug\net6.0\Idyfa.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Idyfa.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Idyfa\src\Idyfa.Core\bin\Debug\net6.0\Idyfa.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

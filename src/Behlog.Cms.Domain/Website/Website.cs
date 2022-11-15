@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Behlog.Cms.Commands;
 using Behlog.Cms.Events;
 using Behlog.Cms.Models;
@@ -102,7 +101,8 @@ public class Website : AggregateRoot<Guid>
     }
 
 
-    public void SoftDelete(IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
+    public void SoftDelete(
+        IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
     {
         //TODO : check if can softdelete
         ChangeStatus(WebsiteStatus.Deleted, userContext.UserId, applicationContext.IpAddress);
