@@ -13,7 +13,7 @@ namespace Behlog.Cms.Handlers;
 
 public class WebsiteCommandHandlers :
     IBehlogCommandHandler<CreateWebsiteCommand, CommandResult<WebsiteResult>>,
-    IBehlogCommandHandler<UpdateWebsiteCommand>,
+    IBehlogCommandHandler<UpdateWebsiteCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteWebsiteCommand>,
     IBehlogCommandHandler<RemoveWebsiteCommand>,
     IBehlogCommandHandler<SetWebsiteStatusCommand>
@@ -39,7 +39,6 @@ public class WebsiteCommandHandlers :
     public async Task<CommandResult<WebsiteResult>> HandleAsync(
         CreateWebsiteCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
         var validation = CreateWebsiteCommandValidator.Run(command);
         if (validation.HasError)
         {
@@ -56,16 +55,21 @@ public class WebsiteCommandHandlers :
     }
 
 
-    public async Task HandleAsync(
+    public async Task<CommandResult> HandleAsync(
         UpdateWebsiteCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var validation = UpdateWebsiteCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult.FromValidator(validation);
+        }
 
         var website = await GetByIdAsync(command.Id, cancellationToken);
         website.ThrowExceptionIfReferenceIsNull(nameof(website));
         website.Update(command, _userContext, _applicationContext);
 
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return CommandResult.Create();
     }
 
     public async Task HandleAsync(

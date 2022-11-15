@@ -1,8 +1,9 @@
 using Behlog.Core;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class UpdateWebsiteCommand : IBehlogCommand
+public class UpdateWebsiteCommand : IBehlogCommand<CommandResult>
 {
     public UpdateWebsiteCommand(
         Guid id, string name, string title, string description,
