@@ -12,7 +12,7 @@ namespace Behlog.Cms.Handlers;
 
 
 public class CommentCommandHandlers :
-    IBehlogCommandHandler<CreateCommentCommand, CommentResult>,
+    IBehlogCommandHandler<CreateCommentCommand, CommentCommandResult>,
     IBehlogCommandHandler<UpdateCommentCommand>
 {
     
@@ -32,7 +32,7 @@ public class CommentCommandHandlers :
     }
 
 
-    public async Task<CommentResult> HandleAsync(
+    public async Task<CommentCommandResult> HandleAsync(
         CreateCommentCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
@@ -42,7 +42,7 @@ public class CommentCommandHandlers :
         _writeStore.MarkForAdd(comment);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        return comment.ToResult();
+        return new CommentCommandResult(comment.ToResult());
     }
 
     public async Task HandleAsync(

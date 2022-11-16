@@ -5,7 +5,7 @@ using Behlog.Cms.Domain.Models;
 namespace Behlog.Cms.Commands;
 
 
-public class CreateCommentCommand : IBehlogCommand<CommentResult>
+public class CreateCommentCommand : IBehlogCommand<CommentCommandResult>
 {
     
     public Guid ContentId { get; }
