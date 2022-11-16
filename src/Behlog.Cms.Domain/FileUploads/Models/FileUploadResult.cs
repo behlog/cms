@@ -3,7 +3,7 @@ using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.Models;
 
-public class FileUploadResult : BehlogResult
+public class FileUploadResult
 {
     
     public Guid Id { get; set; }

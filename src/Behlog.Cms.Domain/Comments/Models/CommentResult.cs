@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Domain.Models;
 
-public class CommentResult : BehlogResult
+public class CommentResult
 {
     public Guid Id { get; set; }   
     public string Title { get; set; }

@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Models;
 
-public class TagResult : BehlogResult 
+public class TagResult  
 {
     
     public Guid Id { get; protected set; } 

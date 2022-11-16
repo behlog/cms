@@ -4,14 +4,16 @@ using Behlog.Cms.Models;
 using Behlog.Cms.Store;
 using Behlog.Core;
 using Behlog.Core.Contracts;
+using Behlog.Core.Domain;
 using Behlog.Core.Models;
 using Behlog.Extensions;
 using Idyfa.Core.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
 
 
-public class WebsiteCommandHandlers :
+public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
     IBehlogCommandHandler<CreateWebsiteCommand, CommandResult<WebsiteResult>>,
     IBehlogCommandHandler<UpdateWebsiteCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteWebsiteCommand>,
@@ -24,18 +26,17 @@ public class WebsiteCommandHandlers :
     private readonly IWebsiteReadStore _readStore;
     private readonly IWebsiteWriteStore _writeStore;
 
-
     public WebsiteCommandHandlers(
+        IBehlogManager manager, ISystemDateTime dateTime, ILogger<WebsiteCommandHandlers> logger,
         IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext,
-        IWebsiteReadStore readStore, IWebsiteWriteStore writeStore)
+        IWebsiteReadStore readStore, IWebsiteWriteStore writeStore) : base(logger, manager, dateTime)
     {
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _applicationContext = applicationContext ?? throw new ArgumentNullException(nameof(applicationContext));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
     }
-
-
+    
     public async Task<CommandResult<WebsiteResult>> HandleAsync(
         CreateWebsiteCommand command, CancellationToken cancellationToken = default)
     {
@@ -47,7 +48,19 @@ public class WebsiteCommandHandlers :
 
         var website = Website.Create(command);
         _writeStore.MarkForAdd(website);
-        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        
+        try
+        {
+            await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            LogException(ex);   
+        }
+        finally
+        {
+            await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
+        }
 
         return await Task.FromResult(
             CommandResult<WebsiteResult>.With(website.ToResult())
@@ -116,6 +129,6 @@ public class WebsiteCommandHandlers :
     {
         return await _readStore.FindAsync(id, cancellationToken).ConfigureAwait(false);
     }
-
+    
     #endregion
 }

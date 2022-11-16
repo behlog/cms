@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Models;
 
-public class LanguageResult : BehlogResult
+public class LanguageResult
 {
     
     public string Title { get; set; }

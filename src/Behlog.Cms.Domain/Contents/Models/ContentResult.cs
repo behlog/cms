@@ -3,7 +3,7 @@ using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.Models;
 
-public class ContentResult : BehlogResult
+public class ContentResult
 {
 
     public ContentResult(

@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Models;
 
-public class ContentTypeResult : BehlogResult
+public class ContentTypeResult
 {
     public Guid Id { get; set; }
     public string SystemName { get; set; }

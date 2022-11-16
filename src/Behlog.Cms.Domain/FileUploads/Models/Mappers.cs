@@ -1,6 +1,4 @@
 using Behlog.Cms.Domain;
-using Behlog.Core;
-using Behlog.Core.Validations;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Models;
@@ -33,15 +31,4 @@ public static class FileUploadMappers
         };
     }
     
-    
-    public static FileUploadResult WithValidationErrors(
-        this FileUpload fileUpload, IEnumerable<ValidationError> errors)
-    {
-        fileUpload.ThrowExceptionIfArgumentIsNull(nameof(fileUpload));
-        if (errors is null || !errors.Any())
-            throw new ArgumentNullException(nameof(errors));
-
-        var result = fileUpload.ToResult();
-        return (FileUploadResult)result.WithValidationErrors(errors);
-    }
 }
