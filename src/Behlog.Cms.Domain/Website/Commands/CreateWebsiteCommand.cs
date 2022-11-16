@@ -9,15 +9,15 @@ public class CreateWebsiteCommand : IBehlogCommand<CommandResult<WebsiteResult>>
     
     public string Name { get; }
     public string Title { get; }
-    public string Description { get; }
-    public string Keywords { get; }
-    public string Url { get; }
+    public string? Description { get; }
+    public string? Keywords { get; }
+    public string? Url { get; }
     public string OwnerUserId { get; }
     public Guid? DefaultLangId { get; }
-    public string Password { get; }
+    public string? Password { get; }
     public bool IsReadOnly { get; }
-    public string Email { get; }
-    public string CopyrightText { get; }
+    public string? Email { get; }
+    public string? CopyrightText { get; }
 
 
     public CreateWebsiteCommand(
