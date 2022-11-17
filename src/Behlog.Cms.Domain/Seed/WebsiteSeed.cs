@@ -1,6 +1,8 @@
 using Behlog.Cms.Commands;
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
+using Behlog.Cms.Exceptions;
+using Behlog.Cms.Handlers;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Seed;
@@ -9,14 +11,16 @@ namespace Behlog.Cms.Seed;
 internal class WebsiteSeed
 {
     private readonly IWebsiteWriteStore _writeStore;
+    private readonly IWebsiteService _service;
 
-
-    public WebsiteSeed(IWebsiteWriteStore writeStore)
+    public WebsiteSeed(
+        IWebsiteWriteStore writeStore, IWebsiteService service)
     {
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
+        _service = service ?? throw new ArgumentNullException(nameof(service));
     }
-
-
+    
+    
     public async Task<Website> SeedWebsiteAsync(WebsiteSeedData seedData, string ownerUserId)
     {
         seedData.ThrowExceptionIfArgumentIsNull(nameof(seedData));
@@ -32,11 +36,19 @@ internal class WebsiteSeed
                 langId = EnglishLanguage.Id;
         }
 
-        var website = Website.Create(new CreateWebsiteCommand(
+        var createCommand = new CreateWebsiteCommand(
             seedData.Name, seedData.Title, seedData.Description, seedData.Keywords,
-            seedData.Url, ownerUserId, langId, null, false, seedData.Email, seedData.CopyrightText));
+            seedData.Url, ownerUserId, langId, null, false, seedData.Email, seedData.CopyrightText);
+
+        var validation = CreateWebsiteCommandValidator.Run(createCommand);
+        if (!validation.IsValid)
+        {
+            throw new BehlogSeedingException();
+        }
         
+        var website = await Website.CreateAsync(createCommand, _service);
         _writeStore.MarkForAdd(website);
+        
         await _writeStore.SaveChangesAsync(CancellationToken.None).ConfigureAwait(false);
         
         return website;

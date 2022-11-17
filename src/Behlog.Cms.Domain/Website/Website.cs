@@ -9,7 +9,7 @@ using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
-public class Website : AggregateRoot<Guid>
+public partial class Website : AggregateRoot<Guid>
 {
     
     private Website() { }
@@ -46,10 +46,11 @@ public class Website : AggregateRoot<Guid>
     #region Builders
 
 
-    public static Website Create(CreateWebsiteCommand command)
+    public static async Task<Website> CreateAsync(
+        CreateWebsiteCommand command, IWebsiteService service)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-
+        
         var website = new Website
         {
             Id = Guid.NewGuid(),
@@ -68,6 +69,8 @@ public class Website : AggregateRoot<Guid>
             OwnerUserId = "", //TODO : Set UserId
         };
 
+        await website.CheckNameExistAsync(service);
+        
         var createdEvent = website.GetCreatedEvent();
         website.Enqueue(createdEvent);
         

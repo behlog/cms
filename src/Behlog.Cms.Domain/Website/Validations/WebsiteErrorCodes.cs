@@ -17,6 +17,9 @@ public static class WebsiteErrorCodes
     public static string EmailFormat = "website.email.format";
     public static string CopyrightMaxLen = "website.cpr.maxlen";
 
+    public static string CreateStoreFatal = "website.create.fatal";
+    public static string UpdateStoreFatal = "website.update.fatal";
+
     public static string? GetMessage(string errorCode)
     {
         return ValidationMessages.ResourceManager.GetString(errorCode);

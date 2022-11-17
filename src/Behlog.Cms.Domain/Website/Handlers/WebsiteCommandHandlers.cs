@@ -6,6 +6,7 @@ using Behlog.Core;
 using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
 using Behlog.Core.Models;
+using Behlog.Core.Validations;
 using Behlog.Extensions;
 using Idyfa.Core.Contracts;
 using Microsoft.Extensions.Logging;
@@ -23,18 +24,21 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
 {
     private readonly IIdyfaUserContext _userContext;
     private readonly IBehlogApplicationContext _applicationContext;
+    private readonly IWebsiteService _service;
     private readonly IWebsiteReadStore _readStore;
     private readonly IWebsiteWriteStore _writeStore;
 
     public WebsiteCommandHandlers(
         IBehlogManager manager, ISystemDateTime dateTime, ILogger<WebsiteCommandHandlers> logger,
         IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext,
-        IWebsiteReadStore readStore, IWebsiteWriteStore writeStore) : base(logger, manager, dateTime)
+        IWebsiteReadStore readStore, IWebsiteWriteStore writeStore, 
+        IWebsiteService service) : base(logger, manager, dateTime)
     {
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _applicationContext = applicationContext ?? throw new ArgumentNullException(nameof(applicationContext));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
+        _service = service ?? throw new ArgumentNullException(nameof(service));
     }
     
     public async Task<CommandResult<WebsiteResult>> HandleAsync(
@@ -46,7 +50,7 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
             return CommandResult<WebsiteResult>.WithValidations(validation.Items);
         }
 
-        var website = Website.Create(command);
+        var website = await Website.CreateAsync(command, _service);
         _writeStore.MarkForAdd(website);
         
         try
@@ -55,7 +59,8 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
         }
         catch (Exception ex)
         {
-            LogException(ex);   
+            LogException(ex);
+            throw;
         }
         finally
         {
@@ -81,7 +86,20 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
         website.ThrowExceptionIfReferenceIsNull(nameof(website));
         website.Update(command, _userContext, _applicationContext);
 
-        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            LogException(ex);
+            throw;
+        }
+        finally
+        {
+            await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
+        }
+        
         return CommandResult.Create();
     }
 
