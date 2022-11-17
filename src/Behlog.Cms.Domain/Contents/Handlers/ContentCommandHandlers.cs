@@ -1,17 +1,20 @@
 using Behlog.Cms.Commands;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
+using Behlog.Cms.Validations;
 using Behlog.Core;
 using Behlog.Core.Contracts;
+using Behlog.Core.Models;
 using Behlog.Core.Validations;
 using Behlog.Extensions;
 using Idyfa.Core.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
 
 
-public class ContentCommandHandlers :
-    IBehlogCommandHandler<CreateContentCommand, ContentResult>,
+public class ContentCommandHandlers : BehlogBaseCommandHandler,
+    IBehlogCommandHandler<CreateContentCommand, CommandResult<ContentResult>>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
     IBehlogCommandHandler<PublishContentCommand, ValidationResult>,
@@ -25,8 +28,10 @@ public class ContentCommandHandlers :
     private readonly ISystemDateTime _dateTime;
 
     public ContentCommandHandlers(
-       IIdyfaUserContext userContext, IContentReadStore readStore, IContentWriteStore writeStore,
-       IBehlogApplicationContext appContext, IContentService contentService, ISystemDateTime dateTime)
+        ILogger<ContentCommandHandlers> logger, IBehlogManager manager, 
+        IIdyfaUserContext userContext, IContentReadStore readStore, IContentWriteStore writeStore, 
+        IBehlogApplicationContext appContext, IContentService contentService, ISystemDateTime dateTime)
+            : base(logger, manager, dateTime)
     {
         _service = contentService ?? throw new ArgumentNullException(nameof(contentService));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
@@ -36,17 +41,35 @@ public class ContentCommandHandlers :
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
     }
 
-    public async Task<ContentResult> HandleAsync(
+    public async Task<CommandResult<ContentResult>> HandleAsync(
         CreateContentCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var validation = CreateContentCommandValidator.Run(command);
+        if (!validation.IsValid)
+        {
+            return CommandResult<ContentResult>.WithValidations(validation.Items);
+        }
 
         var content = await Content.CreateAsync(
             command, _service, _userContext, _appContext, _dateTime);
-        
-        await _writeStore.AddAsync(content, cancellationToken).ConfigureAwait(false);
 
-        return await Task.FromResult(content.ToResult());
+        try
+        {
+            await _writeStore.AddAsync(content, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            LogException(ex);
+            throw;
+        }
+        finally
+        {
+            await PublishAsync<Content, Guid>(content, cancellationToken).ConfigureAwait(false);
+        }
+        
+        return await Task.FromResult(
+            CommandResult<ContentResult>.With( content.ToResult() )
+            );
     }
 
     public async Task HandleAsync(
