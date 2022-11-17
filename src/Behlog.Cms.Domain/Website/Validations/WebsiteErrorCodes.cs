@@ -1,3 +1,5 @@
+using Behlog.Cms.Resources;
+
 namespace Behlog.Cms.Handlers;
 
 public static class WebsiteErrorCodes
@@ -15,8 +17,8 @@ public static class WebsiteErrorCodes
     public static string EmailFormat = "website.email.format";
     public static string CopyrightMaxLen = "website.cpr.maxlen";
 
-    public static string GetMessage(string errorCode)
+    public static string? GetMessage(string errorCode)
     {
-        return "";
+        return ValidationMessages.ResourceManager.GetString(errorCode);
     }
 }

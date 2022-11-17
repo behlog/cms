@@ -1,6 +1,7 @@
 using Behlog.Cms.Commands;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
+using Behlog.Cms.Resources;
 using Behlog.Core.Contracts;
 using Behlog.Core.Models;
 using Behlog.Core.Validations;
@@ -15,7 +16,7 @@ public class CreateWebsiteCommandValidator
     public ValidatorResult Validate(CreateWebsiteCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-
+        
         return ValidatorResult.Create()
             .HasMaxLenght(command.Name, 256, nameof(command.Name), 
                 "Name maxlen is 256", WebsiteErrorCodes.NameMaxLen)
@@ -36,7 +37,7 @@ public class CreateWebsiteCommandValidator
             .IsEmailFormatCorrect(command.Email, nameof(command.Email), 
                 "Email format is incorrect", WebsiteErrorCodes.EmailFormat)
             .HasMaxLenght(command.CopyrightText, 1000, nameof(command.CopyrightText), 
-                "Maxlen is 1000", WebsiteErrorCodes.CopyrightMaxLen);
+                ValidationMessages.website_cpr_maxlen, WebsiteErrorCodes.CopyrightMaxLen);
     }
 
 
