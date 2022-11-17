@@ -4,6 +4,6 @@ namespace Behlog.Cms;
 public interface IWebsiteService
 {
     
-    Task<bool> ExistByNameAsync(string name, Guid websiteId);
+    Task<bool> ExistByNameAsync(Guid? websiteId, string name);
     
 }

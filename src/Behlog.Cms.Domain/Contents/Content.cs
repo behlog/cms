@@ -5,10 +5,12 @@ using Behlog.Extensions;
 using Behlog.Core.Domain;
 using Behlog.Cms.Commands;
 using Behlog.Cms.Exceptions;
+using Behlog.Core.Contracts;
+using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
-public class Content : AggregateRoot<Guid>, IHasMetadata
+public partial class Content : AggregateRoot<Guid>, IHasMetadata
 {
     protected AggregateCompletionTask CompletionTask = new();
 
@@ -65,41 +67,60 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     #region Builders
 
     public static async Task<Content> CreateAsync(
-        CreateContentCommand command, IBehlogManager manager)
+        CreateContentCommand command, IContentService service,
+        IIdyfaUserContext userContext, IBehlogApplicationContext appContext,
+        ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+        service.ThrowExceptionIfArgumentIsNull(nameof(service));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+
+        await CheckForDuplicateSlug(null, command.WebsiteId, command.Slug, service);
 
         var content = new Content
         {
             Id = Guid.NewGuid(),
-            CreatedDate = DateTime.UtcNow, //TODO : from dateservice
+            CreatedDate = dateTime.UtcNow,
             Title = command.Title.Trim().CorrectYeKe(),
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Slug = command.Slug?.MakeSlug().CorrectYeKe()!,
             ContentTypeId = command.ContentTypeId,
             Body = command.Body?.CorrectYeKe()!,
-            AuthorUserId = command.AuthorUserId,
+            AuthorUserId = userContext.UserId!,
             Summary = command.Summary?.CorrectYeKe()!,
             OrderNum = command.OrderNum,
             Status = ContentStatus.Draft,
             BodyType = command.BodyType,
-            CreatedByIp = "", //TODO : read from UserContext
-            CreatedByUserId = "", //TODO : read from UserContext
+            CreatedByIp = appContext.IpAddress, 
+            CreatedByUserId = userContext.UserId,
+            Password = command.Password,
+            IconName = command.IconName,
+            ViewPath = command.ViewPath
         };
 
         content.Categories = command.Categories?.ToList()
             .Select(categoryId => new ContentCategoryItem(content.Id, categoryId))
             .ToList()!;
-        await content.PublishCreatedEvent(manager);
+        
+        content.AddRemovedEvent();
+        
         return await Task.FromResult(content);
     }
     
     public async Task UpdateAsync(
-        UpdateContentCommand command, IBehlogManager manager)
+        UpdateContentCommand command, IContentService service,
+        IIdyfaUserContext userContext, ISystemDateTime dateTime, 
+        IBehlogApplicationContext appContext)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        manager.ThrowExceptionIfArgumentIsNull(nameof(manager));
+        service.ThrowExceptionIfArgumentIsNull(nameof(service));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+
+        await CheckForDuplicateSlug(Id, WebsiteId, command.Slug, service);
         
         Title = command.Title.Trim().CorrectYeKe();
         Slug = command.Slug?.MakeSlug().CorrectYeKe()!;
@@ -112,11 +133,14 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
         AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         OrderNum = command.OrderNum;
         Categories = command.Categories?.ToList()
-            .Select(categoryId => new ContentCategoryItem(Id, categoryId)).ToList()!;
-        LastUpdated = DateTime.UtcNow; //TODO : use date service
-        LastUpdatedByUserId = ""; //TODO : read from UserContext
-        
-        await PublishUpdatedEvent(manager);
+            .Select(categoryId => new ContentCategoryItem(Id, categoryId))
+            .ToList()!;
+        LastUpdated = dateTime.UtcNow;
+        LastUpdatedByUserId = userContext.UserId;
+        IconName = command.IconName;
+        Password = command.Password;
+
+        AddUpdatedEvent();
     }
 
     /// <summary>
@@ -124,51 +148,60 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
     /// When soft deleted, the Content wont displayed anymore and the user must
     /// find it on recycle bin.
     /// </summary>
-    /// <param name="manager"></param>
-    public async Task SoftDeleteAsync(IBehlogManager manager)
+    public async Task SoftDeleteAsync(
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
         Status = ContentStatus.Deleted;
-        LastStatusChangedDate = DateTime.UtcNow;
-        LastUpdatedByUserId = ""; //TODO : userContext
+        LastStatusChangedDate = dateTime.UtcNow;
+        LastUpdatedByUserId = userContext.UserId;
         
         var e = new ContentSoftDeletedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
 
-    public async Task PublishContentAsync(IBehlogManager manager)
+    public async Task PublishContentAsync(
+        IIdyfaUserContext userContext, ISystemDateTime dateTime,
+        IBehlogApplicationContext appContext)
     {
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        
         if (!Status.CanPublished())
         {
             throw new ContentCannotPublishedException(Status);
         }
         
         Status = ContentStatus.Published;
-        var publishDate = DateTime.UtcNow;
+        var publishDate = dateTime.UtcNow;
         PublishDate = publishDate;
         LastStatusChangedDate = publishDate;
         
-        var userId = "";
-        var userIp = "";
+        var userId = userContext.UserId!;
+        var userIp = appContext.IpAddress!;
 
         var e = new ContentPublishedEvent(Id, publishDate, userId, userIp);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
     
     /// <summary>
     /// Removing the <see cref="Content"/> physically. When Removed, the data cannot recovered.
     /// </summary>
-    public async Task RemoveAsync(IBehlogManager manager)
+    public void Remove()
     {
-        await PublishRemovedEvent(manager);
+        AddRemovedEvent();
     }
     
     #endregion
     
     #region Events
 
-    private async Task PublishCreatedEvent(IBehlogManager manager)
+    private void AddCreatedEvent()
     {
         var e = new ContentCreatedEvent(
             id: Id,
@@ -185,10 +218,10 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories?.Select(_=> _.CategoryId).ToList()!
         );
 
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
-    private async Task PublishUpdatedEvent(IBehlogManager manager) 
+    private void AddUpdatedEvent() 
     {
         var e = new ContentUpdatedEvent(
             id: Id,
@@ -205,13 +238,13 @@ public class Content : AggregateRoot<Guid>, IHasMetadata
             categories: Categories?.Select(_=> _.CategoryId).ToList()!
         );
 
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
-    private async Task PublishRemovedEvent(IBehlogManager manager)
+    private void AddRemovedEvent()
     {
         var e = new ContentRemovedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
+        Enqueue(e);
     }
 
     #endregion

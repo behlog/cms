@@ -50,6 +50,9 @@ public partial class Website : AggregateRoot<Guid>
         CreateWebsiteCommand command, IWebsiteService service)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        service.ThrowExceptionIfArgumentIsNull(nameof(service));
+
+        await CheckNameExistAsync(null, command.Name, service);
         
         var website = new Website
         {
@@ -68,8 +71,6 @@ public partial class Website : AggregateRoot<Guid>
             IsReadOnly = command.IsReadOnly,
             OwnerUserId = "", //TODO : Set UserId
         };
-
-        await website.CheckNameExistAsync(service);
         
         var createdEvent = website.GetCreatedEvent();
         website.Enqueue(createdEvent);
@@ -87,6 +88,9 @@ public partial class Website : AggregateRoot<Guid>
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
         applicationContext.ThrowExceptionIfArgumentIsNull(nameof(applicationContext));
+        service.ThrowExceptionIfArgumentIsNull(nameof(service));
+        
+        await CheckNameExistAsync(Id, command.Name, service);
         
         Title = command.Title?.Trim().CorrectYeKe()!;
         Name = command.Name?.Trim().CorrectYeKe()!;
@@ -100,7 +104,7 @@ public partial class Website : AggregateRoot<Guid>
         LastUpdated = DateTime.UtcNow;
         LastUpdatedByIp = applicationContext.IpAddress;
 
-        await CheckNameExistAsync(service);
+        
 
         var updatedEvent = this.GetUpdatedEvent();
         Enqueue(updatedEvent);

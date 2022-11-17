@@ -5,9 +5,10 @@ namespace Behlog.Cms.Domain;
 public partial class Website
 {
 
-    private async Task CheckNameExistAsync(IWebsiteService service)
+    private static async Task CheckNameExistAsync(
+        Guid? id, string name, IWebsiteService service)
     {
-        if (await service.ExistByNameAsync(Name, Id))
-            throw new WebsiteTitleExistException(Name);
+        if (await service.ExistByNameAsync(id, name))
+            throw new WebsiteTitleExistException(name);
     }
 }

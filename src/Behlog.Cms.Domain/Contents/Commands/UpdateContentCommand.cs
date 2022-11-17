@@ -37,5 +37,7 @@ public class UpdateContentCommand : IBehlogCommand
     public string Summary { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
+    public string Password { get; set; }
+    public string IconName { get; set; }
     public IReadOnlyCollection<Guid> Categories { get; }
 }
