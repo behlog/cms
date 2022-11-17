@@ -84,7 +84,7 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
 
         var website = await GetByIdAsync(command.Id, cancellationToken);
         website.ThrowExceptionIfReferenceIsNull(nameof(website));
-        website.Update(command, _userContext, _applicationContext);
+        await website.UpdateAsync(command, _service, _userContext, _applicationContext);
 
         try
         {

@@ -78,8 +78,9 @@ public partial class Website : AggregateRoot<Guid>
     }
 
 
-    public void Update(
+    public async Task UpdateAsync(
         UpdateWebsiteCommand command, 
+        IWebsiteService service,
         IIdyfaUserContext userContext, 
         IBehlogApplicationContext applicationContext)
     {
@@ -98,6 +99,8 @@ public partial class Website : AggregateRoot<Guid>
         Keywords = command.Keywords?.CorrectYeKe();
         LastUpdated = DateTime.UtcNow;
         LastUpdatedByIp = applicationContext.IpAddress;
+
+        await CheckNameExistAsync(service);
 
         var updatedEvent = this.GetUpdatedEvent();
         Enqueue(updatedEvent);
