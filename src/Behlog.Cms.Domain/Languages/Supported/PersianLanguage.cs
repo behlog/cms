@@ -1,6 +1,6 @@
 namespace Behlog.Cms;
 
-public static class FarsiLanguage
+public static class PersianLanguage
 {
     
     public static readonly Guid Id = new ("f8fd832c-ca3d-4379-8b61-d40056705962");

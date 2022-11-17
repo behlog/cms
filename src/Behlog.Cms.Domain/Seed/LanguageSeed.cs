@@ -19,10 +19,10 @@ internal class LanguageSeed
     /// <param name="cancellationToken"></param>
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
-        var farsi = Language.Create(FarsiLanguage.Id,
+        var farsi = Language.Create(PersianLanguage.Id,
             new CreateLanguageCommand(
-                FarsiLanguage.Name, FarsiLanguage.Title,
-                FarsiLanguage.Code, FarsiLanguage.IsoCode));
+                PersianLanguage.Name, PersianLanguage.Title,
+                PersianLanguage.Code, PersianLanguage.IsoCode));
 
         var english = Language.Create(EnglishLanguage.Id,
             new CreateLanguageCommand(

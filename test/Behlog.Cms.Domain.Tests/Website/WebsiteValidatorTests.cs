@@ -17,7 +17,7 @@ public class WebsiteValidatorTests
         validCreateCommand = new CreateWebsiteCommand(
             "Behlog", "Behlog", "Behlog CMS", "Behlog, CMS",
             "https//behlog.ir", Guid.NewGuid().ToString(),
-            FarsiLanguage.Id, null, false,
+            PersianLanguage.Id, null, false,
             "info@behlog.ir", null);
     }
     
@@ -42,7 +42,7 @@ public class WebsiteValidatorTests
         var command = new CreateWebsiteCommand(
             big_name, "Behlog", "Behlog CMS", "Behlog, CMS",
             "https//behlog.ir", Guid.NewGuid().ToString(),
-            FarsiLanguage.Id, null, false,
+            PersianLanguage.Id, null, false,
             "info@behlog.ir", null);
 
         var validation = CreateWebsiteCommandValidator.Run(command);
@@ -65,7 +65,7 @@ public class WebsiteValidatorTests
         var command = new CreateWebsiteCommand(
             "Behlog", "Behlog", "Behlog CMS", "Behlog, CMS",
             "https//behlog.ir", Guid.NewGuid().ToString(),
-            FarsiLanguage.Id, null, false,
+            PersianLanguage.Id, null, false,
             email, null);
         
         var validation = CreateWebsiteCommandValidator.Run(command);
@@ -92,7 +92,7 @@ public class WebsiteValidatorTests
         var command = new CreateWebsiteCommand(
             name, title, "Behlog CMS", "Behlog, CMS",
             "https//behlog.ir", ownerUserId,
-            FarsiLanguage.Id, null, false,
+            PersianLanguage.Id, null, false,
             "hi@behlog.ir", null);
 
         var validation = CreateWebsiteCommandValidator.Run(command);

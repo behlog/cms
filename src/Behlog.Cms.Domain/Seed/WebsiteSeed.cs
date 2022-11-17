@@ -30,8 +30,8 @@ internal class WebsiteSeed
         Guid? langId = null;
         if (seedData.LangCode.IsNotNullOrEmpty())
         {
-            if (seedData.LangCode.ToLower() == FarsiLanguage.Code.ToLower())
-                langId = FarsiLanguage.Id;
+            if (seedData.LangCode.ToLower() == PersianLanguage.Code.ToLower())
+                langId = PersianLanguage.Id;
             else if (seedData.LangCode.ToLower() == EnglishLanguage.Code.ToLower())
                 langId = EnglishLanguage.Id;
         }
