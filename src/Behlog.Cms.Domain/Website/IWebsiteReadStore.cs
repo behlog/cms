@@ -7,5 +7,5 @@ namespace Behlog.Cms.Store;
 public interface IWebsiteReadStore : IBehlogReadStore<Website, Guid>
 {
 
-    Task<Website> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Website?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

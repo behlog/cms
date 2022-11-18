@@ -17,6 +17,11 @@ public static class ServiceProvider
         services.AddScoped<IContentCategoryReadStore, ContentCategoryReadStore>();
         services.AddScoped<IContentReadStore, ContentReadStore>();
         services.AddScoped<ICommentReadStore, CommentReadStore>();
+        services.AddScoped<IBlockReadStore, BlockReadStore>();
+        services.AddScoped<IFileUploadReadStore, FileUploadReadStore>();
+        services.AddScoped<ILanguageReadStore, LanguageReadStore>();
+        services.AddScoped<ITagReadStore, TagReadStore>();
+        services.AddScoped<IWebsiteReadStore, WebsiteReadStore>();
         
         return services;
     }
@@ -31,7 +36,12 @@ public static class ServiceProvider
         services.AddScoped<IContentCategoryWriteStore, ContentCategoryWriteStore>();
         services.AddScoped<IContentWriteStore, ContentWriteStore>();
         services.AddScoped<ICommentWriteStore, CommentWriteStore>();
-
+        services.AddScoped<IBlockWriteStore, BlockWriteStore>();
+        services.AddScoped<IFileUploadWriteStore, FileUploadWriteStore>();
+        services.AddScoped<ILanguageWriteStore, LanguageWriteStore>();
+        services.AddScoped<ITagWriteStore, TagWriteStore>();
+        services.AddScoped<IWebsiteWriteStore, WebsiteWriteStore>();
+        
         return services;
     }
 }
