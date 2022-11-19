@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using Behlog.Cms.Domain;
 using Behlog.Core;
+using Behlog.Core.Models;
 using Behlog.Core.Validations;
 
 namespace Behlog.Cms.Models;

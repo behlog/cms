@@ -1,4 +1,4 @@
-namespace Behlog.Cms.Domain.ContentTypes;
+namespace Behlog.Cms.Contracts;
 
 public interface IContentTypeService
 {

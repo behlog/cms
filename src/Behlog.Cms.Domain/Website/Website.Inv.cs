@@ -1,3 +1,4 @@
+using Behlog.Cms.Contracts;
 using Behlog.Cms.Exceptions;
 
 namespace Behlog.Cms.Domain;

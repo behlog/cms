@@ -8,7 +8,7 @@ using Behlog.Extensions;
 namespace Behlog.Cms.Validations;
 
 public class CreateContentCommandValidator :
-    IBehlogCommandValidator<CreateContentCommand, CommandResult<ContentResult>>
+    IBehlogCommandValidator<CreateContentCommand, ContentCommandResult>
 {
     
     public ValidatorResult Validate(CreateContentCommand command)

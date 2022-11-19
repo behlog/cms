@@ -42,7 +42,8 @@ public class CommentCommandHandlers :
         _writeStore.MarkForAdd(comment);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        return new CommentCommandResult(comment.ToResult());
+        // return new CommentCommandResult(comment.ToResult());
+        return new CommentCommandResult();
     }
 
     public async Task HandleAsync(

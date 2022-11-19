@@ -1,4 +1,5 @@
 using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Behlog.Cms.Events;
 using Behlog.Cms.Models;
 using Behlog.Core;

@@ -21,10 +21,8 @@ public class CommentResult
     public string LastUpdatedByIp { get; set; }
 }
 
-public class CommentCommandResult : CommandResult<CommentResult>
+public class CommentCommandResult : CommandResult
 {
 
-    public CommentCommandResult(CommentResult result) : base(result)
-    {
-    }
+    
 }

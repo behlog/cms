@@ -1,4 +1,4 @@
-namespace Behlog.Cms.Domain;
+namespace Behlog.Cms.Contracts;
 
 public interface IContentService
 {

@@ -5,7 +5,7 @@ using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
+public class CreateContentCommand : IBehlogCommand<ContentCommandResult>
 {
     
     public CreateContentCommand(

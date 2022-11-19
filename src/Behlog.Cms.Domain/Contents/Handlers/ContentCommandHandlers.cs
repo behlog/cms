@@ -2,6 +2,7 @@ using Behlog.Cms.Commands;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
 using Behlog.Cms.Validations;
+using Behlog.Cms.Contracts;
 using Behlog.Core;
 using Behlog.Core.Contracts;
 using Behlog.Core.Models;
@@ -14,7 +15,7 @@ namespace Behlog.Cms.Handlers;
 
 
 public class ContentCommandHandlers : BehlogBaseCommandHandler,
-    IBehlogCommandHandler<CreateContentCommand, CommandResult<ContentResult>>,
+    IBehlogCommandHandler<CreateContentCommand, ContentCommandResult>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
     IBehlogCommandHandler<PublishContentCommand, ValidationResult>,
@@ -41,13 +42,14 @@ public class ContentCommandHandlers : BehlogBaseCommandHandler,
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
     }
 
-    public async Task<CommandResult<ContentResult>> HandleAsync(
+    public async Task<ContentCommandResult> HandleAsync(
         CreateContentCommand command, CancellationToken cancellationToken = default)
     {
         var validation = CreateContentCommandValidator.Run(command);
         if (!validation.IsValid)
         {
-            return CommandResult<ContentResult>.WithValidations(validation.Items);
+            // return CommandResult<ContentResult>.WithValidations(validation.Items);\
+            return null;
         }
 
         var content = await Content.CreateAsync(
@@ -67,9 +69,11 @@ public class ContentCommandHandlers : BehlogBaseCommandHandler,
             await PublishAsync<Content, Guid>(content, cancellationToken).ConfigureAwait(false);
         }
         
-        return await Task.FromResult(
-            CommandResult<ContentResult>.With( content.ToResult() )
-            );
+        // return await Task.FromResult(
+        //     CommandResult<ContentResult>.With( content.ToResult() )
+        //     );
+
+        return new ContentCommandResult();
     }
 
     public async Task HandleAsync(

@@ -7,8 +7,10 @@ using Behlog.Cms.Commands;
 using Behlog.Cms.Exceptions;
 using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
+using Behlog.Cms.Contracts;
 
 namespace Behlog.Cms.Domain;
+
 
 public partial class Content : AggregateRoot<Guid>, IHasMetadata
 {

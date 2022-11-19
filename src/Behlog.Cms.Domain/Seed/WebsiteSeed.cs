@@ -1,4 +1,5 @@
 using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Exceptions;

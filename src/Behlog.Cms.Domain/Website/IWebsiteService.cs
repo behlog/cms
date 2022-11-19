@@ -1,4 +1,4 @@
-namespace Behlog.Cms;
+namespace Behlog.Cms.Contracts;
 
 
 public interface IWebsiteService

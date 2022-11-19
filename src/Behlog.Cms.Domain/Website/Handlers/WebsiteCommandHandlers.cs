@@ -1,4 +1,5 @@
 using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
 using Behlog.Cms.Store;
@@ -47,7 +48,7 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
         var validation = CreateWebsiteCommandValidator.Run(command);
         if (validation.HasError)
         {
-            return CommandResult<WebsiteResult>.WithValidations(validation.Items);
+            return CommandResult<WebsiteResult>.FromValidator(validation);
         }
 
         var website = await Website.CreateAsync(command, _service);
@@ -68,7 +69,7 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
         }
 
         return await Task.FromResult(
-            CommandResult<WebsiteResult>.With(website.ToResult())
+            CommandResult<WebsiteResult>.Create().With(website.ToResult())
             );
     }
 

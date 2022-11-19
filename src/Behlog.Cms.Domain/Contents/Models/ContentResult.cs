@@ -1,5 +1,6 @@
 using Behlog.Core;
 using Behlog.Cms.Domain;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Models;
 
@@ -52,5 +53,11 @@ public class ContentResult
     public string AltTitle { get; }
     public int OrderNum { get; }
     public IReadOnlyCollection<Guid> Categories { get; protected set; } = new List<Guid>();
+    
+}
+
+
+public class ContentCommandResult : CommandResult
+{
     
 }
