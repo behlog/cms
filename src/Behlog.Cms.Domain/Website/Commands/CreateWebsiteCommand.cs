@@ -7,19 +7,21 @@ namespace Behlog.Cms.Commands;
 public class CreateWebsiteCommand : IBehlogCommand<CommandResult<WebsiteResult>>
 {
     
-    public string Name { get; }
-    public string Title { get; }
-    public string? Description { get; }
-    public string? Keywords { get; }
-    public string? Url { get; }
-    public string OwnerUserId { get; }
-    public Guid? DefaultLangId { get; }
-    public string? Password { get; }
-    public bool IsReadOnly { get; }
-    public string? Email { get; }
-    public string? CopyrightText { get; }
+    public string Name { get; set; }
+    public string Title { get; set; }
+    public string? Description { get; set; }
+    public string? Keywords { get; set; }
+    public string? Url { get; set; }
+    public string OwnerUserId { get; set; }
+    public Guid? DefaultLangId { get; set; }
+    public string? Password { get; set; }
+    public bool IsReadOnly { get; set; }
+    public string? Email { get; set; }
+    public string? CopyrightText { get; set; }
 
-
+    
+    public CreateWebsiteCommand() { }
+    
     public CreateWebsiteCommand(
         string name, string title, string description, string keywords, string url, 
         string ownerUserId, Guid? defaultLangId, string password, bool isReadOnly, 

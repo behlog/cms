@@ -11,11 +11,12 @@ using Behlog.Core.Validations;
 using Behlog.Extensions;
 using Idyfa.Core.Contracts;
 using Microsoft.Extensions.Logging;
+using Behlog.Core.CQRS;
 
 namespace Behlog.Cms.Handlers;
 
 
-public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
+public class WebsiteCommandHandlers :
     IBehlogCommandHandler<CreateWebsiteCommand, CommandResult<WebsiteResult>>,
     IBehlogCommandHandler<UpdateWebsiteCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteWebsiteCommand>,
@@ -28,18 +29,25 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
     private readonly IWebsiteService _service;
     private readonly IWebsiteReadStore _readStore;
     private readonly IWebsiteWriteStore _writeStore;
+    private readonly ILogger<WebsiteCommandHandlers> _logger;
+    private readonly ISystemDateTime _dateTime;
+    private readonly IBehlogManager _manager;
 
     public WebsiteCommandHandlers(
         IBehlogManager manager, ISystemDateTime dateTime, ILogger<WebsiteCommandHandlers> logger,
         IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext,
         IWebsiteReadStore readStore, IWebsiteWriteStore writeStore, 
-        IWebsiteService service) : base(logger, manager, dateTime)
+        IWebsiteService service) 
+        // : base(logger, manager, dateTime)
     {
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _applicationContext = applicationContext ?? throw new ArgumentNullException(nameof(applicationContext));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _service = service ?? throw new ArgumentNullException(nameof(service));
+        _dateTime = dateTime;
+        _logger = logger;
+        _manager = manager;
     }
     
     public async Task<CommandResult<WebsiteResult>> HandleAsync(
@@ -60,12 +68,13 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
         }
         catch (Exception ex)
         {
-            LogException(ex);
+            
+            // LogException(ex);
             throw;
         }
         finally
         {
-            await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
+            // await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
         }
 
         return await Task.FromResult(
@@ -93,12 +102,12 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
         }
         catch (Exception ex)
         {
-            LogException(ex);
+            // LogException(ex);
             throw;
         }
         finally
         {
-            await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
+            // await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
         }
         
         return CommandResult.Create();
@@ -147,6 +156,11 @@ public class WebsiteCommandHandlers : BehlogBaseCommandHandler,
     private async Task<Website> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _readStore.FindAsync(id, cancellationToken).ConfigureAwait(false);
+    }
+
+    private void LogException(Exception exception)
+    {
+        
     }
     
     #endregion

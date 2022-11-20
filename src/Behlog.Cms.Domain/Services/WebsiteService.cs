@@ -14,6 +14,6 @@ public class WebsiteService : IWebsiteService
 
     public async Task<bool> ExistByNameAsync(Guid? websiteId, string name)
     {
-        throw new NotImplementedException();
+        return false;
     }
 }
