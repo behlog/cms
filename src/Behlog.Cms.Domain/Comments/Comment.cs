@@ -169,14 +169,6 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
             AuthorName, CreatedByUserId, CreatedByIp, CreatedDate);
         Enqueue(e);
     }
-    
-    private async Task PublishCreatedEvent(IBehlogManager manager)
-    {
-        var e = new CommentCreatedEvent(
-            Id, Title, Body, BodyType, Email, WebUrl, AuthorUserId,
-            AuthorName, CreatedByUserId, CreatedByIp, CreatedDate);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
 
 
     private void AddUpdatedEvent()
@@ -188,27 +180,11 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    private async Task PublishUpdatedEvent(IBehlogManager manager)
-    {
-        var e = new CommentUpdatedEvent(
-            Id, Title, Body, BodyType, Email, WebUrl, AuthorUserId,
-            AuthorName, CreatedByUserId, LastUpdatedByUserId,
-            CreatedByIp, LastUpdatedByIp, CreatedDate, LastUpdated);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
     public void AddRemovedEvent()
     {
         var e = new CommentRemovedEvent(Id);
         Enqueue(e);
     }
-    
-    private async Task PublishRemovedEvent(IBehlogManager manager)
-    {
-        var e = new CommentRemovedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
 
     private void AddApprovedEvent()
     {
@@ -216,22 +192,10 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    private async Task PublishApprovedEvent(IBehlogManager manager)
-    {
-        var e = new CommentApprovedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false); 
-    }
-
     private void AddBlockedEvent()
     {
         var e = new CommentBlockedEvent(Id);
         Enqueue(e);
-    }
-
-    private async Task PublishBlockedEvent(IBehlogManager manager)
-    {
-        var e = new CommentBlockedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
     }
 
     private void AddRejectedEvent()
@@ -240,24 +204,11 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
 
-    private async Task PublishRejectedEvent(IBehlogManager manager)
-    {
-        var e = new CommentRejectedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
     private void AddSoftDeletedEvent()
     {
         var e = new CommentSoftDeletedEvent(Id);
         Enqueue(e);
     }
-
-    private async Task PublishSoftDeletedEvent(IBehlogManager manager)
-    {
-        var e = new CommentSoftDeletedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
 
     private void AddSpammedEvent()
     {
@@ -265,12 +216,6 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    private async Task PublishSpammedEvent(IBehlogManager manager)
-    {
-        var e = new CommentSpammedEvent(Id);
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
     private void ChangeStatus(CommentStatus status)
     {
         Status = status;

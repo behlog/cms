@@ -1,15 +1,16 @@
-using Behlog.Cms.Contracts;
 using Behlog.Core;
+using Behlog.Cms.Contracts;
 
 namespace Behlog.Cms.Services;
 
+
 public class WebsiteService : IWebsiteService
 {
-    private readonly IBehlogManager _manager;
+    private readonly IBehlogMediator _mediator;
 
-    public WebsiteService(IBehlogManager manager)
+    public WebsiteService(IBehlogMediator mediator)
     {
-        _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     public async Task<bool> ExistByNameAsync(Guid? websiteId, string name)

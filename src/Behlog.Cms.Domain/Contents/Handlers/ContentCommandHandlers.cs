@@ -14,26 +14,31 @@ using Microsoft.Extensions.Logging;
 namespace Behlog.Cms.Handlers;
 
 
-public class ContentCommandHandlers : BehlogBaseCommandHandler,
-    IBehlogCommandHandler<CreateContentCommand, ContentCommandResult>,
+public class ContentCommandHandlers :
+    IBehlogCommandHandler<CreateContentCommand, CommandResult<ContentResult>>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
     IBehlogCommandHandler<PublishContentCommand, ValidationResult>,
     IBehlogCommandHandler<RemoveContentCommand>
 {
+    private readonly IBehlogMediator _mediator;
+    private readonly IBehlogMediatorAssistant _assistant;
     private readonly IIdyfaUserContext _userContext;
     private readonly IBehlogApplicationContext _appContext;
     private readonly IContentReadStore _readStore;
     private readonly IContentWriteStore _writeStore;
     private readonly IContentService _service;
     private readonly ISystemDateTime _dateTime;
+    private readonly ILogger<ContentCommandHandlers> _logger;
 
     public ContentCommandHandlers(
-        ILogger<ContentCommandHandlers> logger, IBehlogManager manager, 
+        ILogger<ContentCommandHandlers> logger, IBehlogMediator mediator, IBehlogMediatorAssistant assistant,
         IIdyfaUserContext userContext, IContentReadStore readStore, IContentWriteStore writeStore, 
         IBehlogApplicationContext appContext, IContentService contentService, ISystemDateTime dateTime)
-            : base(logger, manager, dateTime)
     {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _assistant = assistant ?? throw new ArgumentNullException(nameof(assistant));
         _service = contentService ?? throw new ArgumentNullException(nameof(contentService));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
@@ -42,14 +47,13 @@ public class ContentCommandHandlers : BehlogBaseCommandHandler,
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
     }
 
-    public async Task<ContentCommandResult> HandleAsync(
+    public async Task<CommandResult<ContentResult>> HandleAsync(
         CreateContentCommand command, CancellationToken cancellationToken = default)
     {
         var validation = CreateContentCommandValidator.Run(command);
         if (!validation.IsValid)
         {
-            // return CommandResult<ContentResult>.WithValidations(validation.Items);\
-            return null;
+            return CommandResult<ContentResult>.FromValidator(validation);
         }
 
         var content = await Content.CreateAsync(
@@ -61,19 +65,17 @@ public class ContentCommandHandlers : BehlogBaseCommandHandler,
         }
         catch (Exception ex)
         {
-            LogException(ex);
+            _assistant.LogException(ex);
             throw;
         }
         finally
         {
-            await PublishAsync<Content, Guid>(content, cancellationToken).ConfigureAwait(false);
+            await _assistant.PublishAsync<Content, Guid>(content, cancellationToken).ConfigureAwait(false);
         }
         
-        // return await Task.FromResult(
-        //     CommandResult<ContentResult>.With( content.ToResult() )
-        //     );
-
-        return new ContentCommandResult();
+        return await Task.FromResult(
+            CommandResult<ContentResult>.Create().With(content.ToResult())
+            );
     }
 
     public async Task HandleAsync(

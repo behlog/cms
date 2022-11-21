@@ -1,20 +1,20 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Resources;
-using Behlog.Cms.Store;
 using Behlog.Core;
+using Behlog.Cms.Store;
+using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Seed;
+
 
 internal class ContentTypeSeed
 {
     private readonly IContentTypeWriteStore _writeStore;
-    private readonly IBehlogManager _manager;
+    private readonly IBehlogMediator _mediator;
     
     public ContentTypeSeed(
-        IContentTypeWriteStore writeStore, IBehlogManager manager)
+        IContentTypeWriteStore writeStore, IBehlogMediator mediator)
     {
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
-        _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
 

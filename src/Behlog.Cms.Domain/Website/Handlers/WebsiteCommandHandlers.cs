@@ -1,17 +1,14 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Contracts;
+using Behlog.Core;
+using Behlog.Cms.Store;
+using Behlog.Extensions;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
-using Behlog.Cms.Store;
-using Behlog.Core;
-using Behlog.Core.Contracts;
-using Behlog.Core.Domain;
 using Behlog.Core.Models;
-using Behlog.Core.Validations;
-using Behlog.Extensions;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Idyfa.Core.Contracts;
+using Behlog.Core.Contracts;
 using Microsoft.Extensions.Logging;
-using Behlog.Core.CQRS;
 
 namespace Behlog.Cms.Handlers;
 
@@ -31,23 +28,22 @@ public class WebsiteCommandHandlers :
     private readonly IWebsiteWriteStore _writeStore;
     private readonly ILogger<WebsiteCommandHandlers> _logger;
     private readonly ISystemDateTime _dateTime;
-    private readonly IBehlogManager _manager;
+    private readonly IBehlogMediator _mediator;
 
     public WebsiteCommandHandlers(
-        IBehlogManager manager, ISystemDateTime dateTime, ILogger<WebsiteCommandHandlers> logger,
+        IBehlogMediator mediator, ISystemDateTime dateTime, ILogger<WebsiteCommandHandlers> logger,
         IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext,
         IWebsiteReadStore readStore, IWebsiteWriteStore writeStore, 
-        IWebsiteService service) 
-        // : base(logger, manager, dateTime)
+        IWebsiteService service)
     {
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _applicationContext = applicationContext ?? throw new ArgumentNullException(nameof(applicationContext));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _service = service ?? throw new ArgumentNullException(nameof(service));
-        _dateTime = dateTime;
-        _logger = logger;
-        _manager = manager;
+        _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
     
     public async Task<CommandResult<WebsiteResult>> HandleAsync(

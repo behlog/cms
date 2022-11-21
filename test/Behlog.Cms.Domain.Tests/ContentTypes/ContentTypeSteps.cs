@@ -14,11 +14,11 @@ namespace Behlog.Cms.Domain.Tests.ContentTypes;
 public class ContentTypeSteps : BaseTestSteps
 {
     private readonly Dictionary<string, ContentType> _contentTypes = new();
-    private readonly IBehlogManager _manager;
+    private readonly IBehlogMediator _mediator;
     
     public ContentTypeSteps()
     {
-        _manager = Substitute.For<IBehlogManager>();
+        _mediator = Substitute.For<IBehlogMediator>();
     }
 
 

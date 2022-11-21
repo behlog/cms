@@ -16,20 +16,20 @@ public class ContentCategoryCommandHandlers :
     IBehlogCommandHandler<SoftDeleteContentCategoryCommand>,
     IBehlogCommandHandler<RemoveContentCategoryCommand>
 {
-    private readonly IBehlogManager _manager;
+    private readonly IBehlogMediator _mediator;
     private readonly IContentCategoryWriteStore _writeStore;
     private readonly IContentCategoryReadStore _readStore;
     private readonly IBehlogApplicationContext _applicationContext;
     private readonly IIdyfaUserContext _userContext;
 
     public ContentCategoryCommandHandlers(
-        IBehlogManager manager, 
+        IBehlogMediator mediator, 
         IContentCategoryWriteStore writeStore, 
         IContentCategoryReadStore readStore,
         IBehlogApplicationContext applicationContext,
         IIdyfaUserContext userContext)
     {
-        _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _applicationContext = applicationContext ?? throw new ArgumentNullException(nameof(applicationContext));

@@ -12,14 +12,14 @@ public class ContentTypeCommandHandler :
     IBehlogCommandHandler<UpdateContentTypeCommand>,
     IBehlogCommandHandler<SoftDeleteContentTypeCommand>
 {
-    private readonly IBehlogManager _manager;
+    private readonly IBehlogMediator _mediator;
     private readonly IContentTypeReadStore _readStore;
     private readonly IContentTypeWriteStore _writeStore;
 
     public ContentTypeCommandHandler(
-        IBehlogManager manager, IContentTypeReadStore readStore, IContentTypeWriteStore writeStore)
+        IBehlogMediator mediator, IContentTypeReadStore readStore, IContentTypeWriteStore writeStore)
     {
-        _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
     }

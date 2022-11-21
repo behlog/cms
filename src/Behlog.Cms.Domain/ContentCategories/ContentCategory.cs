@@ -145,21 +145,6 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    protected async Task PublishCreatedEvent(IBehlogManager manager)
-    {
-        var e = new ContentCategoryCreatedEvent(
-            id: Id,
-            title: Title,
-            altTitle: AltTitle,
-            slug: Slug,
-            parentId: ParentId,
-            description: Description,
-            contentTypeId: ContentTypeId,
-            status: Status
-        );
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
 
     private void AddUpdatedEvent()
     {
@@ -177,22 +162,6 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    protected async Task PublishUpdatedEvent(IBehlogManager manager) 
-    {
-        var e = new ContentCategoryUpdatedEvent(
-            id: Id,
-            title: Title,
-            altTitle: AltTitle,
-            slug: Slug,
-            parentId: ParentId,
-            description: Description,
-            contentTypeId: ContentTypeId,
-            status: Status
-        );
-        await manager.PublishAsync(e).ConfigureAwait(false);
-    }
-
-
     private void AddSoftDeletedEvent()
     {
         var e = new ContentCategorySoftDeletedEvent(Id);

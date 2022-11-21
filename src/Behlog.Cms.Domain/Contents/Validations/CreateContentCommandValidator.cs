@@ -1,14 +1,15 @@
-using Behlog.Cms.Commands;
 using Behlog.Cms.Models;
-using Behlog.Core.Contracts;
-using Behlog.Core.Models;
-using Behlog.Core.Validations;
 using Behlog.Extensions;
+using Behlog.Core.Models;
+using Behlog.Cms.Commands;
+using Behlog.Core.Contracts;
+using Behlog.Core.Validations;
 
 namespace Behlog.Cms.Validations;
 
+
 public class CreateContentCommandValidator :
-    IBehlogCommandValidator<CreateContentCommand, ContentCommandResult>
+    IBehlogCommandValidator<CreateContentCommand, CommandResult<ContentResult>>
 {
     
     public ValidatorResult Validate(CreateContentCommand command)
