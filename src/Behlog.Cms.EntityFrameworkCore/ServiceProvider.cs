@@ -1,11 +1,23 @@
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
+using Behlog.Cms.EntityFrameworkCore;
 using Behlog.Cms.EntityFrameworkCore.Stores;
+using Behlog.Core;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceProvider
 {
+
+    /// <summary>
+    /// Adds BehlogDbContext to the Service Collections.
+    /// </summary>
+    public static IServiceCollection AddBehlogDbContext(this IServiceCollection services)
+    {
+        services.AddDbContext<IBehlogDbContext, BehlogDbContext>();
+        return services;
+    }
+    
 
     /// <summary>
     /// Adds EntityFramework providers for Read Store contracts of Behlog.Cms

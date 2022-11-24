@@ -12,12 +12,12 @@ namespace Behlog.Cms.Seed;
 
 internal class WebsiteSeed
 {
-    private readonly ILogger<WebsiteSeed> _logger;
+    private readonly ILogger _logger;
     private readonly IWebsiteWriteStore _writeStore;
     private readonly IWebsiteService _service;
 
     public WebsiteSeed(
-        ILogger<WebsiteSeed> logger, IWebsiteWriteStore writeStore, IWebsiteService service)
+        ILogger logger, IWebsiteWriteStore writeStore, IWebsiteService service)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
