@@ -122,20 +122,26 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         await Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    public bool CheckDatabaseExist()
+    {
+        return Database.CanConnect();
+    }
+
     public void AddRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
     {
-        throw new NotImplementedException();
+        Set<TEntity>().AddRange(entities);
     }
 
     public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
     {
-        throw new NotImplementedException();
+        Set<TEntity>().RemoveRange(entities);
     }
 
     public void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class
     {
-        throw new NotImplementedException();
+        Set<TEntity>().Update(entity);
     }
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

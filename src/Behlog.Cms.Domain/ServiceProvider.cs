@@ -37,4 +37,5 @@ public static class ServiceProvider
         services.AddScoped<IContentTypeService, ContentTypeService>();
         services.AddScoped<IWebsiteService, WebsiteService>();
     }
+    
 }
