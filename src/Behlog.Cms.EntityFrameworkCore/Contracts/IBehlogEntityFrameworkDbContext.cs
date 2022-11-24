@@ -17,10 +17,6 @@ public interface IBehlogEntityFrameworkDbContext : IBehlogDbContext
     
     void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
 
-    Task RemoveRangeAsync<TEntity>(
-        IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
-        where TEntity : class;
-    
     void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class;
 
     void MarkAsChanged<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;

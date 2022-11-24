@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Behlog.Cms.EntityFrameworkCore;
 
+
 public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
 {
     private IDbContextTransaction _transaction;
@@ -132,6 +133,12 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         Set<TEntity>().AddRange(entities);
     }
 
+    public async Task AddRangeAsync<TEntity>(
+        IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : class
+    {
+        await Set<TEntity>().AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+    }
+
     public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
     {
         Set<TEntity>().RemoveRange(entities);
@@ -141,7 +148,12 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
     {
         Set<TEntity>().Update(entity);
     }
-    
+
+    public void MarkAsChanged<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+    {
+        Set<TEntity>().UpdateRange(entities);
+    }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
