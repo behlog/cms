@@ -20,6 +20,8 @@ public static class ServiceProvider
         this IServiceCollection services, BehlogDbConfig dbConfig)
     {
         dbConfig.ThrowExceptionIfArgumentIsNull(nameof(dbConfig));
+        services.AddTransient<IBehlogDbContext>(
+            provider => provider.GetRequiredService<BehlogDbContext>());
         services.AddTransient<IBehlogEntityFrameworkDbContext>(
             provider => provider.GetRequiredService<BehlogDbContext>());
         services.AddEntityFrameworkSqlite();
