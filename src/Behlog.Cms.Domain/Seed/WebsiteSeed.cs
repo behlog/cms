@@ -48,7 +48,7 @@ internal class WebsiteSeed
             else
             {
                 _logger.LogError($"The language '{seedData.LangCode}' not supported.");
-                throw new Exception($"Language '{seedData.LangCode}' not supported.");
+                throw new BehlogLanguageNotSupportedException(seedData.LangCode);
             }
         }
 

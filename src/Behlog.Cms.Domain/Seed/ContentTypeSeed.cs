@@ -18,7 +18,7 @@ internal class ContentTypeSeed
     }
 
 
-    public async Task SeedAsync()
+    public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
         //for english
         foreach (var systemName in ContentTypes.All)
@@ -39,7 +39,7 @@ internal class ContentTypeSeed
                     PersianLanguage.Id, systemName.ToLower()));
             _writeStore.MarkForAdd(contentType);
         }
-
-        await _writeStore.SaveChangesAsync().ConfigureAwait(false);
+        
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }

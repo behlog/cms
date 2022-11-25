@@ -20,7 +20,7 @@ internal class UserSeed
     }
 
     
-    public async Task<User> SeedAdminUserAsync()
+    public async Task<User> SeedAdminUserAsync(CancellationToken cancellationToken = default)
     {
         var adminRole = Role.New()
             .WithName("Admin")
