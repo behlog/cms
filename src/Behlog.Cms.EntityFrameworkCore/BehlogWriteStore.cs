@@ -1,11 +1,13 @@
 using Behlog.Core;
-using Behlog.Core.Domain;
 using Behlog.Extensions;
+using Behlog.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore;
 
-public class BehlogWriteStore<TEntity, TId> : IBehlogWriteStore<TEntity, TId> where TEntity : AggregateRoot<TId>
+
+public class BehlogWriteStore<TEntity, TId> 
+    : IBehlogWriteStore<TEntity, TId> where TEntity : AggregateRoot<TId>
 {
     private readonly IBehlogEntityFrameworkDbContext _db;
     private readonly DbSet<TEntity> _set;
