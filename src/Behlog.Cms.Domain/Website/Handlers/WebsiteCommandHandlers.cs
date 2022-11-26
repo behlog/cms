@@ -30,6 +30,8 @@ public class WebsiteCommandHandlers :
     private readonly ISystemDateTime _dateTime;
     private readonly IBehlogMediator _mediator;
 
+    private readonly Behlogger<WebsiteCommandHandlers> _behlogger;
+
     public WebsiteCommandHandlers(
         IBehlogMediator mediator, ISystemDateTime dateTime, ILogger<WebsiteCommandHandlers> logger,
         IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext,
@@ -44,6 +46,8 @@ public class WebsiteCommandHandlers :
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
+        _behlogger = new Behlogger<WebsiteCommandHandlers>(_logger, _dateTime);
     }
     
     public async Task<CommandResult<WebsiteResult>> HandleAsync(
@@ -64,13 +68,8 @@ public class WebsiteCommandHandlers :
         }
         catch (Exception ex)
         {
-            
-            // LogException(ex);
+            _behlogger.LogException(ex);
             throw;
-        }
-        finally
-        {
-            // await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
         }
 
         return await Task.FromResult(
@@ -98,14 +97,10 @@ public class WebsiteCommandHandlers :
         }
         catch (Exception ex)
         {
-            // LogException(ex);
+            _behlogger.LogException(ex);
             throw;
         }
-        finally
-        {
-            // await PublishAsync<Website, Guid>(website, cancellationToken).ConfigureAwait(false);
-        }
-        
+
         return CommandResult.Create();
     }
 
@@ -120,7 +115,15 @@ public class WebsiteCommandHandlers :
         website.SoftDelete(_userContext, _applicationContext);
         _writeStore.MarkForUpdate(website);
 
-        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
     }
 
     public async Task HandleAsync(
@@ -131,7 +134,16 @@ public class WebsiteCommandHandlers :
         var website = await GetByIdAsync(command.Id, cancellationToken);
         website.Remove();
         _writeStore.MarkForDelete(website);
-        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        try
+        {
+            await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
     }
 
     public async Task HandleAsync(
@@ -143,7 +155,16 @@ public class WebsiteCommandHandlers :
         website.ThrowExceptionIfReferenceIsNull(nameof(website));
         
         website.SetStatus(command.Status, _userContext, _applicationContext);
-        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        try
+        {
+            await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
     }
 
 
@@ -154,10 +175,5 @@ public class WebsiteCommandHandlers :
         return await _readStore.FindAsync(id, cancellationToken).ConfigureAwait(false);
     }
 
-    private void LogException(Exception exception)
-    {
-        
-    }
-    
     #endregion
 }
