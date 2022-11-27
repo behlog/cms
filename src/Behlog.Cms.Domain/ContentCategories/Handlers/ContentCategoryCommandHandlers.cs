@@ -68,7 +68,7 @@ public class ContentCategoryCommandHandlers :
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
         category.SoftDelete();
-        category.SetIdentityOnUpdate(_userContext, _appContext);
+        
         
         _writeStore.MarkForUpdate(category);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
