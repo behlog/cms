@@ -19,9 +19,14 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
 
     #region Methods
 
-    public static ContentCategory Create(CreateContentCategoryCommand command)
+    public static ContentCategory Create(
+        CreateContentCategoryCommand command, IIdyfaUserContext userContext, 
+        IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        
         checkRequiredFields(command);
         
         var category = new ContentCategory
@@ -35,7 +40,10 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
             ParentId = command.ParentId,
             ContentTypeId = command.ContentTypeId,
             Description = command.Description,
-            CreatedDate = DateTime.UtcNow
+            CreatedDate = dateTime.UtcNow,
+            CreatedByIp = appContext.IpAddress,
+            WebsiteId = null, //TODO : read from User claims
+            CreatedByUserId = userContext.UserId
         };
         
         category.AddCreatedEvent();

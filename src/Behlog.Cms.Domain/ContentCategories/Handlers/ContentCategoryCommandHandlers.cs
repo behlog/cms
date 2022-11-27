@@ -16,24 +16,21 @@ public class ContentCategoryCommandHandlers :
     IBehlogCommandHandler<SoftDeleteContentCategoryCommand>,
     IBehlogCommandHandler<RemoveContentCategoryCommand>
 {
-    private readonly IBehlogMediator _mediator;
     private readonly IContentCategoryWriteStore _writeStore;
     private readonly IContentCategoryReadStore _readStore;
-    private readonly IBehlogApplicationContext _applicationContext;
+    private readonly IBehlogApplicationContext _appContext;
     private readonly IIdyfaUserContext _userContext;
+    private readonly ISystemDateTime _dateTime;
 
     public ContentCategoryCommandHandlers(
-        IBehlogMediator mediator, 
-        IContentCategoryWriteStore writeStore, 
-        IContentCategoryReadStore readStore,
-        IBehlogApplicationContext applicationContext,
-        IIdyfaUserContext userContext)
+        IContentCategoryWriteStore writeStore, IContentCategoryReadStore readStore,
+        IBehlogApplicationContext appContext, IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
-        _applicationContext = applicationContext ?? throw new ArgumentNullException(nameof(applicationContext));
+        _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+        _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
     }
     
     public async Task<ContentCategoryResult> HandleAsync(
@@ -41,8 +38,8 @@ public class ContentCategoryCommandHandlers :
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
-        var category = ContentCategory.Create(command);
-        category.SetIdentityOnAdd(_userContext, _applicationContext);
+        var category = ContentCategory.Create(command, _userContext, _appContext, _dateTime);
+        category.SetIdentityOnAdd(_userContext, _appContext);
         await _writeStore.AddAsync(category, cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(category.ToResult());
@@ -57,7 +54,7 @@ public class ContentCategoryCommandHandlers :
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
         category.Update(command);
-        category.SetIdentityOnUpdate(_userContext, _applicationContext);
+        category.SetIdentityOnUpdate(_userContext, _appContext);
         _writeStore.MarkForUpdate(category);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -72,7 +69,7 @@ public class ContentCategoryCommandHandlers :
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
         category.SoftDelete();
-        category.SetIdentityOnUpdate(_userContext, _applicationContext);
+        category.SetIdentityOnUpdate(_userContext, _appContext);
         
         _writeStore.MarkForUpdate(category);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
