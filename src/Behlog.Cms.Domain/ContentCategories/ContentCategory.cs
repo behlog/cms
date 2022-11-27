@@ -50,8 +50,15 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         return category;
     }
 
-    public void Update(UpdateContentCategoryCommand command) {
+    public void Update(
+        UpdateContentCategoryCommand command, IIdyfaUserContext userContext, 
+        IBehlogApplicationContext appContext, ISystemDateTime dateTime) 
+    {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
         checkRequiredFields(command);
         
         Title = command.Title?.Trim().CorrectYeKe()!;
@@ -61,14 +68,14 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         ParentId = command.ParentId;
         Description = command.Description?.CorrectYeKe()!;
         ContentTypeId = command.ContentTypeId;
-        LastUpdated = DateTime.UtcNow;
-        if (Status == EntityStatus.Enabled && !command.Enabled ||
-            Status != EntityStatus.Enabled && command.Enabled)
-        {
-            LastStatusChangedOn = DateTime.UtcNow;
-        }
-        Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
-
+        ChangeStatus(
+            command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled, 
+            userContext, appContext, dateTime);
+        
+        LastUpdatedByIp = appContext.IpAddress;
+        LastUpdatedByUserId = userContext.UserId;
+        LastUpdated = dateTime.UtcNow;
+        
         AddUpdatedEvent();
     }
 
@@ -87,20 +94,16 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         AddRemovedEvent();
     }
 
-    public void SetIdentityOnAdd(
-        IIdyfaUserContext userContext, 
-        IBehlogApplicationContext applicationContext)
+    private void ChangeStatus(
+        EntityStatus status, IIdyfaUserContext userContext, 
+        IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
-        CreatedByUserId = userContext.UserId;
-        CreatedByIp = applicationContext.IpAddress;
-    }
-
-    public void SetIdentityOnUpdate(
-        IIdyfaUserContext userContext,
-        IBehlogApplicationContext applicationContext)
-    {
+        if (this.Status == status) return;
+        
+        LastStatusChangedOn = dateTime.UtcNow;
+        Status = status;
+        LastUpdatedByIp = appContext.IpAddress;
         LastUpdatedByUserId = userContext.UserId;
-        LastUpdatedByIp = applicationContext.IpAddress;
     }
     
     #endregion

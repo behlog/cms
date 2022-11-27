@@ -39,7 +39,6 @@ public class ContentCategoryCommandHandlers :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
         var category = ContentCategory.Create(command, _userContext, _appContext, _dateTime);
-        category.SetIdentityOnAdd(_userContext, _appContext);
         await _writeStore.AddAsync(category, cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(category.ToResult());
@@ -53,9 +52,9 @@ public class ContentCategoryCommandHandlers :
         var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
-        category.Update(command);
-        category.SetIdentityOnUpdate(_userContext, _appContext);
+        category.Update(command, _userContext, _appContext, _dateTime);
         _writeStore.MarkForUpdate(category);
+        
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
