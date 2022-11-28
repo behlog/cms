@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Behlog.Cms.Domain;
 using Behlog.Core.Validations;
 
@@ -15,7 +16,8 @@ public static class WebsiteValidations
             status == WebsiteStatus.Closed ||
             status == WebsiteStatus.Online)
         {
-            result.AddError("Status", errorMessage, errorCode);
+            return result.WithError(ValidationError
+                .Create("Status", errorCode, errorMessage));
         }
 
         return result;

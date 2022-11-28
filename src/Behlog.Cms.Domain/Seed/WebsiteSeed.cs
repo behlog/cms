@@ -57,7 +57,7 @@ internal class WebsiteSeed
             seedData.Url, ownerUserId, langId, null, false, seedData.Email, seedData.CopyrightText);
 
         var validation = CreateWebsiteCommandValidator.Run(createCommand);
-        if (!validation.IsValid)
+        if (validation.HasError)
         {
             _logger.LogError($"Validation error for Website: {validation.ToString()}");
             throw new BehlogSeedingException();

@@ -22,11 +22,11 @@ public class CreateWebsiteCommandValidator
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.NameMaxLen)!, 
                 WebsiteErrorCodes.NameMaxLen)
             
-            .IsNotNullOrEmpty(command.Name, nameof(command.Name), 
+            .IsRequired(command.Name, nameof(command.Name), 
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.NameIsNull)!, 
                 WebsiteErrorCodes.NameIsNull)
             
-            .IsNotNullOrEmpty(command.Title, nameof(command.Title), 
+            .IsRequired(command.Title, nameof(command.Title), 
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.TitleIsNull)!, 
                 WebsiteErrorCodes.TitleIsNull)
             
@@ -42,7 +42,7 @@ public class CreateWebsiteCommandValidator
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.UrlMaxLen)!, 
                 WebsiteErrorCodes.UrlMaxLen)
             
-            .IsNotNullOrEmpty(command.OwnerUserId, nameof(command.OwnerUserId), 
+            .IsRequired(command.OwnerUserId, nameof(command.OwnerUserId), 
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.OwnerUserNull)!, 
                 WebsiteErrorCodes.OwnerUserNull)
             

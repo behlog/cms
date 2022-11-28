@@ -56,7 +56,7 @@ public class WebsiteCommandHandlers :
         var validation = CreateWebsiteCommandValidator.Run(command);
         if (validation.HasError)
         {
-            return CommandResult<WebsiteResult>.FromValidator(validation);
+            return CommandResult<WebsiteResult>.Failed(validation.Errors);
         }
 
         var website = await Website.CreateAsync(command, _service);
@@ -84,7 +84,7 @@ public class WebsiteCommandHandlers :
         var validation = UpdateWebsiteCommandValidator.Run(command);
         if (validation.HasError)
         {
-            return CommandResult.FromValidator(validation);
+            return CommandResult.Failed(validation.Errors);
         }
 
         var website = await GetByIdAsync(command.Id, cancellationToken);

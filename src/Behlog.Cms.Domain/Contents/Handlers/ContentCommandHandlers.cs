@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Behlog.Cms.Commands;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
@@ -18,7 +19,7 @@ public class ContentCommandHandlers :
     IBehlogCommandHandler<CreateContentCommand, CommandResult<ContentResult>>,
     IBehlogCommandHandler<UpdateContentCommand>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
-    IBehlogCommandHandler<PublishContentCommand, ValidationResult>,
+    IBehlogCommandHandler<PublishContentCommand, CommandResult>,
     IBehlogCommandHandler<RemoveContentCommand>
 {
     private readonly IBehlogMediator _mediator;
@@ -51,9 +52,9 @@ public class ContentCommandHandlers :
         CreateContentCommand command, CancellationToken cancellationToken = default)
     {
         var validation = CreateContentCommandValidator.Run(command);
-        if (!validation.IsValid)
+        if (validation.HasError)
         {
-            return CommandResult<ContentResult>.FromValidator(validation);
+            return CommandResult<ContentResult>.Failed(validation.Errors);
         }
 
         var content = await Content.CreateAsync(
@@ -103,7 +104,7 @@ public class ContentCommandHandlers :
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
     
-    public async Task<ValidationResult> HandleAsync(
+    public async Task<CommandResult> HandleAsync(
         PublishContentCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
@@ -114,8 +115,8 @@ public class ContentCommandHandlers :
 
         _writeStore.MarkForUpdate(content);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-        return ValidationResult.Create().Build();
+        
+        return CommandResult.Success();
     }
 
     public async Task HandleAsync(

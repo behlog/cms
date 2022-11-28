@@ -48,18 +48,18 @@ public class WebsiteValidatorTests
         var validation = CreateWebsiteCommandValidator.Run(command);
         validation.IsValid.Should().Be(false);
 
-        validation.Items.Should().Contain(
-            validation.Items.First(
+        validation.Errors.Should().Contain(
+            validation.Errors.First(
                 _ => _.FieldName.Equals(nameof(command.Name)) &&
-                     _.Message.Equals("Name maxlen is 256")
+                     _.ErrorCode.Equals(WebsiteErrorCodes.NameMaxLen)
             )
         );
     }
 
     [Theory]
     [InlineData("hi__behlog.ir")]
-    [InlineData("www.hi@behlog.ir")]
-    [InlineData("mm,,,))@uisdi")]
+    [InlineData("www.hi!behlog.ir")]
+    [InlineData(".mm,,,))@uisdi")]
     public void email_cannot_have_incorrect_format(string email)
     {
         var command = new CreateWebsiteCommand(
@@ -71,10 +71,10 @@ public class WebsiteValidatorTests
         var validation = CreateWebsiteCommandValidator.Run(command);
         validation.IsValid.Should().Be(false);
         
-        validation.Items.Should().Contain(
-            validation.Items.First(
+        validation.Errors.Should().Contain(
+            validation.Errors.First(
                 _ => _.FieldName.Equals(nameof(command.Email)) &&
-                     _.Message.Equals("Email format is incorrect")
+                     _.ErrorCode.Equals(WebsiteErrorCodes.EmailFormat)
             )
         );
     }
