@@ -4,6 +4,7 @@ using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
+
 public class UpdateContentCommand : IBehlogCommand<CommandResult>
 {
     

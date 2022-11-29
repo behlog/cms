@@ -1,15 +1,13 @@
-using Behlog.Cms.Commands;
 using Behlog.Core;
-using Behlog.Core.Contracts;
-using Behlog.Extensions;
-using Idyfa.Core.Contracts;
+using Behlog.Cms.Commands;
 
 namespace Behlog.Cms.Domain;
 
-internal static class ContentCategoryExts
+
+internal static class ContentCategoryExtensions
 {
 
-    public static ICollection<ContentMeta>? Convert(
+    public static ICollection<ContentMeta> Convert(
         this IReadOnlyCollection<MetaCommand>? commands, Guid contentId)
     {
         return commands?.ToList()

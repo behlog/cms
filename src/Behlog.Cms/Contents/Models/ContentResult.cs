@@ -1,8 +1,7 @@
-using Behlog.Core;
 using Behlog.Cms.Domain;
-using Behlog.Core.Models;
 
 namespace Behlog.Cms.Models;
+
 
 public class ContentResult
 {
@@ -21,7 +20,8 @@ public class ContentResult
         ContentStatus status,
         string altTitle,
         int orderNum,
-        IReadOnlyCollection<Guid> categories) : base()
+        IReadOnlyCollection<Guid> categories,
+        IReadOnlyCollection<MetaResult> meta)
     {
         Id = id;
         Title = title;
@@ -36,7 +36,8 @@ public class ContentResult
         Status = status;
         AltTitle = altTitle;
         OrderNum = orderNum;
-        Categories = categories;
+        Categories = categories?.ToList()!;
+        Meta = meta?.ToList()!;
     }
     
     public Guid Id { get; }
@@ -52,12 +53,6 @@ public class ContentResult
     public ContentStatus Status { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
-    public IReadOnlyCollection<Guid> Categories { get; protected set; } = new List<Guid>();
-    
-}
-
-
-public class ContentCommandResult : CommandResult
-{
-    
+    public ICollection<Guid> Categories { get; set; }
+    public ICollection<MetaResult> Meta { get; set; }
 }

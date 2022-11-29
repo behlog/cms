@@ -1,15 +1,13 @@
-using System.Net.Http.Headers;
-using Behlog.Cms.Commands;
+using Behlog.Core;
+using Behlog.Extensions;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
-using Behlog.Cms.Validations;
-using Behlog.Cms.Contracts;
-using Behlog.Core;
-using Behlog.Core.Contracts;
 using Behlog.Core.Models;
-using Behlog.Core.Validations;
-using Behlog.Extensions;
+using Behlog.Cms.Commands;
 using Idyfa.Core.Contracts;
+using Behlog.Cms.Contracts;
+using Behlog.Core.Contracts;
+using Behlog.Cms.Validations;
 using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
@@ -31,6 +29,7 @@ public class ContentCommandHandlers :
     private readonly ILogger<ContentCommandHandlers> _logger;
     private readonly Behlogger<ContentCommandHandlers> _behlogger;
 
+    
     public ContentCommandHandlers(
         ILogger<ContentCommandHandlers> logger, IIdyfaUserContext userContext, IContentReadStore readStore, 
         IContentWriteStore writeStore, IBehlogApplicationContext appContext, IContentService contentService, 
@@ -46,6 +45,7 @@ public class ContentCommandHandlers :
         _behlogger = new Behlogger<ContentCommandHandlers>(logger, dateTime);
     }
 
+    
     public async Task<CommandResult<ContentResult>> HandleAsync(
         CreateContentCommand command, CancellationToken cancellationToken = default)
     {
