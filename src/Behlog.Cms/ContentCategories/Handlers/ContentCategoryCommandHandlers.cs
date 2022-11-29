@@ -4,14 +4,17 @@ using Behlog.Extensions;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Validations;
 using Behlog.Core.Contracts;
+using Behlog.Core.Models;
 using Idyfa.Core.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
 
 
 public class ContentCategoryCommandHandlers :
-    IBehlogCommandHandler<CreateContentCategoryCommand, ContentCategoryResult>,
+    IBehlogCommandHandler<CreateContentCategoryCommand, CommandResult<ContentCategoryResult>>,
     IBehlogCommandHandler<UpdateContentCategoryCommand>,
     IBehlogCommandHandler<SoftDeleteContentCategoryCommand>,
     IBehlogCommandHandler<RemoveContentCategoryCommand>
@@ -21,27 +24,49 @@ public class ContentCategoryCommandHandlers :
     private readonly IBehlogApplicationContext _appContext;
     private readonly IIdyfaUserContext _userContext;
     private readonly ISystemDateTime _dateTime;
+    private readonly ILogger<ContentCategoryCommandHandlers> _logger;
+    private readonly Behlogger<ContentCategoryCommandHandlers> _behlogger;
 
     public ContentCategoryCommandHandlers(
         IContentCategoryWriteStore writeStore, IContentCategoryReadStore readStore,
-        IBehlogApplicationContext appContext, IIdyfaUserContext userContext, ISystemDateTime dateTime)
+        IBehlogApplicationContext appContext, IIdyfaUserContext userContext, ISystemDateTime dateTime,
+        ILogger<ContentCategoryCommandHandlers> logger)
     {
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        _behlogger = new Behlogger<ContentCategoryCommandHandlers>(_logger, _dateTime);
     }
     
-    public async Task<ContentCategoryResult> HandleAsync(
+    
+    public async Task<CommandResult<ContentCategoryResult>> HandleAsync(
         CreateContentCategoryCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var validation = CreateContentCategoryCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult<ContentCategoryResult>.Failed(validation.Errors);
+        }
 
-        var category = ContentCategory.Create(command, _userContext, _appContext, _dateTime);
-        await _writeStore.AddAsync(category, cancellationToken).ConfigureAwait(false);
+        try
+        {
+            var category = ContentCategory.Create(command, _userContext, _appContext, _dateTime);
+            await _writeStore.AddAsync(category, cancellationToken).ConfigureAwait(false);
 
-        return await Task.FromResult(category.ToResult());
+            return await Task.FromResult(
+                CommandResult<ContentCategoryResult>.Create().With(category.ToResult())
+                );
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
     }
 
     public async Task HandleAsync(

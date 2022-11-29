@@ -1,9 +1,10 @@
 using Behlog.Cms.Models;
 using Behlog.Core;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class CreateContentCategoryCommand : IBehlogCommand<ContentCategoryResult>
+public class CreateContentCategoryCommand : IBehlogCommand<CommandResult<ContentCategoryResult>>
 {
     public CreateContentCategoryCommand(
         string title, string altTitle, string slug, Guid langId,
