@@ -11,6 +11,8 @@ public class UpdateContentCategoryCommandValidator :
     public ValidatorResult Validate(UpdateContentCategoryCommand command)
     {
         return ValidatorResult.Create()
+                .ThrowExceptionIfIdIsNotValid(command.Id)
+                
                 .IsRequired(command.Title, nameof(command.Title),
                     ContentCategoryErrorCodes.GetMessage(ContentCategoryErrorCodes.TitleIsNull)!,
                     ContentCategoryErrorCodes.TitleIsNull)

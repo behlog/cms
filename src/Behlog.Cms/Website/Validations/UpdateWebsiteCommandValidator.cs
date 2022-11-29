@@ -17,6 +17,8 @@ public class UpdateWebsiteCommandValidator :
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         
         return ValidatorResult.Create()
+            .ThrowExceptionIfIdIsNotValid(command.Id)
+            
             .HasMaxLenght(command.Name, 256, nameof(command.Name), 
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.NameMaxLen)!, 
                 WebsiteErrorCodes.NameMaxLen)
