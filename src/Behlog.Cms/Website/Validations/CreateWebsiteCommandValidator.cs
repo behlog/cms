@@ -1,3 +1,5 @@
+using Behlog.Cms.Domain;
+using Behlog.Cms.Models;
 using Behlog.Extensions;
 using Behlog.Core.Models;
 using Behlog.Cms.Commands;
@@ -7,11 +9,11 @@ using Behlog.Core.Validations;
 namespace Behlog.Cms.Handlers;
 
 
-public class UpdateWebsiteCommandValidator :
-    IBehlogCommandValidator<UpdateWebsiteCommand, CommandResult>
+public class CreateWebsiteCommandValidator 
+    : IBehlogCommandValidator<CreateWebsiteCommand, CommandResult<WebsiteResult>>
 {
     
-    public ValidatorResult Validate(UpdateWebsiteCommand command)
+    public ValidatorResult Validate(CreateWebsiteCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         
@@ -28,6 +30,10 @@ public class UpdateWebsiteCommandValidator :
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.TitleIsNull)!, 
                 WebsiteErrorCodes.TitleIsNull)
             
+            .HasMaxLenght(command.Title, 256, nameof(command.Title),
+                WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.TitleMaxLen)!,
+                WebsiteErrorCodes.TitleMaxLen)
+            
             .HasMaxLenght(command.Description, 2000, nameof(command.Description),
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.DescriptionMaxLen)!,
                 WebsiteErrorCodes.DescriptionMaxLen)
@@ -39,7 +45,15 @@ public class UpdateWebsiteCommandValidator :
             .HasMaxLenght(command.Url, 2000, nameof(command.Url), 
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.UrlMaxLen)!, 
                 WebsiteErrorCodes.UrlMaxLen)
-
+            
+            .IsRequired(command.OwnerUserId, nameof(command.OwnerUserId), 
+                WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.OwnerUserNull)!, 
+                WebsiteErrorCodes.OwnerUserNull)
+            
+            .CheckWebsiteStatusOnCreate(WebsiteStatus.UnderConstruction,
+                WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.InvalidStatus)!,
+                WebsiteErrorCodes.InvalidStatus)
+            
             .IsEmailFormatCorrect(command.Email, nameof(command.Email), 
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.EmailFormat)!, 
                 WebsiteErrorCodes.EmailFormat)
@@ -49,8 +63,9 @@ public class UpdateWebsiteCommandValidator :
                 WebsiteErrorCodes.CopyrightMaxLen);
     }
 
-    public static ValidatorResult Run(UpdateWebsiteCommand command)
+
+    public static ValidatorResult Run(CreateWebsiteCommand command)
     {
-        return new UpdateWebsiteCommandValidator().Validate(command);
+        return new CreateWebsiteCommandValidator().Validate(command);
     }
 }

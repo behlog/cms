@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{00436295-75B0-48C5-ABEA-5C18AD55D1ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behlog.Cms.Domain", "src\Behlog.Cms.Domain\Behlog.Cms.Domain.csproj", "{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behlog.Cms", "src\Behlog.Cms\Behlog.Cms.csproj", "{2B06A35C-1D7C-4398-ACE5-7D40C86DBDE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behlog.Cms.EntityFrameworkCore", "src\Behlog.Cms.EntityFrameworkCore\Behlog.Cms.EntityFrameworkCore.csproj", "{8BD900C5-0B4A-4954-BC81-5A6D6FB50BAB}"
 EndProject

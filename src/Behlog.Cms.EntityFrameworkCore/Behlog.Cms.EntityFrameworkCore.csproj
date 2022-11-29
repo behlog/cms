@@ -17,9 +17,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="Behlog.Cms.Domain">
-            <HintPath>..\Behlog.Cms.Domain\bin\Debug\net6.0\Behlog.Cms.Domain.dll</HintPath>
-        </Reference>
+      <ProjectReference Include="..\Behlog.Cms\Behlog.Cms.csproj" />
     </ItemGroup>
 
 </Project>

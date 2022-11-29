@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Behlog.Cms.Domain\Behlog.Cms.Domain.csproj" />
+      <ProjectReference Include="..\..\src\Behlog.Cms\Behlog.Cms.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -24,7 +24,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Block", b =>
+            modelBuilder.Entity("Behlog.Cms.Block", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -155,7 +155,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Block", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Comment", b =>
+            modelBuilder.Entity("Behlog.Cms.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,7 +231,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Comment", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
+            modelBuilder.Entity("Behlog.Cms.Content", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -345,7 +345,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Content", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentCategory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -411,7 +411,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("ContentCategory", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentCategoryItem", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentCategoryItem", b =>
                 {
                     b.Property<Guid>("ContentId")
                         .HasColumnType("uniqueidentifier");
@@ -424,7 +424,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("ContentCategoryItem", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentTag", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentTag", b =>
                 {
                     b.Property<Guid>("ContentId")
                         .HasColumnType("uniqueidentifier");
@@ -439,7 +439,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("ContentTag", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.FileUpload", b =>
+            modelBuilder.Entity("Behlog.Cms.FileUpload", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -523,7 +523,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("FileUpload", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Language", b =>
+            modelBuilder.Entity("Behlog.Cms.Language", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -562,7 +562,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Language", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Tag", b =>
+            modelBuilder.Entity("Behlog.Cms.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -606,7 +606,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Tag", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Website", b =>
+            modelBuilder.Entity("Behlog.Cms.Website", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -721,15 +721,15 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("ContentType", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Block", b =>
+            modelBuilder.Entity("Behlog.Cms.Block", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                    b.HasOne("Behlog.Cms.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LangId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsMany("Behlog.Cms.Domain.BlockMeta", "Meta", b1 =>
+                    b.OwnsMany("Behlog.Cms.BlockMeta", "Meta", b1 =>
                         {
                             b1.Property<Guid>("OwnerId")
                                 .HasColumnType("uniqueidentifier");
@@ -802,9 +802,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Meta");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Comment", b =>
+            modelBuilder.Entity("Behlog.Cms.Comment", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Content", "Content")
+                    b.HasOne("Behlog.Cms.Content", "Content")
                         .WithMany()
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -813,7 +813,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Content");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
+            modelBuilder.Entity("Behlog.Cms.Content", b =>
                 {
                     b.HasOne("Behlog.Core.ContentType", "ContentType")
                         .WithMany()
@@ -821,13 +821,13 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                    b.HasOne("Behlog.Cms.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LangId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsMany("Behlog.Cms.Domain.ContentLike", "Likes", b1 =>
+                    b.OwnsMany("Behlog.Cms.ContentLike", "Likes", b1 =>
                         {
                             b1.Property<Guid>("ContentId")
                                 .HasColumnType("uniqueidentifier");
@@ -861,7 +861,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasForeignKey("ContentId");
                         });
 
-                    b.OwnsMany("Behlog.Cms.Domain.ContentFile", "Files", b1 =>
+                    b.OwnsMany("Behlog.Cms.ContentFile", "Files", b1 =>
                         {
                             b1.Property<Guid>("ContentId")
                                 .ValueGeneratedOnAdd()
@@ -896,7 +896,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasForeignKey("FileId");
                         });
 
-                    b.OwnsMany("Behlog.Cms.Domain.ContentMeta", "Meta", b1 =>
+                    b.OwnsMany("Behlog.Cms.ContentMeta", "Meta", b1 =>
                         {
                             b1.Property<Guid>("OwnerId")
                                 .HasColumnType("uniqueidentifier");
@@ -970,14 +970,14 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Meta");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentCategory", b =>
                 {
                     b.HasOne("Behlog.Core.ContentType", null)
                         .WithMany()
                         .HasForeignKey("ContentTypeId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                    b.HasOne("Behlog.Cms.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -986,15 +986,15 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentCategoryItem", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentCategoryItem", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Content", "Content")
+                    b.HasOne("Behlog.Cms.Content", "Content")
                         .WithMany("Categories")
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Behlog.Cms.Domain.ContentCategory", "Category")
+                    b.HasOne("Behlog.Cms.ContentCategory", "Category")
                         .WithMany("Contents")
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1005,15 +1005,15 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Content");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentTag", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentTag", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Content", "Content")
+                    b.HasOne("Behlog.Cms.Content", "Content")
                         .WithMany()
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Behlog.Cms.Domain.Tag", "Tag")
+                    b.HasOne("Behlog.Cms.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1024,9 +1024,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.FileUpload", b =>
+            modelBuilder.Entity("Behlog.Cms.FileUpload", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Website", "Website")
+                    b.HasOne("Behlog.Cms.Website", "Website")
                         .WithMany()
                         .HasForeignKey("WebsiteId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1035,9 +1035,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Website");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Tag", b =>
+            modelBuilder.Entity("Behlog.Cms.Tag", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                    b.HasOne("Behlog.Cms.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LangId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1048,7 +1048,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 
             modelBuilder.Entity("Behlog.Core.ContentType", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                    b.HasOne("Behlog.Cms.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LangId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1057,12 +1057,12 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
+            modelBuilder.Entity("Behlog.Cms.Content", b =>
                 {
                     b.Navigation("Categories");
                 });
 
-            modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>
+            modelBuilder.Entity("Behlog.Cms.ContentCategory", b =>
                 {
                     b.Navigation("Contents");
                 });

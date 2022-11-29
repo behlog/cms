@@ -30,6 +30,7 @@ public partial class Website : AggregateRoot<Guid>
     public string? Password { get; protected set; }
     public bool IsReadOnly { get; protected set; }
     public string? Email { get; protected set; }
+    public string TemplateName { get; protected set; }
     public string? CopyrightText { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }

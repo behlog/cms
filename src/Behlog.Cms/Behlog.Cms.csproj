@@ -4,6 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Behlog.Cms</AssemblyName>
+    <RootNamespace>Behlog.Cms</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Behlog.Cms</PackageId>
+    <Title>Behlog CMS library</Title>
+    <Authors>Iman Nemati</Authors>
+    <Description>Behlog CMS is a Content Management System that distributed over Nuget. You can install it with Nuget and start your Website or blog on top of it's ready to use Domain and infrastructure. You can then install other Behlog libraries to extend the functionalities of your website or blog. The main idea is to have a dependency that can updated via Nuget, and to have websites with modern technologies that based on a strong library.</Description>
+    <Copyright>(c) 2022 Iman Nemati</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

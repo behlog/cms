@@ -30,6 +30,7 @@ public static partial class EntityConfigurations
                     s => WebsiteStatus.Find(s));
             web.Property(_ => _.Password).HasMaxLength(100).IsUnicode().IsRequired(false);
             web.Property(_ => _.Email).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            web.Property(_ => _.TemplateName).HasDefaultValue("default").HasMaxLength(256).IsUnicode().IsRequired();
             web.Property(_ => _.CopyrightText).HasMaxLength(1000).IsUnicode().IsRequired(false);
 
             web.OwnsMany(_ => _.Meta, m =>
