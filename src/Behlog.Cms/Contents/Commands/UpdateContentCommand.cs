@@ -10,7 +10,8 @@ public class UpdateContentCommand : IBehlogCommand
         Guid id, string title, string slug, string body, 
         ContentBodyType bodyType, ContentStatus status, 
         Guid contentTypeId, string authorUserId, string summary, 
-        string altTitle, int orderNum, IEnumerable<Guid> categories)
+        string altTitle, int orderNum, IEnumerable<Guid> categories, 
+        IEnumerable<MetaCommand> meta)
     {
         Id = id;
         Title = title;
@@ -24,6 +25,7 @@ public class UpdateContentCommand : IBehlogCommand
         AltTitle = altTitle;
         OrderNum = orderNum;
         Categories = categories?.ToList()!;
+        Meta = meta?.ToList()!;
     }
     
     public Guid Id { get; }
@@ -40,4 +42,5 @@ public class UpdateContentCommand : IBehlogCommand
     public string Password { get; set; }
     public string IconName { get; set; }
     public IReadOnlyCollection<Guid> Categories { get; }
+    public IReadOnlyCollection<MetaCommand> Meta { get; }
 }

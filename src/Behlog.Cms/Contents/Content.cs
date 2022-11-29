@@ -144,6 +144,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         Password = command.Password;
 
         Categories = command.Categories.Convert(Id);
+        
 
         AddUpdatedEvent();
     }
