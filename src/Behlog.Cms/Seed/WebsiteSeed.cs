@@ -1,10 +1,10 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Contracts;
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
-using Behlog.Cms.Exceptions;
-using Behlog.Cms.Handlers;
 using Behlog.Extensions;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
+using Behlog.Cms.Exceptions;
+using Behlog.Cms.Validations;
 using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Seed;
