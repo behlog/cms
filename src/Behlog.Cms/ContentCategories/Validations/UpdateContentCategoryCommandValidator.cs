@@ -1,20 +1,15 @@
 using Behlog.Cms.Commands;
-using Behlog.Cms.Models;
 using Behlog.Core.Contracts;
 using Behlog.Core.Validations;
-using Behlog.Extensions;
 
 namespace Behlog.Cms.Validations;
 
-
-public class CreateContentCategoryCommandValidator :
-    IBehlogCommandValidator<CreateContentCategoryCommand, ContentCategoryResult>
+public class UpdateContentCategoryCommandValidator :
+    IBehlogCommandValidator<UpdateContentCategoryCommand>
 {
-
-    public ValidatorResult Validate(CreateContentCategoryCommand command)
+    
+    public ValidatorResult Validate(UpdateContentCategoryCommand command)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
-
         return ValidatorResult.Create()
                 .IsRequired(command.Title, nameof(command.Title),
                     ContentCategoryErrorCodes.GetMessage(ContentCategoryErrorCodes.TitleIsNull)!,
@@ -42,10 +37,8 @@ public class CreateContentCategoryCommandValidator :
             ;
     }
 
-
-    public static ValidatorResult Run(CreateContentCategoryCommand command)
+    public static ValidatorResult Run(UpdateContentCategoryCommand command)
     {
-        return new CreateContentCategoryCommandValidator().Validate(command);
+        return new UpdateContentCategoryCommandValidator().Validate(command);
     }
-
 }
