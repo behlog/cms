@@ -108,7 +108,6 @@ public class ContentCategoryCommandHandlers :
         
         category.SoftDelete();
         
-        
         _writeStore.MarkForUpdate(category);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
