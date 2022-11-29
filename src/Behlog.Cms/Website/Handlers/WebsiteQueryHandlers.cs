@@ -11,8 +11,7 @@ public class WebsiteQueryHandlers :
     IBehlogQueryHandler<QueryDefaultWebsite, WebsiteResult>
 {
     private readonly IWebsiteReadStore _readStore;
-
-
+    
     public WebsiteQueryHandlers(
         IWebsiteReadStore readStore)
     {

@@ -2,7 +2,7 @@ using System.Net.Http.Headers;
 using Behlog.Cms.Domain;
 using Behlog.Core.Validations;
 
-namespace Behlog.Cms.Handlers;
+namespace Behlog.Cms.Validations;
 
 public static class WebsiteValidations
 {

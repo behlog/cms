@@ -1,6 +1,6 @@
 using Behlog.Cms.Resources;
 
-namespace Behlog.Cms.Handlers;
+namespace Behlog.Cms.Errors;
 
 public static class WebsiteErrorCodes
 {

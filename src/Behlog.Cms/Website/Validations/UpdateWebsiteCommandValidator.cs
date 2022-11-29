@@ -3,8 +3,9 @@ using Behlog.Core.Models;
 using Behlog.Cms.Commands;
 using Behlog.Core.Contracts;
 using Behlog.Core.Validations;
+using Behlog.Cms.Errors;
 
-namespace Behlog.Cms.Handlers;
+namespace Behlog.Cms.Validations;
 
 
 public class UpdateWebsiteCommandValidator :

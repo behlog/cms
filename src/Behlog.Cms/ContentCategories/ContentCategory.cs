@@ -5,6 +5,7 @@ using Behlog.Extensions;
 using Behlog.Cms.Events;
 using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
+using Idyfa.Core;
 using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
@@ -42,7 +43,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
             Description = command.Description,
             CreatedDate = dateTime.UtcNow,
             CreatedByIp = appContext.IpAddress,
-            WebsiteId = null, //TODO : read from User claims
+            WebsiteId = command.WebsiteId, //TODO : read from User claims
             CreatedByUserId = userContext.UserId
         };
         
@@ -67,7 +68,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         LangId = command.LangId;
         ParentId = command.ParentId;
         Description = command.Description?.CorrectYeKe()!;
-        ContentTypeId = command.ContentTypeId;
+        
         ChangeStatus(
             command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled, 
             userContext, appContext, dateTime);

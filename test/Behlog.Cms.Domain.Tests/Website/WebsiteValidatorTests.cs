@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Errors;
 using Behlog.Cms.Handlers;
+using Behlog.Cms.Validations;
 using FluentAssertions;
 using Xunit;
 

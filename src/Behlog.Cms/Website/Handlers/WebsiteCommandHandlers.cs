@@ -8,6 +8,7 @@ using Behlog.Cms.Commands;
 using Behlog.Cms.Contracts;
 using Idyfa.Core.Contracts;
 using Behlog.Core.Contracts;
+using Behlog.Cms.Validations;
 using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
