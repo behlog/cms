@@ -7,7 +7,8 @@ using Behlog.Extensions;
 namespace Behlog.Cms.Handlers;
 
 public class WebsiteQueryHandlers :
-    IBehlogQueryHandler<QueryWebsiteById, WebsiteResult>
+    IBehlogQueryHandler<QueryWebsiteById, WebsiteResult>,
+    IBehlogQueryHandler<QueryDefaultWebsite, WebsiteResult>
 {
     private readonly IWebsiteReadStore _readStore;
 
@@ -31,6 +32,16 @@ public class WebsiteQueryHandlers :
 
         return await Task.FromResult(website.ToResult());
     }
-    
-    
+
+
+    public async Task<WebsiteResult> HandleAsync(
+        QueryDefaultWebsite query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var website = await _readStore.GetDefaultAsync(cancellationToken).ConfigureAwait(false);
+        website.ThrowExceptionIfReferenceIsNull(nameof(website));
+
+        return await Task.FromResult(website.ToResult());
+    }
 }

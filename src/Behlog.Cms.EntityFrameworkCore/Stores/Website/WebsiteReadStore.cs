@@ -17,6 +17,11 @@ public class WebsiteReadStore : BehlogReadStore<Website, Guid>,
     public async Task<Website?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _websites.Include(_ => _.Meta)
-            .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task<Website?> GetDefaultAsync(CancellationToken cancellationToken = default)
+    {
+        return await _websites.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
 }
