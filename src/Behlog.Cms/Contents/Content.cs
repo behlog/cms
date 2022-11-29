@@ -8,6 +8,7 @@ using Behlog.Cms.Exceptions;
 using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
 using Behlog.Cms.Contracts;
+using Idyfa.Core;
 
 namespace Behlog.Cms.Domain;
 
@@ -67,7 +68,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     #endregion
 
     #region Builders
-
+    
+    
     public static async Task<Content> CreateAsync(
         CreateContentCommand command, IContentService service,
         IIdyfaUserContext userContext, IBehlogApplicationContext appContext,
@@ -99,14 +101,15 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             CreatedByUserId = userContext.UserId,
             Password = command.Password,
             IconName = command.IconName,
-            ViewPath = command.ViewPath
+            ViewPath = command.ViewPath,
+            LangId = command.LangId,
+            WebsiteId = command.WebsiteId
         };
 
-        content.Categories = command.Categories?.ToList()
-            .Select(categoryId => new ContentCategoryItem(content.Id, categoryId))
-            .ToList()!;
+        content.Categories = command.Categories.Convert(content.Id);
+        content.Meta = command.Meta.Convert(content.Id)!;
         
-        content.AddRemovedEvent();
+        content.AddCreatedEvent();
         
         return await Task.FromResult(content);
     }
@@ -134,13 +137,13 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         Status = command.Status;
         AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         OrderNum = command.OrderNum;
-        Categories = command.Categories?.ToList()
-            .Select(categoryId => new ContentCategoryItem(Id, categoryId))
-            .ToList()!;
+        Categories = command.Categories.Convert(Id);
         LastUpdated = dateTime.UtcNow;
         LastUpdatedByUserId = userContext.UserId;
         IconName = command.IconName;
         Password = command.Password;
+
+        Categories = command.Categories.Convert(Id);
 
         AddUpdatedEvent();
     }
