@@ -15,7 +15,7 @@ namespace Behlog.Cms.Handlers;
 
 public class ContentCategoryCommandHandlers :
     IBehlogCommandHandler<CreateContentCategoryCommand, CommandResult<ContentCategoryResult>>,
-    IBehlogCommandHandler<UpdateContentCategoryCommand>,
+    IBehlogCommandHandler<UpdateContentCategoryCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteContentCategoryCommand>,
     IBehlogCommandHandler<RemoveContentCategoryCommand>
 {
@@ -46,7 +46,6 @@ public class ContentCategoryCommandHandlers :
     public async Task<CommandResult<ContentCategoryResult>> HandleAsync(
         CreateContentCategoryCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
         var validation = CreateContentCategoryCommandValidator.Run(command);
         if (validation.HasError)
         {
@@ -69,23 +68,38 @@ public class ContentCategoryCommandHandlers :
         }
     }
 
-    public async Task HandleAsync(
+    
+    
+    public async Task<CommandResult> HandleAsync(
         UpdateContentCategoryCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        var validation = UpdateContentCategoryCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult.Failed(validation.Errors);
+        }
 
-        var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
-        category.ThrowExceptionIfReferenceIsNull(nameof(category));
+        try
+        {
+            var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            category.ThrowExceptionIfReferenceIsNull(nameof(category));
         
-        category.Update(command, _userContext, _appContext, _dateTime);
-        _writeStore.MarkForUpdate(category);
+            category.Update(command, _userContext, _appContext, _dateTime);
+            _writeStore.MarkForUpdate(category);
         
-        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+        
+        return CommandResult.Success();
     }
 
     public async Task HandleAsync(
-        SoftDeleteContentCategoryCommand command,
-        CancellationToken cancellationToken = default)
+        SoftDeleteContentCategoryCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
@@ -101,8 +115,7 @@ public class ContentCategoryCommandHandlers :
 
 
     public async Task HandleAsync(
-        RemoveContentCategoryCommand command, 
-        CancellationToken cancellationToken = new CancellationToken())
+        RemoveContentCategoryCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 

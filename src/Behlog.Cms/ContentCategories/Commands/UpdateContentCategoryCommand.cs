@@ -1,8 +1,9 @@
 using Behlog.Core;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class UpdateContentCategoryCommand : IBehlogCommand
+public class UpdateContentCategoryCommand : IBehlogCommand<CommandResult>
 {
     public UpdateContentCategoryCommand(
         Guid id, string title, string altTitle, string slug, Guid langId,

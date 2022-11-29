@@ -1,15 +1,19 @@
 using Behlog.Cms.Commands;
 using Behlog.Core.Contracts;
+using Behlog.Core.Models;
 using Behlog.Core.Validations;
+using Behlog.Extensions;
 
 namespace Behlog.Cms.Validations;
 
 public class UpdateContentCategoryCommandValidator :
-    IBehlogCommandValidator<UpdateContentCategoryCommand>
+    IBehlogCommandValidator<UpdateContentCategoryCommand, CommandResult>
 {
     
     public ValidatorResult Validate(UpdateContentCategoryCommand command)
     {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        
         return ValidatorResult.Create()
                 .ThrowExceptionIfIdIsNotValid(command.Id)
                 
