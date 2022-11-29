@@ -17,13 +17,11 @@ namespace Behlog.Cms.Handlers;
 
 public class ContentCommandHandlers :
     IBehlogCommandHandler<CreateContentCommand, CommandResult<ContentResult>>,
-    IBehlogCommandHandler<UpdateContentCommand>,
+    IBehlogCommandHandler<UpdateContentCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteContentCommand>,
     IBehlogCommandHandler<PublishContentCommand, CommandResult>,
     IBehlogCommandHandler<RemoveContentCommand>
 {
-    private readonly IBehlogMediator _mediator;
-    private readonly IBehlogMediatorAssistant _assistant;
     private readonly IIdyfaUserContext _userContext;
     private readonly IBehlogApplicationContext _appContext;
     private readonly IContentReadStore _readStore;
@@ -31,21 +29,21 @@ public class ContentCommandHandlers :
     private readonly IContentService _service;
     private readonly ISystemDateTime _dateTime;
     private readonly ILogger<ContentCommandHandlers> _logger;
+    private readonly Behlogger<ContentCommandHandlers> _behlogger;
 
     public ContentCommandHandlers(
-        ILogger<ContentCommandHandlers> logger, IBehlogMediator mediator, IBehlogMediatorAssistant assistant,
-        IIdyfaUserContext userContext, IContentReadStore readStore, IContentWriteStore writeStore, 
-        IBehlogApplicationContext appContext, IContentService contentService, ISystemDateTime dateTime)
+        ILogger<ContentCommandHandlers> logger, IIdyfaUserContext userContext, IContentReadStore readStore, 
+        IContentWriteStore writeStore, IBehlogApplicationContext appContext, IContentService contentService, 
+        ISystemDateTime dateTime)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _assistant = assistant ?? throw new ArgumentNullException(nameof(assistant));
         _service = contentService ?? throw new ArgumentNullException(nameof(contentService));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
+        _behlogger = new Behlogger<ContentCommandHandlers>(logger, dateTime);
     }
 
     public async Task<CommandResult<ContentResult>> HandleAsync(
@@ -57,38 +55,50 @@ public class ContentCommandHandlers :
             return CommandResult<ContentResult>.Failed(validation.Errors);
         }
 
-        var content = await Content.CreateAsync(
-            command, _service, _userContext, _appContext, _dateTime);
-
         try
         {
+            var content = await Content.CreateAsync(
+                command, _service, _userContext, _appContext, _dateTime);
             await _writeStore.AddAsync(content, cancellationToken).ConfigureAwait(false);
+            
+            return await Task.FromResult(
+                CommandResult<ContentResult>.Create().With(content.ToResult())
+            );
         }
         catch (Exception ex)
         {
-            _assistant.LogException(ex);
+            _behlogger.LogException(ex);
             throw;
         }
-        finally
-        {
-            await _assistant.PublishAsync<Content, Guid>(content, cancellationToken).ConfigureAwait(false);
-        }
-        
-        return await Task.FromResult(
-            CommandResult<ContentResult>.Create().With(content.ToResult())
-            );
     }
 
-    public async Task HandleAsync(
+    
+    public async Task<CommandResult> HandleAsync(
         UpdateContentCommand command, CancellationToken cancellationToken = default)
     {
-        var content = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
-        content.ThrowExceptionIfReferenceIsNull(nameof(content));
+        var validation = UpdateContentCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult.Failed(validation.Errors);
+        }
 
-        await content.UpdateAsync(
-            command, _service, _userContext, _dateTime, _appContext);
+        try
+        {
+            var content = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            content.ThrowExceptionIfReferenceIsNull(nameof(content));
+
+            await content.UpdateAsync(
+                command, _service, _userContext, _dateTime, _appContext);
         
-        await _writeStore.UpdateAsync(content, cancellationToken).ConfigureAwait(false);
+            await _writeStore.UpdateAsync(content, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+        
+        return CommandResult.Success();
     }
 
     public async Task HandleAsync(

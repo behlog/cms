@@ -50,14 +50,11 @@ public class CreateContentCommandValidator :
                 ContentErrorCodes.GetMessage(ContentErrorCodes.ViewPathMaxLen)!,
                 ContentErrorCodes.ViewPathMaxLen)
             
-            
             ;
 
     }
 
 
-    public static ValidatorResult Run(CreateContentCommand command)
-    {
-        return new CreateContentCommandValidator().Validate(command);
-    }
+    public static ValidatorResult Run(CreateContentCommand command) 
+        => new CreateContentCommandValidator().Validate(command);
 }

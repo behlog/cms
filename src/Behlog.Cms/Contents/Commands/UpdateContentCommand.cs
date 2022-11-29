@@ -1,9 +1,10 @@
 using Behlog.Cms.Domain;
 using Behlog.Core;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class UpdateContentCommand : IBehlogCommand
+public class UpdateContentCommand : IBehlogCommand<CommandResult>
 {
     
     public UpdateContentCommand(
