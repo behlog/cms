@@ -8,7 +8,8 @@ namespace Behlog.Cms.Handlers;
 
 
 public class ContentTypeQueryHandlers :
-    IBehlogQueryHandler<QueryContentTypesByLangId, ContentTypeListResult>
+    IBehlogQueryHandler<QueryContentTypesByLangId, ContentTypeListResult>,
+    IBehlogQueryHandler<QueryContentTypesByLangCode, ContentTypeListResult>
 {
     private readonly IContentTypeReadStore _readStore;
     private readonly ILanguageReadStore _langReadStore;
@@ -29,12 +30,32 @@ public class ContentTypeQueryHandlers :
         var lang = await _langReadStore.FindAsync(query.LangId, cancellationToken).ConfigureAwait(false);
         lang.ThrowExceptionIfReferenceIsNull(nameof(lang));
         
-        var source = await _readStore.GetByLangIdAsync(lang.Id).ConfigureAwait(false);
+        var source = await _readStore.GetByLangIdAsync(lang.Id, cancellationToken).ConfigureAwait(false);
         if (source is null || !source.Any())
-            return new ContentTypeListResult();
+            return new ContentTypeListResult(lang.Id,lang.Code, lang.Title);
         
         return new ContentTypeListResult(
+            lang.Id, lang.Code, lang.Title,
             source.Select(_ => _.ToResult()).ToList()
             );
     }
+
+    public async Task<ContentTypeListResult> HandleAsync(
+        QueryContentTypesByLangCode query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var lang = await _langReadStore.GetByCodeAsync(query.LangCode, cancellationToken).ConfigureAwait(false);
+        lang.ThrowExceptionIfReferenceIsNull(nameof(lang));
+
+        var source = await _readStore.GetByLangIdAsync(lang.Id, cancellationToken).ConfigureAwait(false);
+        if (source is null || !source.Any())
+            return new ContentTypeListResult(lang.Id, lang.Code, lang.Title);
+
+        return new ContentTypeListResult(
+            lang.Id, lang.Code, lang.Title,
+            source.Select(_ => _.ToResult()).ToList()
+            );
+    }
+    
 }

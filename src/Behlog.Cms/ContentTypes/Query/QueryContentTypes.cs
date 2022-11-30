@@ -15,7 +15,7 @@ public class QueryContentTypesByLangId : IBehlogQuery<ContentTypeListResult>
 }
 
 
-public class QueryContentTypesByLangCode : IBehlogQuery<ContentTypeResult>
+public class QueryContentTypesByLangCode : IBehlogQuery<ContentTypeListResult>
 {
 
     public QueryContentTypesByLangCode(string langCode)

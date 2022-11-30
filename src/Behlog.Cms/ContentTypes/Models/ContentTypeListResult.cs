@@ -6,8 +6,11 @@ public class ContentTypeListResult
 {
     private Dictionary<Guid, ContentTypeResult> _dictionary = new();
 
-    public ContentTypeListResult()
+    public ContentTypeListResult(Guid langId, string langCode, string langTitle)
     {
+        LangId = langId;
+        LangCode = langCode;
+        LangTitle = langTitle;
     }
 
     public Guid LangId { get; }
@@ -16,8 +19,14 @@ public class ContentTypeListResult
     
     public string LangTitle { get; }
     
-    public ContentTypeListResult(IReadOnlyCollection<ContentTypeResult> results)
+    public ContentTypeListResult(
+        Guid langId, string langCode, string langTitle,
+        IReadOnlyCollection<ContentTypeResult> results)
     {
+        LangId = langId;
+        LangCode = langCode;
+        LangTitle = langTitle;
+        
         Add(results);
     }
 
