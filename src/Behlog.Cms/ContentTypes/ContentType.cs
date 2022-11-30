@@ -1,6 +1,7 @@
 using Behlog.Cms.Commands;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Events;
+using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
 using Behlog.Extensions;
 
@@ -20,7 +21,6 @@ public class ContentType : AggregateRoot<Guid> {
     public string Slug { get; protected set; }
     public string? Description { get; protected set; }
     public Guid LangId { get; protected set; }
-    public string LangCode { get; protected set; }
     public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
@@ -36,9 +36,10 @@ public class ContentType : AggregateRoot<Guid> {
     
     #region Builders
 
-    public static ContentType Create(CreateContentTypeCommand command)
+    public static ContentType Create(CreateContentTypeCommand command, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         
         var contentType = new ContentType
         {
@@ -49,7 +50,7 @@ public class ContentType : AggregateRoot<Guid> {
             Slug = command.Slug?.Trim().CorrectYeKe()!,
             Status = EntityStatus.Enabled,
             Title = command.Title?.Trim().CorrectYeKe()!,
-            CreatedDate = DateTime.UtcNow
+            CreatedDate = dateTime.UtcNow
         };
 
         contentType.AddCreatedEvent();
@@ -57,22 +58,19 @@ public class ContentType : AggregateRoot<Guid> {
     }
 
 
-    public void Update(UpdateContentTypeCommand command)
+    public void Update(UpdateContentTypeCommand command, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
 
         Title = command.Title?.Trim().CorrectYeKe()!;
         Slug = command.Slug?.Trim().MakeSlug().CorrectYeKe()!;
         SystemName = command.SystemName?.Trim()!;
         LangId = command.LangId;
-        if (command.Enabled && Status != EntityStatus.Enabled ||
-            !command.Enabled && Status != EntityStatus.Disabled)
-        {
-            LastStatusChangedOn = DateTime.UtcNow;
-        }
+        ChangeStatus(command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled);
         Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
         Description = command.Description?.CorrectYeKe()!;
-        LastUpdated = DateTime.UtcNow;
+        LastUpdated = dateTime.UtcNow;
         
         AddUpdatedEvent();
     }
@@ -87,6 +85,8 @@ public class ContentType : AggregateRoot<Guid> {
 
     private void ChangeStatus(EntityStatus status)
     {
+        if(status == Status) return;
+        
         Status = status;
         LastStatusChangedOn = DateTime.UtcNow;
     }

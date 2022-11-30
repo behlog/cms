@@ -1,10 +1,11 @@
 ﻿using Behlog.Core;
+using Behlog.Core.Models;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Commands
 {
 
-    public class UpdateContentTypeCommand : IBehlogCommand
+    public class UpdateContentTypeCommand : IBehlogCommand<CommandResult>
     {
 
         public UpdateContentTypeCommand(

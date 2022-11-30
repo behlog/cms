@@ -3,6 +3,7 @@ using Behlog.Cms.Seed;
 using Behlog.Cms.Store;
 using Behlog.Extensions;
 using Behlog.Cms.Contracts;
+using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
 using Microsoft.Extensions.Logging;
 
@@ -33,7 +34,7 @@ public class CmsSetup : ICmsSetup
         IBehlogMediator mediator, IBehlogDbContext dbContext, IIdyfaDbContext idyfaDbContext,
         IContentTypeWriteStore contentTypeWriteStore, ILanguageWriteStore languageWriteStore, 
         ILogger logger, IIdyfaUserManager userManager, IIdyfaRoleManager roleManager,
-        IWebsiteWriteStore websiteWriteStore, IWebsiteService websiteService)
+        IWebsiteWriteStore websiteWriteStore, IWebsiteService websiteService, ISystemDateTime dateTime)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -46,7 +47,7 @@ public class CmsSetup : ICmsSetup
         _websiteWriteStore = websiteWriteStore ?? throw new ArgumentNullException(nameof(websiteWriteStore));
         _websiteService = websiteService ?? throw new ArgumentNullException(nameof(websiteService));
 
-        _contentTypeSeed = new ContentTypeSeed(_contentTypeWriteStore, _mediator);
+        _contentTypeSeed = new ContentTypeSeed(_contentTypeWriteStore, dateTime);
         _languageSeed = new LanguageSeed(_languageWriteStore);
         _userSeed = new UserSeed(_userManager, _roleManager);
         _websiteSeed = new WebsiteSeed(_logger, _websiteWriteStore, _websiteService);

@@ -1,6 +1,7 @@
 using Behlog.Core;
 using Behlog.Cms.Store;
 using Behlog.Cms.Commands;
+using Behlog.Core.Contracts;
 
 namespace Behlog.Cms.Seed;
 
@@ -8,13 +9,13 @@ namespace Behlog.Cms.Seed;
 internal class ContentTypeSeed
 {
     private readonly IContentTypeWriteStore _writeStore;
-    private readonly IBehlogMediator _mediator;
+    private readonly ISystemDateTime _dateTime;
     
     public ContentTypeSeed(
-        IContentTypeWriteStore writeStore, IBehlogMediator mediator)
+        IContentTypeWriteStore writeStore, ISystemDateTime dateTime)
     {
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
     }
 
 
@@ -26,7 +27,7 @@ internal class ContentTypeSeed
             var contentType = ContentType.Create(
                 new CreateContentTypeCommand(
                     systemName, systemName,
-                    EnglishLanguage.Id, systemName.ToLower()));
+                    EnglishLanguage.Id, systemName.ToLower()), _dateTime);
             _writeStore.MarkForAdd(contentType);
         }
         
@@ -36,7 +37,7 @@ internal class ContentTypeSeed
             var contentType = ContentType.Create(
                 new CreateContentTypeCommand(
                     systemName, ContentTypes.PersianNames[systemName],
-                    PersianLanguage.Id, systemName.ToLower()));
+                    PersianLanguage.Id, systemName.ToLower()), _dateTime);
             _writeStore.MarkForAdd(contentType);
         }
         

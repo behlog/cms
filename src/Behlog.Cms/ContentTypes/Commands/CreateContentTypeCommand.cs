@@ -1,12 +1,14 @@
 ﻿using Behlog.Core;
 using Behlog.Extensions;
 using Behlog.Cms.Models;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands
 {
 
-    public class CreateContentTypeCommand : IBehlogCommand<ContentTypeResult>
+    public class CreateContentTypeCommand : IBehlogCommand<CommandResult<ContentTypeResult>>
     {
+        
         public CreateContentTypeCommand(
             string systemName,
             string title,
