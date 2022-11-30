@@ -10,7 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
 
-
+/// <summary>
+/// Handlers for <see cref="ContentType"/> commands. 
+/// </summary>
 public class ContentTypeCommandHandler :
     IBehlogCommandHandler<CreateContentTypeCommand, CommandResult<ContentTypeResult>>,
     IBehlogCommandHandler<UpdateContentTypeCommand, CommandResult>,
@@ -60,11 +62,16 @@ public class ContentTypeCommandHandler :
         }
     }
 
+    
     public async Task<CommandResult> HandleAsync(
         UpdateContentTypeCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        cancellationToken.ThrowIfCancellationRequested();
+        var validation = UpdateContentTypeCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            _behlogger.LogError(validation.ToString());
+            return CommandResult.Failed(validation.Errors);
+        }
 
         try
         {
@@ -88,9 +95,10 @@ public class ContentTypeCommandHandler :
         SoftDeleteContentTypeCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-        cancellationToken.ThrowIfCancellationRequested();
 
         var contentType = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        contentType.ThrowExceptionIfReferenceIsNull(nameof(contentType));
+        
         contentType.SoftDelete();
         _writeStore.MarkForUpdate(contentType);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
