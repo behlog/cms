@@ -14,7 +14,13 @@ public class ContentTypeReadStore : BehlogReadStore<ContentType, Guid>, IContent
     {
         _contentTypes = db.Set<ContentType>();
     }
-    
+
+
+    public async Task<ContentType> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _set.Include(_ => _.Language)
+            .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken).ConfigureAwait(false);
+    }
 
     public async Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(
         Guid langId, CancellationToken cancellationToken = default)
