@@ -6,5 +6,6 @@ public interface IContentTypeReadStore : IBehlogReadStore<ContentType, Guid>
 {
 
 
-    Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(Guid langId);
+    Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(
+        Guid langId, CancellationToken cancellationToken = default);
 }

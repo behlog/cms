@@ -16,8 +16,10 @@ public class ContentTypeReadStore : BehlogReadStore<ContentType, Guid>, IContent
     }
     
 
-    public async Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(Guid langId)
+    public async Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(
+        Guid langId, CancellationToken cancellationToken = default)
     {
-        return await _contentTypes.Where(_ => _.LangId == langId).ToListAsync().ConfigureAwait(false);
+        return await _contentTypes.Where(_ => _.LangId == langId)
+                                    .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 }

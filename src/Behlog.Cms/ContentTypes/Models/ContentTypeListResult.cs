@@ -10,6 +10,12 @@ public class ContentTypeListResult
     {
     }
 
+    public Guid LangId { get; }
+    
+    public string LangCode { get; }
+    
+    public string LangTitle { get; }
+    
     public ContentTypeListResult(IReadOnlyCollection<ContentTypeResult> results)
     {
         Add(results);

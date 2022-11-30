@@ -6,8 +6,8 @@ namespace Behlog.Cms.EntityFrameworkCore;
 
 public class BehlogReadStore<TEntity, TId> : IBehlogReadStore<TEntity, TId> where TEntity : AggregateRoot<TId>
 {
-    private readonly IBehlogEntityFrameworkDbContext _db;
-    private readonly DbSet<TEntity> _set;
+    protected readonly IBehlogEntityFrameworkDbContext _db;
+    protected readonly DbSet<TEntity> _set;
 
     public BehlogReadStore(IBehlogEntityFrameworkDbContext db)
     {

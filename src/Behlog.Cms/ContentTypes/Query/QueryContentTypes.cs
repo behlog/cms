@@ -4,12 +4,24 @@ using Behlog.Cms.Models;
 namespace Behlog.Cms.Query;
 
 
-public class QueryContentTypes : IBehlogQuery<ContentTypeListResult>
+public class QueryContentTypesByLangId : IBehlogQuery<ContentTypeListResult>
 {
-    public QueryContentTypes(Guid langId)
+    public QueryContentTypesByLangId(Guid langId)
     {
         LangId = langId;
     }
     
     public Guid LangId { get; }
+}
+
+
+public class QueryContentTypesByLangCode : IBehlogQuery<ContentTypeResult>
+{
+
+    public QueryContentTypesByLangCode(string langCode)
+    {
+        LangCode = langCode;
+    }
+    
+    public string LangCode { get; }
 }
