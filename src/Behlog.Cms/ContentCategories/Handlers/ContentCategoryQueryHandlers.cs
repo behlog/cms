@@ -1,6 +1,8 @@
-using Behlog.Cms.Models;
+using Behlog.Core;
 using Behlog.Cms.Query;
-using Behlog.Cms.Store;using Behlog.Core;
+using Behlog.Cms.Store;
+using Behlog.Cms.Models;
+using Behlog.Extensions;
 
 namespace Behlog.Cms.Handlers;
 
@@ -10,16 +12,36 @@ public class ContentCategoryQueryHandlers :
     IBehlogQueryHandler<QueryContentCategoryByParentId, IReadOnlyCollection<ContentCategoryResult>>,
     IBehlogQueryHandler<QueryWebsiteContentCategories, ContentCategoryListResult>
 {
-    public Task<ContentCategoryResult> HandleAsync(
-        QueryContentCategoryById query, CancellationToken cancellationToken = default)
+    private readonly IContentCategoryReadStore _readStore;
+
+    public ContentCategoryQueryHandlers(IContentCategoryReadStore readStore)
     {
-        throw new NotImplementedException();
+        _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
     }
 
-    public Task<IReadOnlyCollection<ContentCategoryResult>> HandleAsync(
+    public async Task<ContentCategoryResult> HandleAsync(
+        QueryContentCategoryById query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var category = await _readStore
+            .FindByIdAsync(query.Id, cancellationToken).ConfigureAwait(false);
+        category.ThrowExceptionIfReferenceIsNull(nameof(category));
+
+        return await Task.FromResult(category.ToResult());
+    }
+
+    public async Task<IReadOnlyCollection<ContentCategoryResult>> HandleAsync(
         QueryContentCategoryByParentId query, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var categories = await _readStore.FindByParentIdAsync(
+                query.ParentId, cancellationToken).ConfigureAwait(false);
+
+        return await Task.FromResult(
+            categories.Select(_ => _.ToResult()).ToList()
+            );
     }
 
     public Task<ContentCategoryListResult> HandleAsync(
