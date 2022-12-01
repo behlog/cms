@@ -44,9 +44,18 @@ public class ContentCategoryQueryHandlers :
             );
     }
 
-    public Task<ContentCategoryListResult> HandleAsync(
+    
+    public async Task<ContentCategoryListResult> HandleAsync(
         QueryWebsiteContentCategories query, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var categories = await _readStore.FindWebsiteContentCategoriesAsync(
+            query.WebsiteId, cancellationToken).ConfigureAwait(false);
+        categories.ThrowExceptionIfReferenceIsNull(nameof(categories));
+
+        var result = new ContentCategoryListResult(
+            categories.Select(_ => _.ToResult()).ToList());
+        return await Task.FromResult(result);
     }
 }
