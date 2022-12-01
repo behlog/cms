@@ -40,7 +40,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             ParentId = command.ParentId,
             ContentTypeId = command.ContentTypeId,
-            Description = command.Description,
+            Description = command.Description?.CorrectYeKe(),
             CreatedDate = dateTime.UtcNow,
             CreatedByIp = appContext.IpAddress,
             WebsiteId = command.WebsiteId, //TODO : read from User claims
@@ -110,7 +110,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
     #endregion
 
     #region Props
-    public Guid? WebsiteId { get; protected set; }
+    public Guid WebsiteId { get; protected set; }
     public string Title { get; protected set; }
     public string? AltTitle { get; protected set; }
     public string Slug { get; protected set; }
