@@ -10,7 +10,8 @@ namespace Behlog.Cms.Handlers;
 public class ContentCategoryQueryHandlers :
     IBehlogQueryHandler<QueryContentCategoryById, ContentCategoryResult>,
     IBehlogQueryHandler<QueryContentCategoryByParentId, IReadOnlyCollection<ContentCategoryResult>>,
-    IBehlogQueryHandler<QueryWebsiteContentCategories, ContentCategoryListResult>
+    IBehlogQueryHandler<QueryWebsiteContentCategories, ContentCategoryListResult>,
+    IBehlogQueryHandler<QueryContentCategoryByContentType, IReadOnlyCollection<ContentCategoryResult>>
 {
     private readonly IContentCategoryReadStore _readStore;
 
@@ -57,5 +58,19 @@ public class ContentCategoryQueryHandlers :
         var result = new ContentCategoryListResult(
             categories.Select(_ => _.ToResult()).ToList());
         return await Task.FromResult(result);
+    }
+
+    public async Task<IReadOnlyCollection<ContentCategoryResult>> HandleAsync(
+        QueryContentCategoryByContentType query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var categories = await _readStore.FindByContentTypeAsync(
+            query.ContentTypeId, cancellationToken).ConfigureAwait(false);
+        categories.ThrowExceptionIfReferenceIsNull(nameof(categories));
+
+        return await Task.FromResult(
+            categories.Select(_ => _.ToResult()).ToList()
+            );
     }
 }

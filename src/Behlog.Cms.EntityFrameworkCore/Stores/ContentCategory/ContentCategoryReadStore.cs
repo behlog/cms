@@ -34,14 +34,16 @@ public class ContentCategoryReadStore : BehlogReadStore<ContentCategory, Guid>, 
     
     /// <inheritdoc /> 
     public async Task<IReadOnlyCollection<ContentCategory>> FindByContentTypeAsync(
-        Guid contentTypeId, CancellationToken cancellationToken = default)
+        Guid? contentTypeId, CancellationToken cancellationToken = default)
     {
         return await _set.Where(_ => _.ContentTypeId == contentTypeId)
             .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public Task<IReadOnlyCollection<ContentCategory>> FindByParentIdAsync(Guid? parentId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<ContentCategory>> FindByParentIdAsync(
+        Guid? parentId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _set.Where(_ => _.ParentId == parentId)
+            .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 }

@@ -26,7 +26,7 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// <param name="contentTypeId">ContentType Id</param>
     /// <returns>A read only list of ContentType's ContentCategories.</returns>
     Task<IReadOnlyCollection<ContentCategory>> FindByContentTypeAsync(
-        Guid contentTypeId, CancellationToken cancellationToken = default);
+        Guid? contentTypeId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Finds all the <see cref="ContentCategory"/> with specified ParentId.
