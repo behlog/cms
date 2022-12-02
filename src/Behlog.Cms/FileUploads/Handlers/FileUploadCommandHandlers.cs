@@ -3,6 +3,10 @@ using Behlog.Cms.Store;
 using Behlog.Cms.Models;
 using Behlog.Extensions;
 using Behlog.Cms.Commands;
+using Behlog.Cms.FileUploads.Internal;
+using Behlog.Core.Contracts;
+using Behlog.Core.Models;
+using Idyfa.Core.Contracts;
 
 
 namespace Behlog.Cms.Domain.FileUploads.Handlers;
@@ -15,13 +19,22 @@ public class FileUploadCommandHandlers :
 {
     private readonly IFileUploadReadStore _readStore;
     private readonly IFileUploadWriteStore _writeStore;
-
-
+    private readonly IIdyfaUserContext _userContext;
+    private readonly IBehlogApplicationContext _appContext;
+    private readonly ISystemDateTime _dateTime;
+    private readonly FileUploader _uploader;
+    
     public FileUploadCommandHandlers(
-        IFileUploadReadStore readStore, IFileUploadWriteStore writeStore)
+        IFileUploadReadStore readStore, IFileUploadWriteStore writeStore, 
+        IIdyfaUserContext userContext, IBehlogApplicationContext appContext, 
+        IWebHostEnvironment env, ISystemDateTime dateTime, BehlogOptions options)
     {
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
+        _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+        _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
+        _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
+        _uploader = new FileUploader(options, env);
     }
 
     public async Task<FileUploadResult> HandleAsync(
@@ -29,10 +42,21 @@ public class FileUploadCommandHandlers :
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
-        var fileUpload = FileUpload.Create(command);
+        var uploadResult = await _uploader.UploadAsync(
+            command.FileData, command.ContentType, command.FileType);
+        FileUploaderResult? alternateUploadResult = null;
+        if (command.AlternateFileData.IsNotNullOrEmpty())
+        {
+            alternateUploadResult = await _uploader.UploadAsync(
+                command.AlternateFileData, command.ContentType, command.FileType);
+        }
+        
+        var fileUpload = FileUpload.Create(
+            command, uploadResult, alternateUploadResult, _appContext, _userContext);
+        
         _writeStore.MarkForAdd(fileUpload);
-
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        
         return fileUpload.ToResult();
     }
 

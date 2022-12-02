@@ -8,13 +8,15 @@ namespace Behlog.Cms.Commands;
 public class CreateFileUploadCommand : IBehlogCommand<FileUploadResult>
 {
     public CreateFileUploadCommand(
-        IFormFile fileData, FileType fileType, Guid websiteId, string title, string description)
+        IFormFile fileData, string contentType, FileType fileType, Guid websiteId, 
+        string title, string description)
     {
         FileData = fileData;
         FileType = fileType;
         WebsiteId = websiteId;
         Title = title;
         Description = description;
+        ContentType = contentType;
     }
 
     public CreateFileUploadCommand(
@@ -37,6 +39,7 @@ public class CreateFileUploadCommand : IBehlogCommand<FileUploadResult>
     public string AltTitle { get; }
     public string Description { get; }
     public Guid WebsiteId { get; }
+    public string ContentType { get; }
 }
 
 
