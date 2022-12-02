@@ -55,6 +55,29 @@ internal class FileUploader
     }
 
 
+    public async Task<FileUploaderResult> UploadAsync(
+        IFormFile fileData, string contentType, FileType fileType)
+    {
+        var result = getResult(fileData, contentType, fileType);
+        
+        try
+        {
+            using var stream = new FileStream(result.FilePath, FileMode.Create);
+            await fileData.CopyToAsync(stream);
+            await stream.FlushAsync();
+            stream.Close();
+        }
+        catch (Exception ex)
+        {
+            return await Task.FromResult(
+                result.WithError($"Error : {ex.GetBaseException().Message}")
+                );
+        }
+
+        return await Task.FromResult(result.Finished());
+    }
+    
+
     private FileUploaderResult getResult(
         IFormFile fileData, string contentType, FileType fileType)
     {
