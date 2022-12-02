@@ -103,7 +103,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             IconName = command.IconName,
             ViewPath = command.ViewPath,
             LangId = command.LangId,
-            WebsiteId = command.WebsiteId
+            WebsiteId = command.WebsiteId,
+            LangCode = "" //TODO : add langcode
         };
 
         content.Categories = command.Categories.Convert(content.Id);
