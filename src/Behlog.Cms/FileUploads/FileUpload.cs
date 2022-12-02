@@ -52,7 +52,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Description = command.Description?.CorrectYeKe()!,
             CreatedDate = DateTime.UtcNow,
-            AlternateFilePath = command.AlternateFilePath,
+            // AlternateFilePath = command.AlternateFilePath,
             CreatedByIp = "", //TODO : HttpContext
             CreatedByUserId = "", //TODO : from UserContext
         };

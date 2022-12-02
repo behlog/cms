@@ -25,5 +25,8 @@ public class FileType : Enumeration
         => new FileType(4, nameof(Document));
 
     public static FileType Downloads
-        => new FileType(4, nameof(Downloads));
+        => new FileType(5, nameof(Downloads));
+
+    public static FileType CompressedArchive
+        => new FileType(6, nameof(CompressedArchive));
 }

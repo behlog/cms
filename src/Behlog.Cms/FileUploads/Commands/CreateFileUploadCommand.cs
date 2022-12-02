@@ -6,28 +6,27 @@ namespace Behlog.Cms.Commands;
 public class CreateFileUploadCommand : IBehlogCommand<FileUploadResult>
 {
     public CreateFileUploadCommand(
-        string filePath, string title, string description)
+        IFormFile fileData, string title, string description)
     {
-        FilePath = filePath;
+        FileData = fileData;
         Title = title;
         Description = description;
     }
 
     public CreateFileUploadCommand(
-        string filePath, string alternateFilePath, 
+        IFormFile fileData, IFormFile alternateFileData, 
         string title, string altTitle, string description)
     {
-        FilePath = filePath;
-        AlternateFilePath = alternateFilePath;
+        fileData = fileData;
+        AlternateFileData = alternateFileData;
         Title = title;
         AltTitle = altTitle;
         Description = description;
     }
 
-    
+    public IFormFile FileData { get; }
     public string Title { get; }
-    public string FilePath { get; }
-    public string AlternateFilePath { get; }
+    public IFormFile AlternateFileData { get; }
     public string AltTitle { get; }
     public string Description { get; }
 }
