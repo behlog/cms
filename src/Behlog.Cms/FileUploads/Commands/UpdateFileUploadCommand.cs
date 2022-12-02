@@ -1,8 +1,9 @@
 using Behlog.Core;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class UpdateFileUploadCommand : IBehlogCommand
+public class UpdateFileUploadCommand : IBehlogCommand<CommandResult>
 {
     public Guid Id { get; }
     public string Title { get; }

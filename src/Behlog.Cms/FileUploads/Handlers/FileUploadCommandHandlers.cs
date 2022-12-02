@@ -15,7 +15,7 @@ namespace Behlog.Cms.Handlers;
 
 public class FileUploadCommandHandlers :
     IBehlogCommandHandler<CreateFileUploadCommand, CommandResult<FileUploadResult>>,
-    IBehlogCommandHandler<UpdateFileUploadCommand>,
+    IBehlogCommandHandler<UpdateFileUploadCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteFileUploadCommand>,
     IBehlogCommandHandler<RemoveFileUploadCommand>
 {
@@ -66,17 +66,23 @@ public class FileUploadCommandHandlers :
         return CommandResult<FileUploadResult>.Success(fileUpload.ToResult());
     }
 
-    public async Task HandleAsync(
+    public async Task<CommandResult> HandleAsync(
         UpdateFileUploadCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
-
+        var validation = UpdateFileUploadCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult.Failed(validation.Errors);
+        }
+        
         var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
 
         fileUpload.Update(command, _userContext, _appContext, _dateTime);
         _writeStore.MarkForUpdate(fileUpload);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        return CommandResult.Success();
     }
 
     public async Task HandleAsync(
