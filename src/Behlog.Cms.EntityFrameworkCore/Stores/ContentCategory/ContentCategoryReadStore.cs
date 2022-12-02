@@ -25,9 +25,13 @@ public class ContentCategoryReadStore : BehlogReadStore<ContentCategory, Guid>, 
 
     /// <inheritdoc /> 
     public async Task<IReadOnlyCollection<ContentCategory>> FindWebsiteContentCategoriesAsync(
-        Guid websiteId, CancellationToken cancellationToken = default)
+        Guid websiteId, Guid? contentTypeId, CancellationToken cancellationToken = default)
     {
-        return await _set.Where(_ => _.WebsiteId == websiteId)
+        var query = _set.Where(_ => _.WebsiteId == websiteId);
+        if (contentTypeId.HasValue)
+            query = query.Where(_ => _.ContentTypeId == contentTypeId.Value);
+        
+        return await query.Where(_ => _.WebsiteId == websiteId)
             .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 

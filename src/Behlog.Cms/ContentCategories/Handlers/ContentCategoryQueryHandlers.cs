@@ -52,7 +52,7 @@ public class ContentCategoryQueryHandlers :
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
         var categories = await _readStore.FindWebsiteContentCategoriesAsync(
-            query.WebsiteId, cancellationToken).ConfigureAwait(false);
+            query.WebsiteId, query.ContentTypeId, cancellationToken).ConfigureAwait(false);
         categories.ThrowExceptionIfReferenceIsNull(nameof(categories));
 
         var result = new ContentCategoryListResult(
