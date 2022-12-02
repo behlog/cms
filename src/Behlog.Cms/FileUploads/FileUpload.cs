@@ -111,31 +111,44 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     }
     
 
-    public void Update(UpdateFileUploadCommand command)
+    public void Update(UpdateFileUploadCommand command, IIdyfaUserContext userContext,
+        IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
-
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
         Title = command.Title;
         AltTitle = command.AltTitle;
         Description = command.Description;
+        LastUpdatedByIp = appContext.IpAddress;
+        LastUpdatedByUserId = userContext.UserId;
+        LastUpdated = dateTime.UtcNow;
 
         if (command.Hidden && Status != FileUploadStatus.Hidden)
         {
-            ChangeStatus(FileUploadStatus.Hidden);
+            ChangeStatus(FileUploadStatus.Hidden, appContext, userContext, dateTime);
         }
         
         AddUpdatedEvent();
     }
 
-    public void SoftDelete()
+    public void SoftDelete(
+        IIdyfaUserContext userContext, 
+        IBehlogApplicationContext appContext, 
+        ISystemDateTime dateTime)
     {
-        ChangeStatus(FileUploadStatus.Deleted);
+        ChangeStatus(FileUploadStatus.Deleted, appContext, userContext, dateTime);
         AddSoftDeletedEvent();
     }
 
-    public void Archive()
+    public void Archive(
+        IIdyfaUserContext userContext, 
+        IBehlogApplicationContext appContext, 
+        ISystemDateTime dateTime)
     {
-        ChangeStatus(FileUploadStatus.Archived);
+        ChangeStatus(FileUploadStatus.Archived, appContext, userContext, dateTime);
         AddArchivedEvent();
     }
 
@@ -202,12 +215,18 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
 
     #region helpers
 
-    private void ChangeStatus(FileUploadStatus status)
+    private void ChangeStatus(
+        FileUploadStatus status, IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
         Status = status;
-        LastStatusChangedOn = DateTime.UtcNow;
-        LastUpdatedByUserId = ""; //TODO : from userContext
-        LastUpdatedByIp = ""; //TODO : from HttpContext
+        LastStatusChangedOn = dateTime.UtcNow;
+        LastUpdatedByUserId = userContext.UserId;
+        LastUpdatedByIp = appContext.IpAddress;
     }
 
     #endregion

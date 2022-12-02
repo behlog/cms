@@ -47,13 +47,13 @@ public class ContentFile : ValueObject
         return this;
     }
 
-    public ContentFile WithTitle(string title)
+    public ContentFile WithTitle(string? title)
     {
         Title = title;
         return this;
     }
 
-    public ContentFile WithDescription(string description)
+    public ContentFile WithDescription(string? description)
     {
         Description = description;
         return this;

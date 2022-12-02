@@ -69,7 +69,7 @@ public class FileUploadCommandHandlers :
         var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
 
-        fileUpload.Update(command);
+        fileUpload.Update(command, _userContext, _appContext, _dateTime);
         _writeStore.MarkForUpdate(fileUpload);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -78,10 +78,11 @@ public class FileUploadCommandHandlers :
         SoftDeleteFileUploadCommand command, CancellationToken cancellationToken = default)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        
         var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
         
-        fileUpload.SoftDelete();
+        fileUpload.SoftDelete(_userContext, _appContext, _dateTime);
         await _writeStore.SaveChangesAsync(cancellationToken);
     }
 

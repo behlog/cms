@@ -107,7 +107,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         };
 
         content.Categories = command.Categories.Convert(content.Id);
-        content.Meta = command.Meta.Convert(content.Id)!;
+        content.Meta = command.Meta.Convert(content.Id);
+        content.Files = command.Files.Convert(content.Id);
         
         content.AddCreatedEvent();
         

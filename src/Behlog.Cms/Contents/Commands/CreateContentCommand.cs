@@ -14,7 +14,8 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         string title, string slug, Guid contentTypeId, Guid langId, 
         string body, ContentBodyType bodyType, 
         string summary, string altTitle, int orderNum, 
-        IEnumerable<Guid> categories, IEnumerable<MetaCommand> meta)
+        IEnumerable<Guid> categories, IEnumerable<MetaCommand> meta,
+        IEnumerable<ContentFileCommand> files)
     {
         WebsiteId = websiteId;
         Title = title;
@@ -28,6 +29,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         OrderNum = orderNum;
         Categories = categories?.ToList();
         Meta = meta?.ToList();
+        Files = files?.ToList();
     }
     
     public Guid WebsiteId { get; }
@@ -47,4 +49,6 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public IReadOnlyCollection<Guid>? Categories { get; }
     
     public IReadOnlyCollection<MetaCommand>? Meta { get; }
+    
+    public IReadOnlyCollection<ContentFileCommand>? Files { get; }
 }

@@ -35,4 +35,15 @@ internal static class ContentCategoryExtensions
             .ToList()!;
     }
 
+
+    public static ICollection<ContentFile> Convert(
+        this IReadOnlyCollection<ContentFileCommand>? files, Guid contentId)
+    {
+        return files?.ToList()
+            .Select(file => ContentFile.New(contentId, file.FileId)
+                .WithFileName(file.FileName)
+                .WithTitle(file.Title)
+                .WithDescription(file.Description))
+            .ToList()!;
+    }
 }
