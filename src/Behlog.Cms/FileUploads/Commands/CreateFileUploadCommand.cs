@@ -1,11 +1,12 @@
 using Behlog.Cms.Domain;
 using Behlog.Core;
 using Behlog.Cms.Models;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
 
-public class CreateFileUploadCommand : IBehlogCommand<FileUploadResult>
+public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadResult>>
 {
     public CreateFileUploadCommand(
         IFormFile fileData, string contentType, FileType fileType, Guid websiteId, 

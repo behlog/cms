@@ -8,12 +8,13 @@ using Behlog.Cms.Commands;
 using Idyfa.Core.Contracts;
 using Behlog.Core.Contracts;
 using Behlog.Cms.FileUploads.Internal;
+using Behlog.Cms.Validations;
 
 namespace Behlog.Cms.Handlers;
 
 
 public class FileUploadCommandHandlers :
-    IBehlogCommandHandler<CreateFileUploadCommand, FileUploadResult>,
+    IBehlogCommandHandler<CreateFileUploadCommand, CommandResult<FileUploadResult>>,
     IBehlogCommandHandler<UpdateFileUploadCommand>,
     IBehlogCommandHandler<SoftDeleteFileUploadCommand>,
     IBehlogCommandHandler<RemoveFileUploadCommand>
@@ -38,11 +39,15 @@ public class FileUploadCommandHandlers :
         _uploader = new FileUploader(options, env);
     }
 
-    public async Task<FileUploadResult> HandleAsync(
+    public async Task<CommandResult<FileUploadResult>> HandleAsync(
         CreateFileUploadCommand command, CancellationToken cancellationToken = default)
     {
-        command.ThrowExceptionIfArgumentIsNull(nameof(command));
-
+        var validation = CreateFileUploadCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult<FileUploadResult>.Failed(validation.Errors);
+        }
+        
         var uploadResult = await _uploader.UploadAsync(
             command.FileData, command.ContentType, command.FileType);
         FileUploaderResult? alternateUploadResult = null;
@@ -58,7 +63,7 @@ public class FileUploadCommandHandlers :
         _writeStore.MarkForAdd(fileUpload);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         
-        return fileUpload.ToResult();
+        return CommandResult<FileUploadResult>.Success(fileUpload.ToResult());
     }
 
     public async Task HandleAsync(
