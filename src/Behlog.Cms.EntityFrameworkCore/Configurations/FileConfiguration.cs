@@ -13,8 +13,8 @@ public static partial class EntityConfigurations
             file.ToTable(FileTableName).HasKey(_ => _.Id);
             
             file.Property(_=> _.Id).ValueGeneratedNever();
-            file.Property(_ => _.Title).HasMaxLength(1000).IsUnicode();
-            file.Property(_ => _.FilePath).HasMaxLength(2000).IsUnicode().IsRequired();
+            file.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired(false);
+            file.Property(_ => _.FilePath).HasMaxLength(2000).IsUnicode().IsRequired(false);
             file.Property(_ => _.AlternateFilePath).HasMaxLength(2000).IsUnicode().IsRequired(false);
             file.Property(_ => _.AltTitle).HasMaxLength(1000).IsRequired(false);
             file.Property(_ => _.Extension).HasMaxLength(50).IsUnicode().IsRequired(false);
@@ -23,6 +23,10 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     c => c.Id,
                     c => FileUploadStatus.Find(c));
+            file.Property(_ => _.FileType).HasDefaultValue(FileType.Common)
+                .HasConversion<int>(
+                    t => t.Id,
+                    t => FileType.Find(t));
             file.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
 
             file.HasOne(_ => _.Website)

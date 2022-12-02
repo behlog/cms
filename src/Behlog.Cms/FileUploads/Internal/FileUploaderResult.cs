@@ -1,7 +1,7 @@
 namespace Behlog.Cms.FileUploads.Internal;
 
 
-internal class FileUploaderResult
+public class FileUploaderResult
 {
     public string FileName { get; set; }
     public string FilePath { get; set; }

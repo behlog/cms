@@ -1,8 +1,12 @@
 using Behlog.Cms.Commands;
 using Behlog.Cms.Events;
+using Behlog.Cms.FileUploads.Internal;
 using Behlog.Core;
+using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
+using Behlog.Core.Models;
 using Behlog.Extensions;
+using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
@@ -22,6 +26,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     public string? AltTitle { get; protected set; }
     public string? Url { get; protected set; }
     public FileUploadStatus Status { get; protected set; }
+    public FileType FileType { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
     public string? Description { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
@@ -40,9 +45,15 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     #region Builders
 
 
-    public static FileUpload Create(CreateFileUploadCommand command)
+    public static FileUpload Create(
+        CreateFileUploadCommand command, FileUploaderResult uploaderResult,
+        FileUploaderResult? alternateFileUploadResult,
+        IBehlogApplicationContext appContext, IIdyfaUserContext userContext)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        uploaderResult.ThrowExceptionIfArgumentIsNull(nameof(uploaderResult));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
 
         var file = new FileUpload
         {
@@ -52,15 +63,53 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Description = command.Description?.CorrectYeKe()!,
             CreatedDate = DateTime.UtcNow,
-            // AlternateFilePath = command.AlternateFilePath,
-            CreatedByIp = "", //TODO : HttpContext
-            CreatedByUserId = "", //TODO : from UserContext
+            FileName = uploaderResult.FileName,
+            Extension = uploaderResult.Extension,
+            FileSize = uploaderResult.FileSize,
+            WebsiteId = command.WebsiteId,
+            FilePath = uploaderResult.FilePath,
+            CreatedByIp = appContext.IpAddress, 
+            CreatedByUserId = userContext.UserId
         };
+
+        if (alternateFileUploadResult is not null)
+        {
+            file.AlternateFilePath = alternateFileUploadResult.FilePath;
+        }
 
         file.AddCreatedEvent();
         return file;
     }
 
+
+    public static FileUpload Create(
+        CreateFileWithUrlCommand command, IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+
+        var file = new FileUpload
+        {
+            Id = Guid.NewGuid(),
+            Url = command.Url,
+            Description = command.Description,
+            WebsiteId = command.WebsiteId,
+            FileType = command.FileType,
+            Status = FileUploadStatus.Created,
+            Title = command.Title,
+            AltTitle = command.AltTitle,
+            CreatedDate = dateTime.UtcNow,
+            CreatedByUserId = userContext.UserId,
+            CreatedByIp = appContext.IpAddress,
+        };
+        
+        file.AddCreatedEvent();
+        return file;
+    }
+    
 
     public void Update(UpdateFileUploadCommand command)
     {

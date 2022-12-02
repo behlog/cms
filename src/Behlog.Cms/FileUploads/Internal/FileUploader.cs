@@ -1,4 +1,3 @@
-using System.Globalization;
 using Behlog.Cms.Domain;
 using Behlog.Core.Models;
 using Behlog.Extensions;

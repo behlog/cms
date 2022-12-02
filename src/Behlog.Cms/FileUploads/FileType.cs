@@ -9,6 +9,8 @@ public class FileType : Enumeration
     {
     }
 
+    public static FileType Find(int id) => FromValue<FileType>(id);
+    
     public static FileType Common
         => new FileType(0, nameof(Common));
 
