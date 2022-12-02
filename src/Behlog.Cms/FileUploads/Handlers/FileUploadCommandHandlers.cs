@@ -1,15 +1,16 @@
 using Behlog.Core;
 using Behlog.Cms.Store;
-using Behlog.Cms.Models;
 using Behlog.Extensions;
-using Behlog.Cms.Commands;
-using Behlog.Cms.FileUploads.Internal;
-using Behlog.Core.Contracts;
+using Behlog.Cms.Models;
+using Behlog.Cms.Domain;
 using Behlog.Core.Models;
+using Behlog.Cms.Commands;
 using Idyfa.Core.Contracts;
+using Behlog.Core.Contracts;
+using Behlog.Cms.FileUploads.Internal;
 
+namespace Behlog.Cms.Handlers;
 
-namespace Behlog.Cms.Domain.FileUploads.Handlers;
 
 public class FileUploadCommandHandlers :
     IBehlogCommandHandler<CreateFileUploadCommand, FileUploadResult>,
