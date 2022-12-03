@@ -1,14 +1,10 @@
-using Behlog.Cms.Domain;
+using Behlog.Core;
+using Behlog.Core.Models;
 
-namespace Behlog.Cms.Models;
+namespace Behlog.Cms.Commands;
 
-public class BlockResult
+public class UpdateBlockCommand : IBehlogCommand<CommandResult>
 {
-    public BlockResult()
-    {
-        Meta = new List<MetaResult>();
-    }
-    
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Title { get; set; }
@@ -26,14 +22,6 @@ public class BlockResult
     public Guid LangId { get; set; }
     public string Keywords { get; set; }
     public Guid? ParentId { get; set; }
-    public BlockStatus Status { get; protected set; }
+    public bool Enabled { get; set; }
     public string ViewPath { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public DateTime? LastUpdated { get; set; }
-    public string CreatedByUserId { get; set; }
-    public string LastUpdatedByUserId { get; set; }
-    public string CreatedByIp { get; set; }
-    public string LastUpdatedByIp { get; set; }
-    public IReadOnlyCollection<MetaResult> Meta { get; set; }
-    
 }

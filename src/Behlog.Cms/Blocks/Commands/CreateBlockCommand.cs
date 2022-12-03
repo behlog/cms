@@ -1,10 +1,11 @@
+using Behlog.Cms.Models;
 using Behlog.Core;
 using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
 
-public class CreateBlockCommand : IBehlogCommand<CommandResult>
+public class CreateBlockCommand : IBehlogCommand<CommandResult<BlockResult>>
 {
     
     public string Name { get; set; }
