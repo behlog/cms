@@ -1,4 +1,6 @@
 using Behlog.Cms.Commands;
+using Behlog.Cms.Events;
+using Behlog.Cms.Models;
 using Behlog.Core;
 using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
@@ -87,9 +89,49 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
             ViewPath = command.ViewPath,
             CreatedByIp = appContext.IpAddress!
         };
-
-
+        
+        block.AddCreatedEvent();
         return block;
+    }
+
+    #endregion
+
+    
+    #region Events
+
+    private void AddCreatedEvent()
+    {
+        var e = new BlockCreatedEvent
+        {
+            Id = Id,
+            Attributes = Attributes,
+            Author = Author,
+            Category = Category,
+            Description = Description,
+            Example = Example,
+            Keywords = Keywords,
+            Name = Name,
+            Status = Status,
+            Template = Template,
+            Title = Title,
+            AuthorEmail = AuthorEmail,
+            BlockType = BlockType,
+            CoverPhoto = CoverPhoto,
+            CreatedDate = CreatedDate,
+            IconName = IconName,
+            IsRtl = IsRtl,
+            LangId = LangId,
+            LastUpdated = LastUpdated,
+            ParentId = ParentId,
+            ViewPath = ViewPath,
+            CreatedByIp = CreatedByIp,
+            CreatedByUserId = CreatedByUserId,
+            LastUpdatedByIp = LastUpdatedByIp,
+            LastUpdatedByUserId = LastUpdatedByUserId,
+            Meta = Meta?.Select(_ => _.MapToResult()).ToList()!
+        };
+        
+        Enqueue(e);
     }
 
     #endregion

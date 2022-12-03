@@ -1,10 +1,14 @@
 using Behlog.Cms.Domain;
+using Behlog.Cms.Models;
+using Behlog.Core;
 
-namespace Behlog.Cms.Models;
+namespace Behlog.Cms.Events;
 
-public class BlockResult
+
+public class BlockCreatedEvent : IBehlogEvent
 {
-    public BlockResult()
+
+    public BlockCreatedEvent()
     {
         Meta = new List<MetaResult>();
     }
@@ -35,5 +39,4 @@ public class BlockResult
     public string CreatedByIp { get; set; }
     public string LastUpdatedByIp { get; set; }
     public IReadOnlyCollection<MetaResult> Meta { get; set; }
-    
 }
