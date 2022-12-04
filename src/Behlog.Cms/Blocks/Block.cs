@@ -9,6 +9,7 @@ using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
+
 public class Block : AggregateRoot<Guid>, IHasMetadata
 {
     private Block() { }
