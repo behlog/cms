@@ -19,7 +19,7 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
     public string Name { get; protected set; }
     public string Title { get; protected set; }
     public string BlockType { get; protected set; }
-    public string Category { get; protected set; }
+    public string? Category { get; protected set; }
     public string? Author { get; protected set; }
     public string? AuthorEmail { get; protected set; }
     public string? Description { get; protected set; }

@@ -8,25 +8,61 @@ public class ContentBlock : ValueObject
 
     public static ContentBlock New(
         Guid contentId,
-        string source,
-        ContentBodyType bodyType,
-        string textContent,
-        bool hidden = false
+        Guid blockId,
+        ContentBodyType bodyType
     )
     {
         return new ContentBlock
         {
             ContentId = contentId,
-            Source = source,
-            Hidden = hidden,
             BodyType = bodyType,
-            TextContent = textContent
+            BlockId = blockId
         };
+    }
+
+    public ContentBlock Hide()
+    {
+        this.Hidden = true;
+        return this;
+    }
+
+    public ContentBlock SetSource(string source)
+    {
+        this.Source = source;
+        return this;
+    }
+
+    public ContentBlock SetProperties(string properties)
+    {
+        this.Properties = properties;
+        return this;
+    }
+
+    public ContentBlock SetTextContent(string textContent)
+    {
+        this.TextContent = textContent;
+        return this;
+    }
+
+    public ContentBlock SetOrderNum(int orderNum)
+    {
+        this.OrderNum = orderNum;
+        return this;
+    }
+
+    public ContentBlock Delete()
+    {
+        this.Deleted = true;
+        return this;
     }
     
     public Guid ContentId { get; private set; }
     
+    public Guid BlockId { get; private set; }
+    
     public string Source { get; private set; }
+    
+    public string Properties { get; private set; }
     
     public bool Deleted { get; private set; }
     
