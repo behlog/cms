@@ -19,6 +19,8 @@ public class ContentBlock : ValueObject
             BlockId = blockId
         };
     }
+    
+    public long Id { get; private set; }
 
     public ContentBlock Hide()
     {
@@ -62,7 +64,7 @@ public class ContentBlock : ValueObject
     
     public string Source { get; private set; }
     
-    public string Properties { get; private set; }
+    public string? Properties { get; private set; }
     
     public bool Deleted { get; private set; }
     
@@ -70,7 +72,7 @@ public class ContentBlock : ValueObject
     
     public ContentBodyType BodyType { get; private set; }
     
-    public string TextContent { get; private set; }
+    public string? TextContent { get; private set; }
     
     public int OrderNum { get; private set; }
     
@@ -78,9 +80,9 @@ public class ContentBlock : ValueObject
     {
         yield return ContentId;
         yield return BlockId;
-        yield return TextContent;
+        yield return TextContent!;
         yield return Source;
-        yield return Properties;
+        yield return Properties!;
         yield return BodyType;
         yield return OrderNum;
         yield return Deleted;

@@ -24,6 +24,7 @@ public partial class Webpage : AggregateRoot<Guid>, IHasMetadata
     public string? ViewPath { get; protected set; }
     public DateTime? PublishDate { get; protected set; }
     public string? Password { get; protected set; }
+    public WebpageStatus Status { get; protected set; }
     
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }

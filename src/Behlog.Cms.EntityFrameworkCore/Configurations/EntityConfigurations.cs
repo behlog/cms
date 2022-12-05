@@ -40,4 +40,8 @@ public static partial class EntityConfigurations
     public const string ContentBlockTableName = nameof(ContentBlock);
 
     public const string BlockMetaTableName = nameof(BlockMeta);
+    
+    public const string WebpageTableName = nameof(Webpage);
+    
+    public const string WebpageBlockTableName = nameof(WebpageBlock);
 }

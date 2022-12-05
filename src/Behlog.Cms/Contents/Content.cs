@@ -8,7 +8,6 @@ using Behlog.Cms.Exceptions;
 using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
 using Behlog.Cms.Contracts;
-using Idyfa.Core;
 
 namespace Behlog.Cms.Domain;
 
@@ -53,17 +52,20 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     
     public Language Language { get; protected set; }
     
-    public ICollection<ContentCategoryItem> Categories { get; protected set; } 
+    public IEnumerable<ContentCategoryItem> Categories { get; protected set; } 
         = new HashSet<ContentCategoryItem>();
 
-    public ICollection<ContentMeta> Meta { get; protected set; }
+    public IEnumerable<ContentMeta> Meta { get; protected set; }
         = new HashSet<ContentMeta>();
 
-    public ICollection<ContentFile> Files { get; protected set; } 
+    public IEnumerable<ContentFile> Files { get; protected set; } 
         = new HashSet<ContentFile>();
     
-    public ICollection<ContentLike> Likes { get; protected set; }
+    public IEnumerable<ContentLike> Likes { get; protected set; }
         = new HashSet<ContentLike>();
+
+    public IEnumerable<ContentBlock> Blocks { get; protected set; }
+        = new HashSet<ContentBlock>();
 
     #endregion
 
