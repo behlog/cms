@@ -88,7 +88,7 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
             LangId = command.LangId,
             ParentId = command.ParentId,
             ViewPath = command.ViewPath,
-            CreatedByIp = appContext.IpAddress!
+            CreatedByIp = appContext.IpAddress
         };
         
         block.AddCreatedEvent();

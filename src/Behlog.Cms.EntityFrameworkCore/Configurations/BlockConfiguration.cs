@@ -36,7 +36,6 @@ public static partial class EntityConfigurations
             block.Property(_ => _.CreatedByIp).HasMaxLength(50).IsRequired(false);
             block.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
             
-
             block.OwnsMany(_ => _.Meta, meta =>
             {
                 meta.ToTable(BlockMetaTableName).HasKey("Id");
