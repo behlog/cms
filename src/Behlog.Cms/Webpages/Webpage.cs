@@ -33,8 +33,14 @@ public partial class Webpage : AggregateRoot<Guid>, IHasMetadata
     public string LastUpdatedByUserId { get; protected set; }
     public string? CreatedByIp { get; protected set; }
     public string? LastUpdatedByIp { get; protected set; }
-    
+
     #endregion
 
-    
+
+    #region Navigations
+
+    public IEnumerable<WebpageMeta> Meta { get; protected set; }
+
+    #endregion
+
 }

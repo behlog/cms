@@ -1,4 +1,5 @@
 using Behlog.Cms.Domain;
+using Behlog.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Configurations;
@@ -35,7 +36,19 @@ public static partial class EntityConfigurations
             page.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
             page.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
 
-
+            page.OwnsMany(_ => _.Meta, m => {
+                m.ToTable(ContentMetaTableName).HasKey("Id");
+                m.Property<long>("Id").ValueGeneratedOnAdd();
+                m.WithOwner().HasForeignKey(_ => _.OwnerId);
+                m.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);
+                m.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
+                m.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode().IsRequired(false);
+                m.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
+                    .HasConversion<int>(
+                        c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));
+                m.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired(false);
+                m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            });
         });
     }
     
