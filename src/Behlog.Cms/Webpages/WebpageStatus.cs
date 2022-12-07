@@ -8,6 +8,8 @@ public class WebpageStatus : Enumeration
     {
     }
 
+    public static WebpageStatus Find(int id) => FromValue<WebpageStatus>(id);
+
     public static WebpageStatus Deleted =
         new WebpageStatus(-1, nameof(Deleted));
 
@@ -16,4 +18,7 @@ public class WebpageStatus : Enumeration
 
     public static WebpageStatus Published =
         new WebpageStatus(1, nameof(Published));
+
+    public static WebpageStatus Disabled =
+        new WebpageStatus(2, nameof(Disabled));
 }

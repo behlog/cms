@@ -19,19 +19,20 @@ public partial class Webpage : AggregateRoot<Guid>, IHasMetadata
     public string Name { get; protected set; }
     public Guid LangId { get; protected set; }
     public string? Body { get; protected set; }
+    public string? Summary { get; protected set; }
+    public ContentBodyType BodyType { get; protected set; }
     public string? HtmlFileName { get; protected set; }
     public bool IsHomePage { get; protected set; }
     public string? ViewPath { get; protected set; }
     public DateTime? PublishDate { get; protected set; }
     public string? Password { get; protected set; }
     public WebpageStatus Status { get; protected set; }
-    
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     public string CreatedByUserId { get; protected set; }
     public string LastUpdatedByUserId { get; protected set; }
-    public string CreatedByIp { get; protected set; }
-    public string LastUpdatedByIp { get; protected set; }
+    public string? CreatedByIp { get; protected set; }
+    public string? LastUpdatedByIp { get; protected set; }
     
     #endregion
 
