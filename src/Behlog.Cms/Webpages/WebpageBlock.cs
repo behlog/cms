@@ -56,7 +56,7 @@ public class WebpageBlock : ValueObject
     }
 
     #region props
-
+    public int Id { get; protected set; }
     public Guid WebpageId { get; private set; }
     public Guid BlockId { get; private set; }
     public ContentBodyType BodyType { get; private set; }

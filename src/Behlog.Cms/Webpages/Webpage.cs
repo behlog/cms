@@ -39,7 +39,11 @@ public partial class Webpage : AggregateRoot<Guid>, IHasMetadata
 
     #region Navigations
 
+    public Language Language { get; protected set; }
+
     public IEnumerable<WebpageMeta> Meta { get; protected set; }
+
+    public IEnumerable<WebpageBlock> Blocks { get; protected set; }
 
     #endregion
 
