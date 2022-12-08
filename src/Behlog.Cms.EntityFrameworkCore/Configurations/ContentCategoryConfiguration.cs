@@ -23,7 +23,7 @@ public static partial class EntityConfigurations
                     c => c.Id,
                     c => EntityStatus.FromValue<EntityStatus>(c));
 
-            category.HasOne<ContentType>()
+            category.HasOne(_=> _.ContentType)
                 .WithMany()
                 .HasForeignKey(_ => _.ContentTypeId)
                 .OnDelete(DeleteBehavior.SetNull);
