@@ -48,4 +48,6 @@ public static partial class EntityConfigurations
     public const string ComponentTableName = nameof(Component);
 
     public const string ComponentMetaTableName = nameof(ComponentMeta);
+
+    public const string ContentComponentTableName = nameof(ContentComponent);
 }

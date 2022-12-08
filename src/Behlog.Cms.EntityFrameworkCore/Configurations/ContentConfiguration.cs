@@ -90,6 +90,20 @@ public static partial class EntityConfigurations
                 f.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired(false);
                 f.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
             });
+
+
+            content.OwnsMany(_ => _.Components, comp => {
+                comp.ToTable(ContentComponentTableName)
+                    .HasKey(_ => _.Id);
+                comp.Property(_ => _.Id).ValueGeneratedOnAdd();
+                comp.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
+                    .HasConversion<int>(
+                        s=> s.Id,
+                        s=> EntityStatus.FromValue<EntityStatus>(s));
+                comp.Property(_ => _.Params).HasMaxLength(4000).IsUnicode().IsRequired(false);
+                comp.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode().IsRequired(false);
+                comp.Property(_ => _.IsRtl).HasDefaultValue(false);
+            });
             
             content.HasOne(_ => _.ContentType)
                 .WithMany()
