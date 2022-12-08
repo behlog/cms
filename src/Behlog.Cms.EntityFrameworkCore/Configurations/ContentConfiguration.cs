@@ -1,5 +1,5 @@
-using Behlog.Cms.Domain;
 using Behlog.Core;
+using Behlog.Cms.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Configurations;
