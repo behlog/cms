@@ -30,5 +30,7 @@ public class Component : AggregateRoot<Guid>
 
     public Website Website { get; protected set; }
 
+    public IEnumerable<ComponentMeta> Meta { get; protected set; }
+
     #endregion
 }
