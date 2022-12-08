@@ -24,6 +24,11 @@ public static partial class EntityConfigurations
                 .HasConversion<int>(
                     s => s.Id,
                     s => EntityStatus.FromValue<EntityStatus>(s));
+
+            component.HasOne(_ => _.Website)
+                    .WithMany()
+                    .HasForeignKey(_ => _.WebsiteId)
+                    .OnDelete(DeleteBehavior.Restrict);
         });
     }
 

@@ -12,6 +12,7 @@ public class Component : AggregateRoot<Guid>
 
 
     #region props
+    public Guid WebsiteId { get; protected set; }
     public string Name { get; protected set; }
     public string Title { get; protected set; }
     public string Category { get; protected set; }
@@ -25,4 +26,9 @@ public class Component : AggregateRoot<Guid>
     #endregion
 
 
+    #region Navigations
+
+    public Website Website { get; protected set; }
+
+    #endregion
 }
