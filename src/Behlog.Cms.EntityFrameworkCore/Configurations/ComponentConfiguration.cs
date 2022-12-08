@@ -37,6 +37,7 @@ public static partial class EntityConfigurations
                         c => c.Id, c => EntityStatus.FromValue<EntityStatus>(c));
                 m.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
+                m.Property(_ => _.Index).HasColumnName("IndexNumber").IsRequired();
             });
 
             component.HasOne(_ => _.Website)
