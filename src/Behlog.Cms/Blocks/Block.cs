@@ -53,7 +53,6 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
 
     #endregion
 
-
     #region Builders
 
 
@@ -97,7 +96,6 @@ public class Block : AggregateRoot<Guid>, IHasMetadata
 
     #endregion
 
-    
     #region Events
 
     private void AddCreatedEvent()
