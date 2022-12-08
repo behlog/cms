@@ -26,7 +26,7 @@ public static partial class EntityConfigurations
                     s => EntityStatus.FromValue<EntityStatus>(s));
 
             component.OwnsMany(_ => _.Meta, m => {
-                m.ToTable(ContentMetaTableName).HasKey("Id");
+                m.ToTable(ComponentMetaTableName).HasKey("Id");
                 m.Property<long>("Id").ValueGeneratedOnAdd();
                 m.WithOwner().HasForeignKey(_ => _.OwnerId);
                 m.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);

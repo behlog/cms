@@ -12,16 +12,20 @@ public class ComponentMeta : MetaBase<Guid>
 
     public static ComponentMeta New() => new ComponentMeta();
 
-    public static ComponentMeta New(string metaKey) => new ComponentMeta
-    {
-        MetaKey = metaKey
-    };
+    public int Index { get; protected set; }
 
-    public static ComponentMeta New(string metaKey, string metaValue) => new ComponentMeta
-    {
-        MetaKey = metaKey,
-        MetaValue = metaValue
-    };
+    public static ComponentMeta New(string metaKey) 
+        => new ComponentMeta
+        {
+            MetaKey = metaKey
+        };
+
+    public static ComponentMeta New(string metaKey, string metaValue) 
+        => new ComponentMeta
+        {
+            MetaKey = metaKey,
+            MetaValue = metaValue
+        };
 
     public ComponentMeta WithOwnerId(Guid categoryId) {
         OwnerId = categoryId;
@@ -70,6 +74,11 @@ public class ComponentMeta : MetaBase<Guid>
 
     public ComponentMeta WithLangCode(string langCode) {
         LangCode = langCode;
+        return this;
+    }
+
+    public ComponentMeta WithIndex(int index) {
+        Index = index;
         return this;
     }
 

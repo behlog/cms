@@ -46,4 +46,6 @@ public static partial class EntityConfigurations
     public const string WebpageBlockTableName = nameof(WebpageBlock);
 
     public const string ComponentTableName = nameof(Component);
+
+    public const string ComponentMetaTableName = nameof(ComponentMeta);
 }
