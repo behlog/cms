@@ -326,7 +326,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     LangId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ParentId = table.Column<Guid>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
-                    ContentTypeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ContentTypeId = table.Column<Guid>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -334,8 +334,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     LastUpdatedByUserId = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedByIp = table.Column<string>(type: "TEXT", nullable: true),
                     LastUpdatedByIp = table.Column<string>(type: "TEXT", nullable: true),
-                    LastStatusChangedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LanguageId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    LastStatusChangedOn = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -345,19 +344,19 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         column: x => x.ContentTypeId,
                         principalTable: "ContentType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ContentCategory_Language_LanguageId",
-                        column: x => x.LanguageId,
+                        name: "FK_ContentCategory_Language_LangId",
+                        column: x => x.LangId,
                         principalTable: "Language",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ContentCategory_Website_WebsiteId",
                         column: x => x.WebsiteId,
                         principalTable: "Website",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -665,9 +664,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                 column: "ContentTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContentCategory_LanguageId",
+                name: "IX_ContentCategory_LangId",
                 table: "ContentCategory",
-                column: "LanguageId");
+                column: "LangId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContentCategory_WebsiteId",

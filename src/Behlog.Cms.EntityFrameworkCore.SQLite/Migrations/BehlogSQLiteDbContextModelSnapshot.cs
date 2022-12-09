@@ -402,7 +402,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("ContentTypeId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
@@ -420,9 +419,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("LangId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("LanguageId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("LastStatusChangedOn")
@@ -464,7 +460,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
                     b.HasIndex("ContentTypeId");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LangId");
 
                     b.HasIndex("WebsiteId");
 
@@ -1269,19 +1265,18 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     b.HasOne("Behlog.Core.ContentType", "ContentType")
                         .WithMany()
                         .HasForeignKey("ContentTypeId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Behlog.Cms.Domain.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("LangId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Behlog.Cms.Domain.Website", "Website")
                         .WithMany()
                         .HasForeignKey("WebsiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ContentType");
