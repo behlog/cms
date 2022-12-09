@@ -21,7 +21,6 @@ public class CmsSetup : ICmsSetup
     private readonly ILanguageWriteStore _languageWriteStore;
     private readonly IIdyfaUserManager _userManager;
     private readonly IIdyfaRoleManager _roleManager;
-    private readonly ILogger _logger;
     private readonly IWebsiteWriteStore _websiteWriteStore;
     private readonly IWebsiteService _websiteService;
 
@@ -33,7 +32,7 @@ public class CmsSetup : ICmsSetup
     public CmsSetup(
         IBehlogMediator mediator, IBehlogDbContext dbContext, IIdyfaDbContext idyfaDbContext,
         IContentTypeWriteStore contentTypeWriteStore, ILanguageWriteStore languageWriteStore, 
-        ILogger logger, IIdyfaUserManager userManager, IIdyfaRoleManager roleManager,
+        IIdyfaUserManager userManager, IIdyfaRoleManager roleManager,
         IWebsiteWriteStore websiteWriteStore, IWebsiteService websiteService, ISystemDateTime dateTime)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -41,7 +40,6 @@ public class CmsSetup : ICmsSetup
         _idyfaDbContext = idyfaDbContext ?? throw new ArgumentNullException(nameof(idyfaDbContext));
         _contentTypeWriteStore = contentTypeWriteStore ?? throw new ArgumentNullException(nameof(contentTypeWriteStore));
         _languageWriteStore = languageWriteStore ?? throw new ArgumentNullException(nameof(languageWriteStore));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         _websiteWriteStore = websiteWriteStore ?? throw new ArgumentNullException(nameof(websiteWriteStore));
@@ -50,7 +48,7 @@ public class CmsSetup : ICmsSetup
         _contentTypeSeed = new ContentTypeSeed(_contentTypeWriteStore, dateTime);
         _languageSeed = new LanguageSeed(_languageWriteStore);
         _userSeed = new UserSeed(_userManager, _roleManager);
-        _websiteSeed = new WebsiteSeed(_logger, _websiteWriteStore, _websiteService);
+        _websiteSeed = new WebsiteSeed(_websiteWriteStore, _websiteService);
     }
 
     
@@ -68,17 +66,17 @@ public class CmsSetup : ICmsSetup
         // await _dbContext.MigrateDbAsync(cancellationToken);
 
         var user = await _userSeed.SeedAdminUserAsync(cancellationToken);
-        _logger.LogInformation($"[Setup] - SeedUser completed. ('{user.UserName}' user has been created. ");
+        Console.WriteLine($"[Setup] - SeedUser completed. ('{user.UserName}' user has been created. ");
 
         await _languageSeed.SeedAsync(cancellationToken);
-        _logger.LogInformation($"[Setup] - SeedLanguages completed...");
+        Console.WriteLine($"[Setup] - SeedLanguages completed...");
 
         await _contentTypeSeed.SeedAsync(cancellationToken);
-        _logger.LogInformation($"[Setup] - SeedContentTypes completed...");
+        Console.WriteLine($"[Setup] - SeedContentTypes completed...");
 
         var website = await _websiteSeed.SeedWebsiteAsync(data, user.Id);
-        _logger.LogInformation($"[Setup] SeedWebsite completed. The Website '{data.Name}' has been created...");
-        
-        _logger.LogInformation($"[Setup] DONE. Now you can enjoy Behlog CMS!");
+        Console.WriteLine($"[Setup] SeedWebsite completed. The Website '{data.Name}' has been created...");
+
+        Console.WriteLine($"[Setup] DONE. Now you can enjoy Behlog CMS!");
     }
 }

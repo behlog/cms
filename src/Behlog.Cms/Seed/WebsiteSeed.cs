@@ -12,14 +12,12 @@ namespace Behlog.Cms.Seed;
 
 internal class WebsiteSeed
 {
-    private readonly ILogger _logger;
     private readonly IWebsiteWriteStore _writeStore;
     private readonly IWebsiteService _service;
 
     public WebsiteSeed(
-        ILogger logger, IWebsiteWriteStore writeStore, IWebsiteService service)
+        IWebsiteWriteStore writeStore, IWebsiteService service)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
@@ -37,17 +35,17 @@ internal class WebsiteSeed
             if (seedData.LangCode.ToLower() == PersianLanguage.Code.ToLower())
             {
                 langId = PersianLanguage.Id;
-                _logger.LogInformation($"Using {PersianLanguage.Title} as Language...");
+                Console.WriteLine($"Using {PersianLanguage.Title} as Language...");
             }
                 
             else if (seedData.LangCode.ToLower() == EnglishLanguage.Code.ToLower())
             {
                 langId = EnglishLanguage.Id;
-                _logger.LogInformation($"Using {EnglishLanguage.Title} as Language...");
+                Console.WriteLine($"Using {EnglishLanguage.Title} as Language...");
             }
             else
             {
-                _logger.LogError($"The language '{seedData.LangCode}' not supported.");
+                Console.WriteLine($"The language '{seedData.LangCode}' not supported.");
                 throw new BehlogLanguageNotSupportedException(seedData.LangCode);
             }
         }
@@ -59,7 +57,7 @@ internal class WebsiteSeed
         var validation = CreateWebsiteCommandValidator.Run(createCommand);
         if (validation.HasError)
         {
-            _logger.LogError($"Validation error for Website: {validation.ToString()}");
+            Console.WriteLine($"Validation error for Website: {validation.ToString()}");
             throw new BehlogSeedingException();
         }
         
@@ -67,8 +65,8 @@ internal class WebsiteSeed
         _writeStore.MarkForAdd(website);
         
         await _writeStore.SaveChangesAsync(CancellationToken.None).ConfigureAwait(false);
-        
-        _logger.LogInformation($"The Website '{website.Name}' has created successfully.");
+
+        Console.WriteLine($"The Website '{website.Name}' has created successfully.");
         
         return website;
     }

@@ -22,6 +22,8 @@ public static class ServiceProvider
         dbConfig.ThrowExceptionIfArgumentIsNull(nameof(dbConfig));
         services.AddTransient<IBehlogDbContext>(
             provider => provider.GetRequiredService<BehlogDbContext>());
+        services.AddTransient<IBehlogEntityFrameworkDbContext>(
+            provider => provider.GetRequiredService<BehlogDbContext>());
         services.AddEntityFrameworkSqlServer();
         services.AddDbContextPool<BehlogDbContext, BehlogSqlServerDbContext>(
             (provider, optionsBuilder)
