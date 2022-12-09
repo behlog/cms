@@ -134,7 +134,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
 
     public Language Language { get; protected set; }
     
-    public ContentType ContentType { get; protected set; }
+    public ContentType? ContentType { get; protected set; }
     
     public Website Website { get; protected set; }
     

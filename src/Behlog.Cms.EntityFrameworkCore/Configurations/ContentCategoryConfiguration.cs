@@ -26,7 +26,17 @@ public static partial class EntityConfigurations
             category.HasOne(_=> _.ContentType)
                 .WithMany()
                 .HasForeignKey(_ => _.ContentTypeId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            category.HasOne(_ => _.Language)
+                .WithMany()
+                .HasForeignKey(_ => _.LangId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            category.HasOne(_ => _.Website)
+                .WithMany()
+                .HasForeignKey(_ => _.WebsiteId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         builder.Entity<ContentCategoryItem>(item =>
