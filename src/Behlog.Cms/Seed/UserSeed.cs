@@ -26,14 +26,16 @@ internal class UserSeed
             .WithName("Admin")
             .WithTitle("Administrator");
 
-        var roleResult = await _roleManager.CreateAsync(adminRole).ConfigureAwait(false);
-        if (!roleResult.Succeeded)
-        {
-            Console.WriteLine($"Error : Adding AdminRole {roleResult.Errors.ToList()}");
-            //TODO : made an extension method to convert identity errors to string in Idyfa
-            throw new BehlogSeedingException(nameof(Role));
+        if(!await _roleManager.RoleExistsAsync(adminRole.Name)) {
+            var roleResult = await _roleManager.CreateAsync(adminRole).ConfigureAwait(false);
+            if (!roleResult.Succeeded) {
+                Console.WriteLine($"Error : Adding AdminRole {roleResult.Errors.ToList()}");
+                //TODO : made an extension method to convert identity errors to string in Idyfa
+                throw new BehlogSeedingException(nameof(Role));
+            }
         }
         
+        //TODO : check if user does not exist then create it.
         var adminUser = User.RegisterUser(
             defaultAdminUserName, defaultAdminPassword, defaultAdminEmail,
             "", "admin", "admin");
@@ -43,6 +45,7 @@ internal class UserSeed
             throw new BehlogSeedingException(nameof(adminUser));
         } 
         
+        //TODO : check if User does not has the admin role then add to it.
         var addToRoleResult = await _userManager
              .AddToRoleAsync(adminUser, adminRole.Name).ConfigureAwait(false);
         if (!addToRoleResult.Succeeded)
