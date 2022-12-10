@@ -103,6 +103,10 @@ public static partial class EntityConfigurations
                 comp.Property(_ => _.Params).HasMaxLength(4000).IsUnicode().IsRequired(false);
                 comp.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode().IsRequired(false);
                 comp.Property(_ => _.IsRtl).HasDefaultValue(false);
+                comp.HasOne(_ => _.Component)
+                    .WithMany()
+                    .HasForeignKey(_ => _.ComponentId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             
             content.HasOne(_ => _.ContentType)
