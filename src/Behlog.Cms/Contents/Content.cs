@@ -70,6 +70,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public IEnumerable<ContentComponent> Components { get; protected set; }
         = new HashSet<ContentComponent>();
 
+    public IEnumerable<ContentTag> Tags { get; protected set; }
+        = new HashSet<ContentTag>();
+
     #endregion
 
     #region Builders

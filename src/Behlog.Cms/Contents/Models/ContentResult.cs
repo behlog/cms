@@ -108,6 +108,21 @@ public class ContentResult
         AuthorUserDisplayName = displayName;
         return this;
     }
+
+    public ContentResult WithTags(IReadOnlyCollection<ContentTag> tags)
+    {
+        var result = new List<ContentTagResult>();
+        foreach(var tag in tags)
+            result.Add(new ContentTagResult(tag.ContentId, tag.TagId).WithTag(tag.Tag));
+        Tags = result.ToList();
+        return this;
+    }
+
+    public ContentResult WithLikesCount(int likesCount)
+    {
+        LikesCount = likesCount;
+        return this;
+    }
     
     public Guid Id { get; }
     public string Title { get; }
@@ -141,5 +156,7 @@ public class ContentResult
     public IReadOnlyCollection<ContentCategoryItemResult> Categories { get; private set; }
     public IReadOnlyCollection<MetaResult> Meta { get; private set; }
     public IReadOnlyCollection<ContentFileResult> Files { get; private set; }
+    public IReadOnlyCollection<ContentTagResult> Tags { get; private set; }
+    public int LikesCount { get; private set; }
     
 }

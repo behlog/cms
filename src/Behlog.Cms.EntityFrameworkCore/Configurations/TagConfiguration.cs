@@ -39,7 +39,7 @@ public static partial class EntityConfigurations
                 });
             
             tag.HasOne(_ => _.Content)
-                .WithMany()
+                .WithMany(_=> _.Tags)
                 .HasForeignKey(_ => _.ContentId)
                 .OnDelete(DeleteBehavior.Restrict);
             
