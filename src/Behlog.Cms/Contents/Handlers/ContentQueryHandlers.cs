@@ -35,7 +35,8 @@ public class ContentQueryHandlers :
             .WithLanguage(content.Language)
             .WithMeta(content.Meta?.ToList())
             .WithTags(content.Tags?.ToList())
-            .WithContentType(content.ContentType);
+            .WithContentType(content.ContentType)
+            .WithLikesCount(await _readStore.CountLikesAsync(content.Id, cancellationToken));
 
         var author = await _userRepo.FindByIdAsync(
             content.AuthorUserId, cancellationToken).ConfigureAwait(false);
@@ -50,6 +51,35 @@ public class ContentQueryHandlers :
     public async Task<ContentResult> HandleAsync(
         QueryContentBySlug query, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        if (query.WebsiteId == default)
+            throw new BehlogInvalidEntityIdException(nameof(Website));
+        
+        if (query.Slug.IsNullOrEmptySpace())
+            throw new ArgumentNullException(nameof(query.Slug));
+
+        var normalizedSlug = query.Slug.CorrectYeKe().ToUpper().Trim();
+        var content = await _readStore.GetBySlugAsync(query.WebsiteId, normalizedSlug, cancellationToken);
+        content.ThrowExceptionIfReferenceIsNull(nameof(content));
+        
+        var result = content.ToResult()
+            .WithCategories(content.Categories?.ToList())
+            .WithFiles(content.Files?.ToList())
+            .WithLanguage(content.Language)
+            .WithMeta(content.Meta?.ToList())
+            .WithTags(content.Tags?.ToList())
+            .WithContentType(content.ContentType)
+            .WithLikesCount(await _readStore.CountLikesAsync(content.Id, cancellationToken));
+
+        var author = await _userRepo.FindByIdAsync(
+            content.AuthorUserId, cancellationToken).ConfigureAwait(false);
+        if (author != null)
+        {
+            result.WithAuthor(author.UserName, author.DisplayName);
+        }
+        
+        return await Task.FromResult(result);
     }
+    
 }
