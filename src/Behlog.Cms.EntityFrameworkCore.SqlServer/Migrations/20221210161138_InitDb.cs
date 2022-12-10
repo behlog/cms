@@ -222,7 +222,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     MetaType = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     LangId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LangCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     OrderNum = table.Column<int>(type: "int", nullable: false)
@@ -251,8 +250,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     MetaType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     LangId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LangCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     OrderNum = table.Column<int>(type: "int", nullable: false)
                 },
@@ -370,10 +368,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     MetaKey = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     MetaValue = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
-                    MetaType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetaType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     LangId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LangCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     OrderNum = table.Column<int>(type: "int", nullable: false)
@@ -477,7 +474,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         column: x => x.ComponentId,
                         principalTable: "Component",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ContentComponent_Content_ContentId",
                         column: x => x.ContentId,
@@ -546,10 +543,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     MetaKey = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     MetaValue = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
-                    MetaType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetaType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     LangId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LangCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     OrderNum = table.Column<int>(type: "int", nullable: false)

@@ -74,11 +74,5 @@ public class BlockMeta : MetaBase<Guid>
         return this;
     }
 
-    public BlockMeta WithLangCode(string langCode)
-    {
-        LangCode = langCode;
-        return this;
-    }
-
     public BlockMeta Build() => this;
 }

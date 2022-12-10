@@ -80,11 +80,5 @@ public class ContentMeta : MetaBase<Guid>
         return this;
     }
 
-    public ContentMeta WithLangCode(string langCode)
-    {
-        LangCode = langCode;
-        return this;
-    }
-
     public ContentMeta Build() => this;
 }

@@ -826,13 +826,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Description")
-                                .IsRequired()
                                 .HasMaxLength(2000)
                                 .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("LangCode")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<Guid?>("LangId")
@@ -924,10 +919,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasColumnType("INTEGER")
                                 .HasColumnName("IndexNumber");
 
-                            b1.Property<string>("LangCode")
-                                .IsRequired()
-                                .HasColumnType("TEXT");
-
                             b1.Property<Guid?>("LangId")
                                 .HasColumnType("TEXT");
 
@@ -938,7 +929,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MetaType")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MetaValue")
@@ -1096,7 +1086,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                             b1.HasOne("Behlog.Cms.Domain.Component", "Component")
                                 .WithMany()
                                 .HasForeignKey("ComponentId")
-                                .OnDelete(DeleteBehavior.Cascade)
+                                .OnDelete(DeleteBehavior.Restrict)
                                 .IsRequired();
 
                             b1.WithOwner()
@@ -1197,10 +1187,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .IsUnicode(true)
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("LangCode")
-                                .IsRequired()
-                                .HasColumnType("TEXT");
-
                             b1.Property<Guid?>("LangId")
                                 .HasColumnType("TEXT");
 
@@ -1211,7 +1197,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MetaType")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MetaValue")
@@ -1308,7 +1293,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
             modelBuilder.Entity("Behlog.Cms.Domain.ContentTag", b =>
                 {
                     b.HasOne("Behlog.Cms.Domain.Content", "Content")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1361,11 +1346,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
                             b1.Property<string>("Description")
                                 .HasMaxLength(2000)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("LangCode")
-                                .HasMaxLength(50)
                                 .IsUnicode(true)
                                 .HasColumnType("TEXT");
 
@@ -1431,6 +1411,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>

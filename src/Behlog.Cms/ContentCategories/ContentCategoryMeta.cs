@@ -77,11 +77,5 @@ public class ContentCategoryMeta : MetaBase<Guid>
         return this;
     }
 
-    public ContentCategoryMeta WithLangCode(string langCode)
-    {
-        LangCode = langCode;
-        return this;
-    }
-
     public ContentCategoryMeta Build() => this;
 }

@@ -833,14 +833,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasColumnType("nvarchar(256)");
 
                             b1.Property<string>("Description")
-                                .IsRequired()
                                 .HasMaxLength(2000)
                                 .IsUnicode(true)
                                 .HasColumnType("nvarchar(2000)");
-
-                            b1.Property<string>("LangCode")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<Guid?>("LangId")
                                 .HasColumnType("uniqueidentifier");
@@ -933,10 +928,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasColumnType("int")
                                 .HasColumnName("IndexNumber");
 
-                            b1.Property<string>("LangCode")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
                             b1.Property<Guid?>("LangId")
                                 .HasColumnType("uniqueidentifier");
 
@@ -947,7 +938,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasColumnType("nvarchar(256)");
 
                             b1.Property<string>("MetaType")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("MetaValue")
@@ -1109,7 +1099,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                             b1.HasOne("Behlog.Cms.Domain.Component", "Component")
                                 .WithMany()
                                 .HasForeignKey("ComponentId")
-                                .OnDelete(DeleteBehavior.Cascade)
+                                .OnDelete(DeleteBehavior.Restrict)
                                 .IsRequired();
 
                             b1.WithOwner()
@@ -1214,10 +1204,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .IsUnicode(true)
                                 .HasColumnType("nvarchar(2000)");
 
-                            b1.Property<string>("LangCode")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
                             b1.Property<Guid?>("LangId")
                                 .HasColumnType("uniqueidentifier");
 
@@ -1228,7 +1214,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasColumnType("nvarchar(256)");
 
                             b1.Property<string>("MetaType")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("MetaValue")
@@ -1325,7 +1310,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
             modelBuilder.Entity("Behlog.Cms.Domain.ContentTag", b =>
                 {
                     b.HasOne("Behlog.Cms.Domain.Content", "Content")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1382,11 +1367,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasMaxLength(2000)
                                 .IsUnicode(true)
                                 .HasColumnType("nvarchar(2000)");
-
-                            b1.Property<string>("LangCode")
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<Guid?>("LangId")
                                 .HasColumnType("uniqueidentifier");
@@ -1450,6 +1430,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>

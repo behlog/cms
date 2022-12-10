@@ -72,11 +72,6 @@ public class WebpageMeta : MetaBase<Guid>
         return this;
     }
 
-    public WebpageMeta WithLangCode(string langCode) {
-        LangCode = langCode;
-        return this;
-    }
-
     public WebpageMeta Build() => this;
 }
 

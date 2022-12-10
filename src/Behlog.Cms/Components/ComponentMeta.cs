@@ -72,11 +72,6 @@ public class ComponentMeta : MetaBase<Guid>
         return this;
     }
 
-    public ComponentMeta WithLangCode(string langCode) {
-        LangCode = langCode;
-        return this;
-    }
-
     public ComponentMeta WithIndex(int index) {
         Index = index;
         return this;
