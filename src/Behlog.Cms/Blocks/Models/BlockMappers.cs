@@ -8,19 +8,7 @@ public static class BlockMappers
 
     public static MetaResult MapToResult(this BlockMeta meta)
     {
-        return new MetaResult
-        {
-            Category = meta.Category,
-            Description = meta.Description,
-            Status = meta.Status,
-            Title = meta.Title,
-            LangCode = meta.LangCode,
-            LangId = meta.LangId,
-            MetaKey = meta.MetaKey,
-            MetaType = meta.MetaType,
-            MetaValue = meta.MetaValue,
-            OrderNum = meta.OrderNum,
-            OwnerId = meta.OwnerId
-        };
+        return new MetaResult(meta.OwnerId, meta.Title, meta.MetaKey, meta.MetaValue,
+            meta.MetaType, meta.Status, meta.LangId, meta.Description, meta.Category, meta.OrderNum);
     }
 }

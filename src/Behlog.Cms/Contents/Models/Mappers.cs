@@ -12,14 +12,11 @@ public static class ContentMappers
         content.ThrowExceptionIfArgumentIsNull(nameof(content));
 
         return new ContentResult(
-            content.Id, content.Title, content.Slug, content.ContentTypeId,
-            "", "", content.Body!, content.BodyType,
-            content.AuthorUserId, content.Summary!, content.Status, 
-            content.AltTitle!, content.OrderNum, 
-            content.Categories?.Select(
-                category => category.CategoryId).ToList()!,
-            content.Meta?.Select(_=> _.ToResult()).ToList()!
-            );
+            content.Id, content.Title, content.Slug, content.ContentTypeId, content.LangId,
+            content.Body!, content.BodyType, content.AuthorUserId, content.Summary, content.Status,
+            content.AltTitle, content.OrderNum, content.LastStatusChangedDate, content.PublishDate,
+            content.IconName, content.ViewPath, content.CreatedDate, content.LastUpdated, 
+            content.CreatedByUserId, content.LastUpdatedByUserId, content.CreatedByIp, content.LastUpdatedByIp);
     }
 
 
@@ -27,19 +24,8 @@ public static class ContentMappers
     {
         meta.ThrowExceptionIfArgumentIsNull(nameof(meta));
 
-        return new MetaResult
-        {
-            OwnerId = meta.OwnerId,
-            MetaKey = meta.MetaKey,
-            MetaValue = meta.MetaValue,
-            Category = meta.Category,
-            Description = meta.Description,
-            Status = meta.Status,
-            Title = meta.Title,
-            LangCode = meta.LangCode,
-            LangId = meta.LangId,
-            MetaType = meta.MetaType,
-            OrderNum = meta.OrderNum
-        };
+        return new MetaResult(
+            meta.OwnerId, meta.Title, meta.MetaKey, meta.MetaValue, meta.MetaType,
+            meta.Status, meta.LangId, meta.Description, meta.Category, meta.OrderNum);
     }
 }

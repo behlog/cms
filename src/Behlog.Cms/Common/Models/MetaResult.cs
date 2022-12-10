@@ -5,15 +5,30 @@ namespace Behlog.Cms.Models;
 
 public class MetaResult
 {
-    public Guid OwnerId { get; set; }
-    public string Title { get; set; }
-    public string MetaKey { get; set; }
-    public string MetaValue { get; set; }
-    public string MetaType { get; set; }
-    public EntityStatus Status { get; set; }
-    public Guid? LangId { get; set; }
-    public string LangCode { get; set; }
-    public string Description { get; set; }
-    public string Category { get; set; }
-    public int OrderNum { get; set; }
+    public MetaResult(
+        Guid ownerId, string title, string metaKey, string metaValue, string metaType,
+        EntityStatus status, Guid? langId, string description, string category, int orderNum)
+    {
+        OwnerId = ownerId;
+        Title = title;
+        MetaKey = metaKey;
+        MetaValue = metaValue;
+        MetaType = metaType;
+        Status = status;
+        LangId = langId;
+        Description = description;
+        Category = category;
+        OrderNum = orderNum;
+    }
+    
+    public Guid OwnerId { get; }
+    public string Title { get; }
+    public string MetaKey { get; }
+    public string MetaValue { get; }
+    public string MetaType { get; }
+    public EntityStatus Status { get; }
+    public Guid? LangId { get; }
+    public string Description { get; }
+    public string Category { get; }
+    public int OrderNum { get; }
 }
