@@ -58,11 +58,17 @@ public class CmsSetup : ICmsSetup
         data.ThrowExceptionIfArgumentIsNull(nameof(data));
         
         //Creates Idyfa Database to manage users and roles
-        await _idyfaDbContext.EnsureCreatedAsync(cancellationToken);
+        // await _idyfaDbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
+        // Console.WriteLine("The Idyfa database created successfully.");
+        // await _idyfaDbContext.MigrateDbAsync(cancellationToken).ConfigureAwait(false);
+        // Console.WriteLine("The Idyfa database migrated successfully.");
         // await _idyfaDbContext.MigrateDbAsync(cancellationToken);
         
         //Creates CMS database
-        await _dbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
+        // await _dbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
+        // Console.WriteLine("The Behlog database created successfully.");
+        // await _dbContext.MigrateDbAsync(cancellationToken).ConfigureAwait(false);
+        // Console.WriteLine("The Behlog database migrated successfully.");
         // await _dbContext.MigrateDbAsync(cancellationToken);
 
         var user = await _userSeed.SeedAdminUserAsync(cancellationToken);

@@ -37,20 +37,22 @@ internal class UserSeed
         
         //TODO : check if user does not exist then create it.
         var adminUser = User.RegisterUser(
-            defaultAdminUserName, defaultAdminPassword, defaultAdminEmail,
-            "", "admin", "admin");
-        var userResult = await _userManager.CreateAsync(adminUser).ConfigureAwait(false);
+            defaultAdminUserName, defaultAdminEmail, "Administrator", "", "admin", "admin");
+        var userResult = await _userManager.CreateAsync(adminUser, defaultAdminPassword).ConfigureAwait(false);
         if (!userResult.Succeeded)
         {
             throw new BehlogSeedingException(nameof(adminUser));
         } 
         
         //TODO : check if User does not has the admin role then add to it.
-        var addToRoleResult = await _userManager
-             .AddToRoleAsync(adminUser, adminRole.Name).ConfigureAwait(false);
-        if (!addToRoleResult.Succeeded)
+        if (!await _userManager.IsInRoleAsync(adminUser, adminRole.Name))
         {
-            throw new BehlogSeedingException(nameof(addToRoleResult));
+            var addToRoleResult = await _userManager
+                .AddToRoleAsync(adminUser, adminRole.Name).ConfigureAwait(false);
+            if (!addToRoleResult.Succeeded)
+            {
+                throw new BehlogSeedingException(nameof(addToRoleResult));
+            }
         }
         
         Console.WriteLine($"[Seed]: User '{adminUser.UserName}' has successfully created.");
