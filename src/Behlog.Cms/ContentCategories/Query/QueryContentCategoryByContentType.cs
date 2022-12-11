@@ -7,10 +7,14 @@ namespace Behlog.Cms.Query;
 public class QueryContentCategoryByContentType : IBehlogQuery<IReadOnlyCollection<ContentCategoryResult>>
 {
 
-    public QueryContentCategoryByContentType(Guid? contentTypeId = null)
+    public QueryContentCategoryByContentType(
+        Guid? contentTypeId, Guid? langId)
     {
         ContentTypeId = contentTypeId;
+        LangId = langId;
     }
     
     public Guid? ContentTypeId { get; }
+
+    public Guid? LangId { get; }
 }

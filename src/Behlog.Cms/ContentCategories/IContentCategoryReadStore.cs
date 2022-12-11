@@ -18,7 +18,7 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// </summary>
     /// <returns>A list of <see cref="ContentCategory"/>(s) based on a <see cref="Website"/></returns>
     Task<IReadOnlyCollection<ContentCategory>> FindWebsiteContentCategoriesAsync(
-        Guid websiteId, Guid? contentTypeId, CancellationToken cancellationToken = default);
+        Guid websiteId, Guid langId, Guid? contentTypeId, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Finds all the <see cref="ContentCategory"/> with the given <see cref="ContentType"/> Id.
@@ -26,7 +26,7 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// <param name="contentTypeId">ContentType Id</param>
     /// <returns>A read only list of ContentType's ContentCategories.</returns>
     Task<IReadOnlyCollection<ContentCategory>> FindByContentTypeAsync(
-        Guid? contentTypeId, CancellationToken cancellationToken = default);
+        Guid? langId, Guid? contentTypeId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Finds all the <see cref="ContentCategory"/> with specified ParentId.
@@ -35,5 +35,5 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// <param name="cancellationToken"></param>
     /// <returns>A list of <see cref="ContentCategory"/>(s) with the same ParentId.</returns>
     Task<IReadOnlyCollection<ContentCategory>> FindByParentIdAsync(
-        Guid? parentId, CancellationToken cancellationToken = default);
+        Guid langId, Guid? parentId, CancellationToken cancellationToken = default);
 }

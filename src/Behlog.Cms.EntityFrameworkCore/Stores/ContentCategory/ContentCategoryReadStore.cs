@@ -25,9 +25,11 @@ public class ContentCategoryReadStore : BehlogReadStore<ContentCategory, Guid>, 
 
     /// <inheritdoc /> 
     public async Task<IReadOnlyCollection<ContentCategory>> FindWebsiteContentCategoriesAsync(
-        Guid websiteId, Guid? contentTypeId, CancellationToken cancellationToken = default)
+        Guid websiteId, Guid langId, Guid? contentTypeId, CancellationToken cancellationToken = default)
     {
-        var query = _set.Where(_ => _.WebsiteId == websiteId);
+        var query = _set.Where(_ => _.WebsiteId == websiteId)
+                        .Where(_=> _.LangId == langId);
+
         if (contentTypeId.HasValue)
             query = query.Where(_ => _.ContentTypeId == contentTypeId.Value);
         
@@ -38,16 +40,23 @@ public class ContentCategoryReadStore : BehlogReadStore<ContentCategory, Guid>, 
     
     /// <inheritdoc /> 
     public async Task<IReadOnlyCollection<ContentCategory>> FindByContentTypeAsync(
-        Guid? contentTypeId, CancellationToken cancellationToken = default)
+        Guid? langId, Guid? contentTypeId, CancellationToken cancellationToken = default)
     {
-        return await _set.Where(_ => _.ContentTypeId == contentTypeId)
-            .ToListAsync(cancellationToken).ConfigureAwait(false);
+        var query = _set.AsQueryable();
+        if(langId.HasValue) {
+            query = query.Where(_ => _.LangId == langId.Value);
+        }
+        if(contentTypeId.HasValue) {
+            query = query.Where(_ => _.ContentTypeId == contentTypeId);
+        }
+
+        return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<IReadOnlyCollection<ContentCategory>> FindByParentIdAsync(
-        Guid? parentId, CancellationToken cancellationToken = default)
+        Guid langId, Guid? parentId, CancellationToken cancellationToken = default)
     {
-        return await _set.Where(_ => _.ParentId == parentId)
+        return await _set.Where(_ => _.LangId == langId && _.ParentId == parentId)
             .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 }

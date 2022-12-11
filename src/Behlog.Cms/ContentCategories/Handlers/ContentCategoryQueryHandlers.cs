@@ -38,7 +38,7 @@ public class ContentCategoryQueryHandlers :
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
         var categories = await _readStore.FindByParentIdAsync(
-                query.ParentId, cancellationToken).ConfigureAwait(false);
+                query.LangId, query.ParentId, cancellationToken).ConfigureAwait(false);
 
         return await Task.FromResult(
             categories.Select(_ => _.ToResult()).ToList()
@@ -52,7 +52,7 @@ public class ContentCategoryQueryHandlers :
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
         var categories = await _readStore.FindWebsiteContentCategoriesAsync(
-            query.WebsiteId, query.ContentTypeId, cancellationToken).ConfigureAwait(false);
+            query.WebsiteId, query.LangId, query.ContentTypeId, cancellationToken).ConfigureAwait(false);
         categories.ThrowExceptionIfReferenceIsNull(nameof(categories));
 
         var result = new ContentCategoryListResult(
@@ -66,7 +66,7 @@ public class ContentCategoryQueryHandlers :
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
         var categories = await _readStore.FindByContentTypeAsync(
-            query.ContentTypeId, cancellationToken).ConfigureAwait(false);
+            query.LangId, query.ContentTypeId, cancellationToken).ConfigureAwait(false);
         categories.ThrowExceptionIfReferenceIsNull(nameof(categories));
 
         return await Task.FromResult(

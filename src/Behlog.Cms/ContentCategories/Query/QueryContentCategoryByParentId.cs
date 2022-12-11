@@ -11,5 +11,7 @@ public class QueryContentCategoryByParentId : IBehlogQuery<IReadOnlyCollection<C
         ParentId = parentId;
     }
     
+    public Guid LangId { get; }
+
     public Guid? ParentId { get; }
 }
