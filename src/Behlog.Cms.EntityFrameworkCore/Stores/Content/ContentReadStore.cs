@@ -1,9 +1,12 @@
 using Behlog.Cms.Domain;
 using Behlog.Cms.Query;
 using Behlog.Extensions;
+using Behlog.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Behlog.Cms.EntityFrameworkCore.Extensions;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
+
 
 public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStore
 {
@@ -122,8 +125,36 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
             .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public Task<IReadOnlyCollection<Content>> FilterAsync(QueryContentsFiltered model, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<QueryResult<Content>> FilterAsync(
+        QueryContentsFiltered model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        model.ThrowExceptionIfArgumentIsNull(nameof(model));
+
+        var result = QueryResult<Content>.Create();
+        var query = _set.Where(_ => _.WebsiteId == model.WebsiteId);
+        query = query.AddConditionIfNotNull(model.LangId, _ => _.LangId == model.LangId!.Value)
+                        .AddConditionIfNotNull(model.ContentTypeId, 
+                            _=> _.ContentTypeId == model.ContentTypeId!.Value)
+                        .AddConditionIfNotNull(model.ContentTypeName, 
+                            _=> _.ContentType.SystemName.ToUpper() == model.ContentTypeName!.ToUpper())
+                        .AddConditionIfNotNull(model.AuthorUserId,
+                            _=> _.AuthorUserId == model.AuthorUserId)
+                        .AddConditionIfNotNull(model.Title,
+                            _=> _.Title.ToUpper().Contains(model.Title!))
+                        .AddConditionIfNotNull(model.Status,
+                            _=> _.Status.Id == model.Status!.Id)
+                        .AddConditionIfNotNull(model.Search,
+                            _=> _.Title.ToUpper().Contains(model.Search!) ||
+                                _.Body!.ToUpper().Contains(model.Search!) ||
+                                _.Summary!.ToUpper().Contains(model.Search!) ||
+                                _.AltTitle!.ToUpper().Contains(model.Search!));
+
+        result.WithTotalCount(
+            await query.LongCountAsync(cancellationToken).ConfigureAwait(false));
+        
+        return result.WithResults(
+            await query.ToListAsync(cancellationToken).ConfigureAwait(false));
     }
+    
 }

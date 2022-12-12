@@ -1,5 +1,6 @@
 using Behlog.Core;
 using Behlog.Cms.Query;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Domain;
 
@@ -66,6 +67,6 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// Includes: Categories, Tags, ContentType and Language. 
     /// </summary>
     /// <returns></returns>
-    Task<IReadOnlyCollection<Content>> FilterAsync(
+    Task<QueryResult<Content>> FilterAsync(
         QueryContentsFiltered model, CancellationToken cancellationToken = default);
 }
