@@ -78,16 +78,11 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
             .Include(_=> _.Tags)
             .Include(_=> _.ContentType)
             .Include(_=> _.Language)
-            .Where(_ => _.WebsiteId == model.WebsiteId);
-        if (model.ContentTypeId.HasValue)
-        {
-            query = query.Where(_ => _.ContentTypeId == model.ContentTypeId.Value);
-        }
-
-        if (model.ContentTypeName.IsNotNullOrEmpty())
-        {
-            query = query.Where(_ => _.ContentType.SystemName.ToUpper() == model.ContentTypeName.ToUpper());
-        }
+            .Where(_ => _.WebsiteId == model.WebsiteId)
+            .AddConditionIfNotNull(model.ContentTypeId,
+                _ => _.ContentTypeId == model.ContentTypeId!.Value)
+            .AddConditionIfNotNull(model.ContentTypeName,
+                _ => _.ContentType.SystemName.ToUpper() == model.ContentTypeName!.ToUpper());
 
         return await query.OrderByDescending(_ => _.CreatedDate)
                             .Take(model.RecordsCount)
@@ -130,10 +125,9 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
         QueryContentsFiltered model, CancellationToken cancellationToken = default)
     {
         model.ThrowExceptionIfArgumentIsNull(nameof(model));
-
-        var result = QueryResult<Content>.Create();
-        var query = _set.Where(_ => _.WebsiteId == model.WebsiteId);
-        query = query.AddConditionIfNotNull(model.LangId, _ => _.LangId == model.LangId!.Value)
+        
+        var query = _set.Where(_ => _.WebsiteId == model.WebsiteId)
+                        .AddConditionIfNotNull(model.LangId, _ => _.LangId == model.LangId!.Value)
                         .AddConditionIfNotNull(model.ContentTypeId, 
                             _=> _.ContentTypeId == model.ContentTypeId!.Value)
                         .AddConditionIfNotNull(model.ContentTypeName, 
@@ -150,11 +144,19 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
                                 _.Summary!.ToUpper().Contains(model.Search!) ||
                                 _.AltTitle!.ToUpper().Contains(model.Search!));
 
-        result.WithTotalCount(
-            await query.LongCountAsync(cancellationToken).ConfigureAwait(false));
-        
-        return result.WithResults(
-            await query.ToListAsync(cancellationToken).ConfigureAwait(false));
+        return QueryResult<Content>.Create()
+            .WithPageNumber(model.Filter.PageNumber)
+            .WithPageSize(model.Filter.PageSize)
+            .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false))
+            .WithResults(await query
+                .Include(_=> _.Categories)
+                .Include(_=> _.Tags)
+                .Include(_=> _.ContentType)
+                .Include(_=> _.Language)
+                .SortBy(model.Filter.OrderBy, model.Filter.OrderDesc)
+                .Skip(model.Filter.StartIndex)
+                .Take(model.Filter.PageSize)
+                .ToListAsync(cancellationToken).ConfigureAwait(false));
     }
     
 }
