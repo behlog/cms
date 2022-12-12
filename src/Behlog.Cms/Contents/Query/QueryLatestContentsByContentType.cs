@@ -1,6 +1,11 @@
-﻿namespace Behlog.Cms.Query
+﻿using Behlog.Core;
+using Behlog.Cms.Models;
+
+namespace Behlog.Cms.Query
 {
-    public class QueryLatestContentsByContentType
+
+    public class QueryLatestContentsByContentType 
+        : IBehlogQuery<IReadOnlyCollection<ContentResult>>
     {
 
         public QueryLatestContentsByContentType(

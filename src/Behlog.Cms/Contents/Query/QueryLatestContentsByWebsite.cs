@@ -1,6 +1,12 @@
-﻿namespace Behlog.Cms.Query
+﻿using Behlog.Core;
+using Behlog.Cms.Models;
+
+
+namespace Behlog.Cms.Query
 {
-    public class QueryLatestContentsByWebsite
+
+    public class QueryLatestContentsByWebsite 
+        : IBehlogQuery<IReadOnlyCollection<ContentResult>>
     {
 
         public QueryLatestContentsByWebsite(Guid websiteId, int recordsCount = 10) {

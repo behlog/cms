@@ -1,4 +1,5 @@
 using Behlog.Cms.Domain;
+using Behlog.Cms.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
@@ -43,5 +44,13 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
             .FirstOrDefaultAsync(_ => _.WebsiteId == websiteId &&
                                       _.Slug.ToUpper() == slug.ToUpper(), cancellationToken)
             .ConfigureAwait(false);
+    }
+
+    public Task<IReadOnlyCollection<Content>> GetLatestByWebsiteId(Guid websiteId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyCollection<Content>> GetLatestByContentType(QueryLatestContentsByContentType model) {
+        throw new NotImplementedException();
     }
 }

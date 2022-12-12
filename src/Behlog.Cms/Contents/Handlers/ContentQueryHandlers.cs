@@ -9,7 +9,9 @@ namespace Behlog.Cms.Handlers;
 
 public class ContentQueryHandlers :
     IBehlogQueryHandler<QueryContentById, ContentResult>,
-    IBehlogQueryHandler<QueryContentBySlug, ContentResult>
+    IBehlogQueryHandler<QueryContentBySlug, ContentResult>,
+    IBehlogQueryHandler<QueryLatestContentsByWebsite, IReadOnlyCollection<ContentResult>>,
+    IBehlogQueryHandler<QueryLatestContentsByContentType, IReadOnlyCollection<ContentResult>>
 {
     private readonly IContentReadStore _readStore;
     private readonly IIdyfaUserRepository _userRepo;
@@ -81,5 +83,17 @@ public class ContentQueryHandlers :
         
         return await Task.FromResult(result);
     }
-    
+
+    public async Task<IReadOnlyCollection<ContentResult>> HandleAsync(
+        QueryLatestContentsByWebsite query, CancellationToken cancellationToken = default) {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyCollection<ContentResult>> HandleAsync(
+        QueryLatestContentsByContentType query, CancellationToken cancellationToken = default) {
+        throw new NotImplementedException();
+    }
+
 }
