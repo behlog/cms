@@ -7,6 +7,7 @@ using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Handlers;
 
+
 public class ContentQueryHandlers :
     IBehlogQueryHandler<QueryContentById, ContentResult>,
     IBehlogQueryHandler<QueryContentBySlug, ContentResult>,
@@ -89,13 +90,37 @@ public class ContentQueryHandlers :
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
         
-        var contents = await _readStore.GetLatestByWebsiteId(query.WebsiteId, query.RecordsCount);
-        var result = 
+        var contents = await _readStore
+            .GetLatestByWebsiteIdAsync(query.WebsiteId, query.RecordsCount, cancellationToken)
+            .ConfigureAwait(false);
+        
+        var result = contents.Select(async _ => _.ToResult()
+            .WithCategories(_.Categories?.ToList())
+            .WithTags(_.Tags?.ToList())
+            .WithLanguage(_.Language)
+            .WithContentType(_.ContentType)
+            .WithLikesCount(await _readStore.CountLikesAsync(_.Id, cancellationToken))
+        ).ToList();
+
+        return await Task.WhenAll(result);
     }
 
-    public Task<IReadOnlyCollection<ContentResult>> HandleAsync(
-        QueryLatestContentsByContentType query, CancellationToken cancellationToken = default) {
-        throw new NotImplementedException();
+    public async Task<IReadOnlyCollection<ContentResult>> HandleAsync(
+        QueryLatestContentsByContentType query, CancellationToken cancellationToken = default) 
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var contents = await _readStore.GetLatestByContentTypeAsync(query, cancellationToken).ConfigureAwait(false);
+        
+        var result = contents.Select(async _ => _.ToResult()
+            .WithCategories(_.Categories?.ToList())
+            .WithTags(_.Tags?.ToList())
+            .WithLanguage(_.Language)
+            .WithContentType(_.ContentType)
+            .WithLikesCount(await _readStore.CountLikesAsync(_.Id, cancellationToken))
+        ).ToList();
+
+        return await Task.WhenAll(result);
     }
 
 }

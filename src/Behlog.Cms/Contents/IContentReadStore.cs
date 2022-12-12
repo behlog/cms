@@ -3,19 +3,69 @@ using Behlog.Cms.Query;
 
 namespace Behlog.Cms.Domain;
 
+/// <summary>
+/// ReadStore for querying the <see cref="Content"/>.
+/// </summary>
 public interface IContentReadStore : IBehlogReadStore<Content, Guid>
 {
 
     Task<Content?> GetByIdAsync(
         Guid id, CancellationToken cancellationToken = default);
     
+    /// <summary>
+    /// Gets total count of <see cref="ContentLike"/> for a <see cref="Content"/>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<int> CountLikesAsync(
         Guid id, CancellationToken cancellationToken = default);
     
+    /// <summary>
+    /// Get Contents with it's Categories, Blocks, Components, Files, Language, Meta and ContentType.
+    /// </summary>
+    /// <param name="websiteId"></param>
+    /// <param name="slug"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<Content?> GetBySlugAsync(
         Guid websiteId, string slug, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyCollection<Content>> GetLatestByWebsiteId(Guid websiteId, int take = 10);
+    /// <summary>
+    /// Get latest Contents with it's Categories, Tags, ContentType and Language.
+    /// </summary>
+    /// <param name="websiteId"></param>
+    /// <param name="take">Number of records to fetch.</param>
+    /// <returns></returns>
+    Task<IReadOnlyCollection<Content>> GetLatestByWebsiteIdAsync(
+        Guid websiteId, int take = 10, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyCollection<Content>> GetLatestByContentType(QueryLatestContentsByContentType model);
+    /// <summary>
+    /// Get latest Contents by ContentType and Website.
+    /// Includes: Categories, Tags, ContentType and Language.
+    /// </summary>
+    /// <param name="model">The Query params.</param>
+    /// <returns></returns>
+    Task<IReadOnlyCollection<Content>> GetLatestByContentTypeAsync(
+        QueryLatestContentsByContentType model, CancellationToken cancellationToken = default);
+
+
+    /// <summary>
+    /// Get Content by ContentType and Slug.
+    /// Includes: Categories, Blocks, Components, Files, Language, Meta and ContentType.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Content?> GetByContentTypeAndSlugAsync(
+        QueryContentByContentTypeAndSlug model, CancellationToken cancellationToken = default);
+
+
+    /// <summary>
+    /// Filter Contents and returns the results with pagination support.
+    /// Includes: Categories, Tags, ContentType and Language. 
+    /// </summary>
+    /// <returns></returns>
+    Task<IReadOnlyCollection<Content>> FilterAsync(
+        QueryContentsFiltered model, CancellationToken cancellationToken = default);
 }
