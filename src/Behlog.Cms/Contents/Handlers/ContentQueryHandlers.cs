@@ -2,6 +2,7 @@ using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
 using Behlog.Cms.Query;
 using Behlog.Core;
+using Behlog.Core.Models;
 using Behlog.Extensions;
 using Idyfa.Core.Contracts;
 
@@ -12,7 +13,9 @@ public class ContentQueryHandlers :
     IBehlogQueryHandler<QueryContentById, ContentResult>,
     IBehlogQueryHandler<QueryContentBySlug, ContentResult>,
     IBehlogQueryHandler<QueryLatestContentsByWebsite, IReadOnlyCollection<ContentResult>>,
-    IBehlogQueryHandler<QueryLatestContentsByContentType, IReadOnlyCollection<ContentResult>>
+    IBehlogQueryHandler<QueryLatestContentsByContentType, IReadOnlyCollection<ContentResult>>,
+    IBehlogQueryHandler<QueryContentByContentTypeAndSlug, ContentResult>,
+    IBehlogQueryHandler<QueryContentsFiltered, QueryResult<ContentResult>>
 {
     private readonly IContentReadStore _readStore;
     private readonly IIdyfaUserRepository _userRepo;
@@ -123,4 +126,32 @@ public class ContentQueryHandlers :
         return await Task.WhenAll(result);
     }
 
+    public async Task<ContentResult> HandleAsync(
+        QueryContentByContentTypeAndSlug query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var content = await _readStore.GetByContentTypeAndSlugAsync(query, cancellationToken).ConfigureAwait(false);
+        content.ThrowExceptionIfReferenceIsNull(nameof(content));
+
+        return content!.ToResult()
+            .WithCategories(content!.Categories?.ToList())
+            .WithLanguage(content!.Language)
+            .WithContentType(content!.ContentType)
+            .WithTags(content!.Tags?.ToList());
+    }
+
+    public async Task<QueryResult<ContentResult>> HandleAsync(
+        QueryContentsFiltered query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var queryResult = await _readStore.FilterAsync(query, cancellationToken).ConfigureAwait(false);
+
+        return QueryResult<ContentResult>
+            .Create(queryResult.Results.Select(_ => _.ToResult()))
+            .WithPageNumber(queryResult.PageNumber)
+            .WithPageSize(queryResult.PageSize)
+            .WithTotalCount(queryResult.TotalCount);
+    }
 }
