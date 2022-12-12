@@ -1,5 +1,6 @@
 using Behlog.Cms.Models;
 using Behlog.Core;
+using Idyfa.Core.Extensions;
 
 namespace Behlog.Cms.Query;
 
@@ -8,13 +9,16 @@ public class QueryContentCategoryByContentType : IBehlogQuery<IReadOnlyCollectio
 {
 
     public QueryContentCategoryByContentType(
-        Guid? contentTypeId, Guid? langId)
+        Guid? contentTypeId, string? contentTypeName, Guid? langId)
     {
         ContentTypeId = contentTypeId;
+        ContentTypeName = contentTypeName?.CorrectYeKe();
         LangId = langId;
     }
     
     public Guid? ContentTypeId { get; }
+    
+    public string? ContentTypeName { get; }
 
     public Guid? LangId { get; }
 }

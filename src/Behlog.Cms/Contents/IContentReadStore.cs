@@ -69,4 +69,13 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// <returns></returns>
     Task<QueryResult<Content>> FilterAsync(
         QueryContentsFiltered model, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Check if any <see cref="Content"/> exists within the Website with the given slug.
+    /// </summary>
+    /// <param name="websiteId">WebsiteId</param>
+    /// <param name="slug">Slug to check</param>
+    /// <returns>True if exists, otherwise false.</returns>
+    Task<bool> ExistBySlugAsync(
+        Guid websiteId, string slug, CancellationToken cancellationToken = default);
 }

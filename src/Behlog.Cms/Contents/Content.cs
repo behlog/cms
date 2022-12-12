@@ -89,8 +89,6 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
 
-        await CheckForDuplicateSlug(null, command.WebsiteId, command.Slug, service);
-
         var content = new Content
         {
             Id = Guid.NewGuid(),
@@ -114,7 +112,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             WebsiteId = command.WebsiteId,
             LangCode = "" //TODO : add langcode
         };
-
+        
+        await CheckForDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
+        
         content.Categories = command.Categories.Convert(content.Id);
         content.Meta = command.Meta.Convert(content.Id);
         content.Files = command.Files.Convert(content.Id);

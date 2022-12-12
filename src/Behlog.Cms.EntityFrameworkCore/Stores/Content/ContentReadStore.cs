@@ -158,5 +158,11 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
                 .Take(model.Filter.PageSize)
                 .ToListAsync(cancellationToken).ConfigureAwait(false));
     }
-    
+
+    /// <inheritdoc />
+    public async Task<bool> ExistBySlugAsync(
+        Guid websiteId, string slug, CancellationToken cancellationToken = default)
+    {
+        return await _set.AnyAsync(_ => _.WebsiteId == websiteId && _.Slug.ToUpper() == slug.ToUpper());
+    }
 }

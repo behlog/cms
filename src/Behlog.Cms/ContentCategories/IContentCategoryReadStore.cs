@@ -1,5 +1,6 @@
 using Behlog.Core;
 using Behlog.Cms.Domain;
+using Behlog.Cms.Query;
 
 namespace Behlog.Cms.Store;
 
@@ -26,7 +27,7 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// <param name="contentTypeId">ContentType Id</param>
     /// <returns>A read only list of ContentType's ContentCategories.</returns>
     Task<IReadOnlyCollection<ContentCategory>> FindByContentTypeAsync(
-        Guid? langId, Guid? contentTypeId, CancellationToken cancellationToken = default);
+        QueryContentCategoryByContentType model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Finds all the <see cref="ContentCategory"/> with specified ParentId.

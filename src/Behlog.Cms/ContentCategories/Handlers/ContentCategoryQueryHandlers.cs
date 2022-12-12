@@ -65,8 +65,7 @@ public class ContentCategoryQueryHandlers :
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
-        var categories = await _readStore.FindByContentTypeAsync(
-            query.LangId, query.ContentTypeId, cancellationToken).ConfigureAwait(false);
+        var categories = await _readStore.FindByContentTypeAsync(query, cancellationToken).ConfigureAwait(false);
         categories.ThrowExceptionIfReferenceIsNull(nameof(categories));
 
         return await Task.FromResult(
