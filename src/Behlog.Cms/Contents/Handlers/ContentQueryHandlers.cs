@@ -85,10 +85,12 @@ public class ContentQueryHandlers :
     }
 
     public async Task<IReadOnlyCollection<ContentResult>> HandleAsync(
-        QueryLatestContentsByWebsite query, CancellationToken cancellationToken = default) {
+        QueryLatestContentsByWebsite query, CancellationToken cancellationToken = default) 
+    {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
-
-        throw new NotImplementedException();
+        
+        var contents = await _readStore.GetLatestByWebsiteId(query.WebsiteId, query.RecordsCount);
+        var result = 
     }
 
     public Task<IReadOnlyCollection<ContentResult>> HandleAsync(

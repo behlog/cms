@@ -15,7 +15,7 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     Task<Content?> GetBySlugAsync(
         Guid websiteId, string slug, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyCollection<Content>> GetLatestByWebsiteId(Guid websiteId);
+    Task<IReadOnlyCollection<Content>> GetLatestByWebsiteId(Guid websiteId, int take = 10);
 
     Task<IReadOnlyCollection<Content>> GetLatestByContentType(QueryLatestContentsByContentType model);
 }

@@ -1,5 +1,6 @@
 using Behlog.Cms.Domain;
 using Behlog.Cms.Query;
+using Behlog.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
@@ -46,11 +47,29 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
             .ConfigureAwait(false);
     }
 
-    public Task<IReadOnlyCollection<Content>> GetLatestByWebsiteId(Guid websiteId) {
-        throw new NotImplementedException();
+    public async Task<IReadOnlyCollection<Content>> GetLatestByWebsiteId(Guid websiteId, int take = 10)
+    {
+        return await _set.Where(_ => _.WebsiteId == websiteId)
+                            .OrderByDescending(_=> _.CreatedDate)
+                            .Take(take)
+                            .ToListAsync();
     }
 
-    public Task<IReadOnlyCollection<Content>> GetLatestByContentType(QueryLatestContentsByContentType model) {
-        throw new NotImplementedException();
+    public async Task<IReadOnlyCollection<Content>> GetLatestByContentType(QueryLatestContentsByContentType model) {
+        model.ThrowExceptionIfArgumentIsNull(nameof(model));
+
+        var query = _set.Where(_ => _.WebsiteId == model.WebsiteId);
+        if (model.ContentTypeId.HasValue)
+        {
+            query = query.Where(_ => _.ContentTypeId == model.ContentTypeId.Value);
+        }
+
+        if (model.ContentTypeName.IsNotNullOrEmpty())
+        {
+            query = query.Where(_ => _.ContentType.SystemName.ToUpper() == model.ContentTypeName.ToUpper());
+        }
+
+        return await query.OrderByDescending(_ => _.CreatedDate)
+                            .Take(model.RecordsCount).ToListAsync();
     }
 }
