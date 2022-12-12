@@ -1,8 +1,7 @@
-using Behlog.Core;
 using Behlog.Extensions;
+using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.Models;
-
 
 public static class ContentTypeMappers
 {

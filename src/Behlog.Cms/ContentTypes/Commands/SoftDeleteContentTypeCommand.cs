@@ -1,4 +1,5 @@
 ﻿using Behlog.Core;
+using Behlog.Cms.Domain;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Commands

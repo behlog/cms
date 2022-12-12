@@ -13,8 +13,8 @@ public class ContentTypeService : IContentTypeService
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
     }
 
-    public async Task<bool> ExistBySystemNameAsync(Guid langId, string systemName)
+    public async Task<bool> ExistBySystemNameAsync(Guid id, Guid langId, string systemName)
     {
-        return await _readStore.ExistBySystemNameAsync(langId, systemName);
+        return await _readStore.ExistBySystemNameAsync(id, langId, systemName).ConfigureAwait(false);
     }
 }

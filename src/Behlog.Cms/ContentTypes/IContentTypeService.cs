@@ -4,5 +4,5 @@ public interface IContentTypeService
 {
 
 
-    Task<bool> ExistBySystemNameAsync(Guid langId, string systemName);
+    Task<bool> ExistBySystemNameAsync(Guid id, Guid langId, string systemName);
 }

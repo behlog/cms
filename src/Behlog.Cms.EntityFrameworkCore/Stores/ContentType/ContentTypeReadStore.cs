@@ -1,6 +1,6 @@
 using System.Globalization;
-using Behlog.Core;
 using Behlog.Cms.Store;
+using Behlog.Cms.Domain;
 using Behlog.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,9 +49,10 @@ public class ContentTypeReadStore : BehlogReadStore<ContentType, Guid>, IContent
 
     /// <inheritdoc /> 
     public async Task<bool> ExistBySystemNameAsync(
-        Guid langId, string systemName, CancellationToken cancellationToken = default)
+        Guid id, Guid langId, string systemName, CancellationToken cancellationToken = default)
     {
-        return await _set.AnyAsync(_ => _.LangId == langId &&
-                                        _.SystemName.ToUpper() == systemName.ToUpper()).ConfigureAwait(false);
+        return await _set.AnyAsync(_ => _.Id != id && _.LangId == langId &&
+                                        _.SystemName.ToUpper() == systemName.ToUpper(), 
+            cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

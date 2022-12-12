@@ -23,6 +23,7 @@ public class CmsSetup : ICmsSetup
     private readonly IIdyfaRoleManager _roleManager;
     private readonly IWebsiteWriteStore _websiteWriteStore;
     private readonly IWebsiteService _websiteService;
+    private readonly IContentTypeService _contentTypeService;
 
     private readonly ContentTypeSeed _contentTypeSeed;
     private readonly LanguageSeed _languageSeed;
@@ -33,7 +34,8 @@ public class CmsSetup : ICmsSetup
         IBehlogMediator mediator, IBehlogDbContext dbContext, IIdyfaDbContext idyfaDbContext,
         IContentTypeWriteStore contentTypeWriteStore, ILanguageWriteStore languageWriteStore, 
         IIdyfaUserManager userManager, IIdyfaRoleManager roleManager,
-        IWebsiteWriteStore websiteWriteStore, IWebsiteService websiteService, ISystemDateTime dateTime)
+        IWebsiteWriteStore websiteWriteStore, IWebsiteService websiteService, 
+        ISystemDateTime dateTime, IContentTypeService contentTypeService)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -44,8 +46,9 @@ public class CmsSetup : ICmsSetup
         _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         _websiteWriteStore = websiteWriteStore ?? throw new ArgumentNullException(nameof(websiteWriteStore));
         _websiteService = websiteService ?? throw new ArgumentNullException(nameof(websiteService));
+        _contentTypeService = contentTypeService ?? throw new ArgumentNullException(nameof(contentTypeService));
 
-        _contentTypeSeed = new ContentTypeSeed(_contentTypeWriteStore, dateTime);
+        _contentTypeSeed = new ContentTypeSeed(_contentTypeWriteStore, dateTime, contentTypeService);
         _languageSeed = new LanguageSeed(_languageWriteStore);
         _userSeed = new UserSeed(_userManager, _roleManager);
         _websiteSeed = new WebsiteSeed(_websiteWriteStore, _websiteService);

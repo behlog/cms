@@ -6,6 +6,7 @@ using NSubstitute;
 using Behlog.Core;
 using Behlog.Cms.Events;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Behlog.Cms.Models;
 using Behlog.Core.Contracts;
 
@@ -17,23 +18,25 @@ public class ContentTypeSteps : BaseTestSteps
     private readonly Dictionary<string, ContentType> _contentTypes = new();
     private readonly IBehlogMediator _mediator;
     private readonly ISystemDateTime _dateTime;
+    private readonly IContentTypeService _service;
     
     public ContentTypeSteps()
     {
         _mediator = Substitute.For<IBehlogMediator>();
         _dateTime = Substitute.For<ISystemDateTime>();
+        _service = Substitute.For<IContentTypeService>();
     }
 
 
     public void IRegisterAContentTypeWithCommand(CreateContentTypeCommand command)
     {
-        var contentType = ContentType.Create(command, _dateTime);
-        _contentTypes[command.Title] = contentType;
+        var contentType = ContentType.CreateAsync(command, _dateTime, _service);
+        _contentTypes[command.Title] = contentType.Result;
     }
     
     public void ThereIsARegisteredContentTypeWithCommand(CreateContentTypeCommand command)
     {
-        var contentType = ContentType.Create(command, _dateTime);
+        var contentType = ContentType.CreateAsync(command, _dateTime, _service).Result;
         _contentTypes[command.Title] = contentType;
     }
     

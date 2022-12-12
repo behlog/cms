@@ -1,12 +1,13 @@
 using Behlog.Core;
 using Behlog.Cms.Store;
+using Behlog.Cms.Domain;
 using Behlog.Extensions;
 using Behlog.Cms.Models;
+using Behlog.Core.Models;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Behlog.Cms.Validations;
 using Behlog.Core.Contracts;
-using Behlog.Core.Models;
-using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
 
@@ -21,17 +22,19 @@ public class ContentTypeCommandHandler :
     private readonly ISystemDateTime _dateTime;
     private readonly IContentTypeReadStore _readStore;
     private readonly IContentTypeWriteStore _writeStore;
+    private readonly IContentTypeService _service;
     private readonly ILogger<ContentTypeCommandHandler> _logger;
     private readonly Behlogger<ContentTypeCommandHandler> _behlogger;
 
     public ContentTypeCommandHandler(
         IContentTypeReadStore readStore, IContentTypeWriteStore writeStore, ISystemDateTime dateTime, 
-        ILogger<ContentTypeCommandHandler> logger)
+        ILogger<ContentTypeCommandHandler> logger, IContentTypeService service)
     {
         _readStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _service = service ?? throw new ArgumentNullException(nameof(service));
         _behlogger = new Behlogger<ContentTypeCommandHandler>(logger, dateTime);
     }
 
@@ -48,7 +51,7 @@ public class ContentTypeCommandHandler :
         
         try
         {
-            var contentType = ContentType.Create(command, _dateTime);
+            var contentType = await ContentType.CreateAsync(command, _dateTime, _service);
             await _writeStore.AddAsync(contentType, cancellationToken).ConfigureAwait(false);
 
             return await Task.FromResult(CommandResult<ContentTypeResult>

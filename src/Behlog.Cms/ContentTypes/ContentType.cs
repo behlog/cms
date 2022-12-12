@@ -1,13 +1,15 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Domain;
+using Behlog.Core;
 using Behlog.Cms.Events;
-using Behlog.Core.Contracts;
-using Behlog.Core.Domain;
 using Behlog.Extensions;
+using Behlog.Core.Domain;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
+using Behlog.Core.Contracts;
 
-namespace Behlog.Core;
+namespace Behlog.Cms.Domain;
 
-public class ContentType : AggregateRoot<Guid> {
+
+public partial class ContentType : AggregateRoot<Guid> {
     
     private ContentType()
     {
@@ -36,10 +38,12 @@ public class ContentType : AggregateRoot<Guid> {
     
     #region Builders
 
-    public static ContentType Create(CreateContentTypeCommand command, ISystemDateTime dateTime)
+    public static async Task<ContentType> CreateAsync(
+        CreateContentTypeCommand command, ISystemDateTime dateTime, IContentTypeService service)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        service.ThrowExceptionIfArgumentIsNull(nameof(service));
         
         var contentType = new ContentType
         {
@@ -52,6 +56,9 @@ public class ContentType : AggregateRoot<Guid> {
             Title = command.Title?.Trim().CorrectYeKe()!,
             CreatedDate = dateTime.UtcNow
         };
+
+        await CheckForDuplicatedSystemName(
+            contentType.Id, contentType.LangId, contentType.SystemName, service);
 
         contentType.AddCreatedEvent();
         return contentType;
