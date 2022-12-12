@@ -18,7 +18,9 @@ public class ContentUpdatedEvent : BehlogDomainEvent
         ContentStatus status,
         string altTitle,
         int orderNum,
-        IReadOnlyCollection<Guid> categories)
+        IReadOnlyCollection<Guid> categories,
+        IReadOnlyCollection<ContentMeta> meta,
+        IReadOnlyCollection<ContentFile> files)
     {
         Id = id;
         Title = title;
@@ -32,6 +34,8 @@ public class ContentUpdatedEvent : BehlogDomainEvent
         AltTitle = altTitle;
         OrderNum = orderNum;
         Categories = categories;
+        Files = files;
+        Meta = meta;
     }
 
     public Guid Id { get; }
@@ -45,5 +49,7 @@ public class ContentUpdatedEvent : BehlogDomainEvent
     public ContentStatus Status { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
-    public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
+    public IReadOnlyCollection<Guid> Categories { get; }
+    public IReadOnlyCollection<ContentFile> Files { get; }
+    public IReadOnlyCollection<ContentMeta> Meta { get; }
 }

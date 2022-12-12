@@ -155,6 +155,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
 
         Categories = command.Categories.Convert(Id);
         Meta = command.Meta.Convert(Id);
+        Files = command.Files.Convert(Id);
 
         AddUpdatedEvent();
     }
@@ -231,7 +232,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             status: Status,
             altTitle: AltTitle,
             orderNum: OrderNum,
-            categories: Categories?.Select(_=> _.CategoryId).ToList()!
+            categories: Categories?.Select(_=> _.CategoryId).ToList()!,
+            meta: Meta?.ToList()!,
+            files: Files?.ToList()!
         );
 
         Enqueue(e);
@@ -251,7 +254,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             status: Status,
             altTitle: AltTitle,
             orderNum: OrderNum,
-            categories: Categories?.Select(_=> _.CategoryId).ToList()!
+            categories: Categories?.Select(_=> _.CategoryId).ToList()!,
+            meta: Meta?.ToList()!,
+            files: Files?.ToList()!
         );
 
         Enqueue(e);

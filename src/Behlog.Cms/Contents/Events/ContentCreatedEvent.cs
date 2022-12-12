@@ -18,7 +18,9 @@ public class ContentCreatedEvent : BehlogDomainEvent
         ContentStatus status,
         string altTitle,
         int orderNum,
-        IReadOnlyCollection<Guid> categories)
+        IReadOnlyCollection<Guid> categories,
+        IReadOnlyCollection<ContentMeta> meta,
+        IReadOnlyCollection<ContentFile> files)
     {
         Id = id;
         Title = title;
@@ -32,6 +34,8 @@ public class ContentCreatedEvent : BehlogDomainEvent
         AltTitle = altTitle;
         OrderNum = orderNum;
         Categories = categories;
+        Meta = meta;
+        Files = files;
     }
 
     public Guid Id { get; }
@@ -46,4 +50,6 @@ public class ContentCreatedEvent : BehlogDomainEvent
     public string AltTitle { get; }
     public int OrderNum { get; }
     public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
+    public IReadOnlyCollection<ContentFile> Files { get; }
+    public IReadOnlyCollection<ContentMeta> Meta { get; }
 }
