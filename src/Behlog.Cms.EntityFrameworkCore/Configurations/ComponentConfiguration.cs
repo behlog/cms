@@ -17,13 +17,22 @@ public static partial class EntityConfigurations
             component.Property(_ => _.Name).HasMaxLength(256).IsUnicode().IsRequired();
             component.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired();
             component.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired();
+            component.Property(_ => _.ComponentType).HasMaxLength(50).IsUnicode().IsRequired();
             component.Property(_ => _.Description).HasMaxLength(1000).IsUnicode().IsRequired(false);
+            component.Property(_ => _.Attributes).HasColumnType("nTEXT").IsRequired(false);
             component.Property(_ => _.Author).HasMaxLength(256).IsUnicode().IsRequired(false);
             component.Property(_ => _.AuthorEmail).HasMaxLength(1000).IsUnicode().IsRequired(false);
+            component.Property(_ => _.Keywords).HasMaxLength(256).IsUnicode().IsRequired(false);
+            component.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode().IsRequired(false);
             component.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
                 .HasConversion<int>(
                     s => s.Id,
                     s => EntityStatus.FromValue<EntityStatus>(s));
+            component.Property(_ => _.CreatedByIp).HasMaxLength(50).IsUnicode().IsRequired(false);
+            component.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsUnicode().IsRequired(false);
+            component.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsUnicode().IsRequired(false);
+            component.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsUnicode().IsRequired(false);
+            
 
             component.OwnsMany(_ => _.Meta, m => {
                 m.ToTable(ComponentMetaTableName).HasKey("Id");
@@ -44,6 +53,11 @@ public static partial class EntityConfigurations
                     .WithMany()
                     .HasForeignKey(_ => _.WebsiteId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+            component.HasOne(_ => _.Language)
+                .WithMany()
+                .HasForeignKey(_ => _.LangId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 
