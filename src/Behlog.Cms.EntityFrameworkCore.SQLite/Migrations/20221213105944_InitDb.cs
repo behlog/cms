@@ -55,47 +55,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Block",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    BlockType = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Category = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Author = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    AuthorEmail = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
-                    IconName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    CoverPhoto = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
-                    Template = table.Column<string>(type: "nTEXT", nullable: false),
-                    Attributes = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    Example = table.Column<string>(type: "nTEXT", nullable: true),
-                    IsRtl = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LangId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Keywords = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    ParentId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
-                    ViewPath = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CreatedByUserId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    LastUpdatedByUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    LastUpdatedByIp = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Block", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Block_Language_LangId",
-                        column: x => x.LangId,
-                        principalTable: "Language",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ContentType",
                 columns: table => new
                 {
@@ -151,20 +110,36 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     WebsiteId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    LangId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     Title = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    ComponentType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Category = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Attributes = table.Column<string>(type: "nTEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
                     Author = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     AuthorEmail = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
                     ParentId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsRtl = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Keywords = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ViewPath = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedByUserId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    LastUpdatedByUserId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    LastUpdatedByIp = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Component", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Component_Language_LangId",
+                        column: x => x.LangId,
+                        principalTable: "Language",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Component_Website_WebsiteId",
                         column: x => x.WebsiteId,
@@ -233,34 +208,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         name: "FK_WebsiteMeta_Website_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Website",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BlockMeta",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    OwnerId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    MetaKey = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    MetaValue = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    MetaType = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
-                    LangId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
-                    Category = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    OrderNum = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BlockMeta", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BlockMeta_Block_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Block",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -413,39 +360,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     table.PrimaryKey("PK_Comment", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Comment_Content_ContentId",
-                        column: x => x.ContentId,
-                        principalTable: "Content",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContentBlock",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ContentId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    BlockId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Source = table.Column<string>(type: "nTEXT", nullable: false),
-                    Properties = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    Deleted = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Hidden = table.Column<bool>(type: "INTEGER", nullable: false),
-                    BodyType = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
-                    TextContent = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    OrderNum = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContentBlock", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ContentBlock_Block_BlockId",
-                        column: x => x.BlockId,
-                        principalTable: "Block",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ContentBlock_Content_ContentId",
                         column: x => x.ContentId,
                         principalTable: "Content",
                         principalColumn: "Id",
@@ -610,19 +524,14 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Block_LangId",
-                table: "Block",
-                column: "LangId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BlockMeta_OwnerId",
-                table: "BlockMeta",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Comment_ContentId",
                 table: "Comment",
                 column: "ContentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Component_LangId",
+                table: "Component",
+                column: "LangId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Component_WebsiteId",
@@ -643,16 +552,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                 name: "IX_Content_LangId",
                 table: "Content",
                 column: "LangId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContentBlock_BlockId",
-                table: "ContentBlock",
-                column: "BlockId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContentBlock_ContentId",
-                table: "ContentBlock",
-                column: "ContentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContentCategory_ContentTypeId",
@@ -723,16 +622,10 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BlockMeta");
-
-            migrationBuilder.DropTable(
                 name: "Comment");
 
             migrationBuilder.DropTable(
                 name: "ComponentMeta");
-
-            migrationBuilder.DropTable(
-                name: "ContentBlock");
 
             migrationBuilder.DropTable(
                 name: "ContentCategoryItem");
@@ -754,9 +647,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
             migrationBuilder.DropTable(
                 name: "WebsiteMeta");
-
-            migrationBuilder.DropTable(
-                name: "Block");
 
             migrationBuilder.DropTable(
                 name: "ContentCategory");

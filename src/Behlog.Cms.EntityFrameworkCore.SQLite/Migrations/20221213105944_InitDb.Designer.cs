@@ -11,131 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 {
     [DbContext(typeof(BehlogSQLiteDbContext))]
-    [Migration("20221210161340_InitDb")]
+    [Migration("20221213105944_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
-
-            modelBuilder.Entity("Behlog.Cms.Domain.Block", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Attributes")
-                        .HasMaxLength(4000)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Author")
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AuthorEmail")
-                        .HasMaxLength(1000)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BlockType")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Category")
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CoverPhoto")
-                        .HasMaxLength(2000)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedByIp")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedByUserId")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Example")
-                        .IsUnicode(true)
-                        .HasColumnType("nTEXT");
-
-                    b.Property<string>("IconName")
-                        .HasMaxLength(100)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsRtl")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Keywords")
-                        .HasMaxLength(500)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("LangId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastUpdatedByIp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastUpdatedByUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("Template")
-                        .IsRequired()
-                        .IsUnicode(true)
-                        .HasColumnType("nTEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ViewPath")
-                        .HasMaxLength(4000)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LangId");
-
-                    b.ToTable("Block", (string)null);
-                });
 
             modelBuilder.Entity("Behlog.Cms.Domain.Comment", b =>
                 {
@@ -223,6 +105,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Attributes")
+                        .HasColumnType("nTEXT");
+
                     b.Property<string>("Author")
                         .HasMaxLength(256)
                         .IsUnicode(true)
@@ -239,6 +124,22 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .IsUnicode(true)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ComponentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
@@ -247,7 +148,28 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .IsUnicode(true)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsRtl")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Keywords")
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("LangId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastUpdatedByIp")
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastUpdatedByUserId")
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -270,10 +192,17 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .IsUnicode(true)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ViewPath")
+                        .HasMaxLength(2000)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("WebsiteId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LangId");
 
                     b.HasIndex("WebsiteId");
 
@@ -495,6 +424,58 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ContentTag", (string)null);
+                });
+
+            modelBuilder.Entity("Behlog.Cms.Domain.ContentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("LangId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastStatusChangedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("SystemName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LangId");
+
+                    b.ToTable("ContentType", (string)null);
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.FileUpload", b =>
@@ -756,132 +737,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     b.ToTable("Website", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Core.ContentType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("LangId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LastStatusChangedOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("SystemName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LangId");
-
-                    b.ToTable("ContentType", (string)null);
-                });
-
-            modelBuilder.Entity("Behlog.Cms.Domain.Block", b =>
-                {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LangId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsMany("Behlog.Cms.Domain.BlockMeta", "Meta", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<string>("Category")
-                                .HasMaxLength(256)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Description")
-                                .HasMaxLength(2000)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<Guid?>("LangId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("MetaKey")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("MetaType")
-                                .HasMaxLength(100)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("MetaValue")
-                                .HasMaxLength(4000)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<int>("OrderNum")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<Guid>("OwnerId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<int>("Status")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER")
-                                .HasDefaultValue(1);
-
-                            b1.Property<string>("Title")
-                                .HasMaxLength(256)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("OwnerId");
-
-                            b1.ToTable("BlockMeta", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("OwnerId");
-                        });
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Meta");
-                });
-
             modelBuilder.Entity("Behlog.Cms.Domain.Comment", b =>
                 {
                     b.HasOne("Behlog.Cms.Domain.Content", "Content")
@@ -895,6 +750,12 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.Component", b =>
                 {
+                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LangId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Behlog.Cms.Domain.Website", "Website")
                         .WithMany()
                         .HasForeignKey("WebsiteId")
@@ -964,6 +825,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasForeignKey("OwnerId");
                         });
 
+                    b.Navigation("Language");
+
                     b.Navigation("Meta");
 
                     b.Navigation("Website");
@@ -971,7 +834,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
                 {
-                    b.HasOne("Behlog.Core.ContentType", "ContentType")
+                    b.HasOne("Behlog.Cms.Domain.ContentType", "ContentType")
                         .WithMany()
                         .HasForeignKey("ContentTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -982,65 +845,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .HasForeignKey("LangId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.OwnsMany("Behlog.Cms.Domain.ContentBlock", "Blocks", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<Guid>("BlockId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<int>("BodyType")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER")
-                                .HasDefaultValue(1);
-
-                            b1.Property<Guid>("ContentId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<bool>("Deleted")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<bool>("Hidden")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("OrderNum")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<string>("Properties")
-                                .HasMaxLength(4000)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Source")
-                                .IsRequired()
-                                .IsUnicode(true)
-                                .HasColumnType("nTEXT");
-
-                            b1.Property<string>("TextContent")
-                                .HasMaxLength(4000)
-                                .IsUnicode(true)
-                                .HasColumnType("TEXT");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("BlockId");
-
-                            b1.HasIndex("ContentId");
-
-                            b1.ToTable("ContentBlock", (string)null);
-
-                            b1.HasOne("Behlog.Cms.Domain.Block", null)
-                                .WithMany()
-                                .HasForeignKey("BlockId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.WithOwner()
-                                .HasForeignKey("ContentId");
-                        });
 
                     b.OwnsMany("Behlog.Cms.Domain.ContentComponent", "Components", b1 =>
                         {
@@ -1232,8 +1036,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasForeignKey("OwnerId");
                         });
 
-                    b.Navigation("Blocks");
-
                     b.Navigation("Components");
 
                     b.Navigation("ContentType");
@@ -1249,7 +1051,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>
                 {
-                    b.HasOne("Behlog.Core.ContentType", "ContentType")
+                    b.HasOne("Behlog.Cms.Domain.ContentType", "ContentType")
                         .WithMany()
                         .HasForeignKey("ContentTypeId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1309,6 +1111,17 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     b.Navigation("Content");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Behlog.Cms.Domain.ContentType", b =>
+                {
+                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LangId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.FileUpload", b =>
@@ -1397,17 +1210,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         });
 
                     b.Navigation("Meta");
-                });
-
-            modelBuilder.Entity("Behlog.Core.ContentType", b =>
-                {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LangId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
