@@ -1,10 +1,11 @@
+using Behlog.Core;
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
 using Behlog.Cms.EntityFrameworkCore;
 using Behlog.Cms.EntityFrameworkCore.Stores;
-using Behlog.Core;
 
 namespace Microsoft.Extensions.DependencyInjection;
+
 
 public static class ServiceProvider
 {
@@ -33,6 +34,7 @@ public static class ServiceProvider
         services.AddScoped<ILanguageReadStore, LanguageReadStore>();
         services.AddScoped<ITagReadStore, TagReadStore>();
         services.AddScoped<IWebsiteReadStore, WebsiteReadStore>();
+        services.AddScoped<IComponentReadStore, ComponentReadStore>();
         
         return services;
     }
@@ -51,6 +53,7 @@ public static class ServiceProvider
         services.AddScoped<ILanguageWriteStore, LanguageWriteStore>();
         services.AddScoped<ITagWriteStore, TagWriteStore>();
         services.AddScoped<IWebsiteWriteStore, WebsiteWriteStore>();
+        services.AddScoped<IComponentWriteStore, ComponentWriteStore>();
         
         return services;
     }
