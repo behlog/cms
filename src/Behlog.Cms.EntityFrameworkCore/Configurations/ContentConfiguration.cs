@@ -53,21 +53,21 @@ public static partial class EntityConfigurations
             });
 
 
-            content.OwnsMany(_ => _.Blocks, b =>
-            {
-                b.ToTable(ContentBlockTableName).HasKey(_=> _.Id);
-                b.Property(_ => _.Id).ValueGeneratedOnAdd();
-                b.WithOwner().HasForeignKey(_ => _.ContentId);
-                b.HasOne<Block>().WithMany().HasForeignKey(_ => _.BlockId);
-                b.Property(_ => _.Source).HasColumnType("nTEXT").IsUnicode().IsRequired();
-                b.Property(_ => _.Properties).HasMaxLength(4000).IsUnicode().IsRequired(false);
-                b.Property(_ => _.TextContent).HasMaxLength(4000).IsUnicode().IsRequired(false);
-                b.Property(_=> _.BodyType).HasDefaultValue(ContentBodyType.HTML)
-                    .HasConversion<int>(
-                        t => t.Id,
-                        t => ContentBodyType.Find(t)
-                    );
-            });
+            // content.OwnsMany(_ => _.Blocks, b =>
+            // {
+            //     b.ToTable(ContentBlockTableName).HasKey(_=> _.Id);
+            //     b.Property(_ => _.Id).ValueGeneratedOnAdd();
+            //     b.WithOwner().HasForeignKey(_ => _.ContentId);
+            //     b.HasOne<Block>().WithMany().HasForeignKey(_ => _.BlockId);
+            //     b.Property(_ => _.Source).HasColumnType("nTEXT").IsUnicode().IsRequired();
+            //     b.Property(_ => _.Properties).HasMaxLength(4000).IsUnicode().IsRequired(false);
+            //     b.Property(_ => _.TextContent).HasMaxLength(4000).IsUnicode().IsRequired(false);
+            //     b.Property(_=> _.BodyType).HasDefaultValue(ContentBodyType.HTML)
+            //         .HasConversion<int>(
+            //             t => t.Id,
+            //             t => ContentBodyType.Find(t)
+            //         );
+            // });
             
             content.OwnsMany(_ => _.Likes, l => {
                 l.ToTable(ContentLikeTableName).HasKey("Id");

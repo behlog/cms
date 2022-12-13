@@ -165,7 +165,13 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         modelBuilder.Ignore<WebsiteStatus>();
         modelBuilder.Ignore<ContentBodyType>();
         modelBuilder.Ignore<WebpageStatus>();
+        modelBuilder.Ignore<Block>();
+        modelBuilder.Ignore<Webpage>();
+        modelBuilder.Ignore<WebpageBlock>();
+        modelBuilder.Ignore<WebpageMeta>();
+        modelBuilder.Ignore<ContentBlock>();
 
+        modelBuilder.AddWebsiteConfiguration();
         modelBuilder.AddLanguageConfiguration();
         modelBuilder.AddContentTypeConfiguration();
         modelBuilder.AddContentConfiguration();
@@ -173,9 +179,7 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         modelBuilder.AddCommentConfiguration();
         modelBuilder.AddFileUploadConfiguration();
         modelBuilder.AddTagConfiguration();
-        modelBuilder.AddBlockConfiguration();
-        modelBuilder.AddWebsiteConfiguration();
-
+        // modelBuilder.AddBlockConfiguration();
         modelBuilder.AddComponentConfiguration();
         
         base.OnModelCreating(modelBuilder);
