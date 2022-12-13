@@ -49,6 +49,19 @@ public static partial class EntityConfigurations
                 m.Property(_ => _.Index).HasColumnName("IndexNumber").IsRequired();
             });
 
+            component.OwnsMany(_ => _.Files, f => {
+                f.ToTable(ContentFileTableName)
+                    .HasKey(_ => new {
+                        _.ComponentId, 
+                        _.FileId
+                    });
+                f.WithOwner().HasForeignKey(_ => _.ComponentId);
+                f.HasOne(_ => _.File).WithMany().HasForeignKey(_ => _.FileId);
+                f.Property(_ => _.FileName).HasMaxLength(2000).IsUnicode().IsRequired();
+                f.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired(false);
+                f.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            });
+            
             component.HasOne(_ => _.Website)
                     .WithMany()
                     .HasForeignKey(_ => _.WebsiteId)
