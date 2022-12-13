@@ -5,7 +5,6 @@ using Behlog.Extensions;
 using Behlog.Cms.Contracts;
 using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
-using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Setup;
 
@@ -56,23 +55,50 @@ public class CmsSetup : ICmsSetup
 
     
     public async Task SetupAsync(
-        WebsiteSeedData data, CancellationToken cancellationToken = default)
+        WebsiteSeedData data,  bool ensureDbCreated = false, CancellationToken cancellationToken = default)
     {
         data.ThrowExceptionIfArgumentIsNull(nameof(data));
-        
-        //Creates Idyfa Database to manage users and roles
-        // await _idyfaDbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
-        // Console.WriteLine("The Idyfa database created successfully.");
-        // await _idyfaDbContext.MigrateDbAsync(cancellationToken).ConfigureAwait(false);
-        // Console.WriteLine("The Idyfa database migrated successfully.");
-        // await _idyfaDbContext.MigrateDbAsync(cancellationToken);
-        
-        //Creates CMS database
-        // await _dbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
-        // Console.WriteLine("The Behlog database created successfully.");
-        // await _dbContext.MigrateDbAsync(cancellationToken).ConfigureAwait(false);
-        // Console.WriteLine("The Behlog database migrated successfully.");
-        // await _dbContext.MigrateDbAsync(cancellationToken);
+
+        if (ensureDbCreated)
+        {
+            try
+            {
+                await _idyfaDbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"[Error]: Creating IdyfaDb {Environment.NewLine} {ex.GetBaseException().Message}");
+            }
+
+            try
+            {
+                await _idyfaDbContext.MigrateDbAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"[Error]: Migrating IdyfaDb {Environment.NewLine} {ex.GetBaseException().Message}");
+            }
+            Console.WriteLine("The Idyfa database created and migrated successfully.");
+
+            try
+            {
+                await _dbContext.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Error]: Creating BehlogDb {Environment.NewLine} {ex.GetBaseException().Message}");
+            }
+
+            try
+            {
+                await _dbContext.MigrateDbAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Error]: Migrating BehlogDb {Environment.NewLine} {ex.GetBaseException().Message}");
+            }
+            Console.WriteLine("The Behlog database created and migrated successfully.");
+        }
 
         var user = await _userSeed.SeedAdminUserAsync(cancellationToken);
         Console.WriteLine($"[Setup] - SeedUser completed. ('{user.UserName}' user has been created. ");

@@ -20,6 +20,12 @@ internal class UserSeed
     }
 
     
+    /// <summary>
+    /// This will creates Admin Role, Admin User if not exists, and Add AdminRole to the AdminUser.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="BehlogSeedingException"></exception>
     public async Task<User> SeedAdminUserAsync(CancellationToken cancellationToken = default)
     {
         var adminRole = Role.New()
@@ -35,16 +41,29 @@ internal class UserSeed
             }
         }
         
-        //TODO : check if user does not exist then create it.
+        // check if user does not exist then create it.
+        
         var adminUser = User.RegisterUser(
             defaultAdminUserName, defaultAdminEmail, "Administrator", "", "admin", "admin");
-        var userResult = await _userManager.CreateAsync(adminUser, defaultAdminPassword).ConfigureAwait(false);
-        if (!userResult.Succeeded)
+        if (await _userManager.ExistByUserNameAsync(adminUser.Id, adminUser.UserName))
         {
-            throw new BehlogSeedingException(nameof(adminUser));
-        } 
+            Console.WriteLine($"[Warning]: AdminUser already existed in the database.");
+        }
+        else
+        {
+            var userResult = await _userManager.CreateAsync(adminUser, defaultAdminPassword).ConfigureAwait(false);
+            if (!userResult.Succeeded)
+            {
+                Console.WriteLine($"[Error]: Creating AdminUser : {userResult.Errors.ToString()}");
+                foreach (var err in userResult.Errors)
+                {
+                    Console.WriteLine($"{err.Code}: {err.Description}");
+                }
+                throw new BehlogSeedingException(nameof(adminUser));
+            } 
+        }
         
-        //TODO : check if User does not has the admin role then add to it.
+        // check if User does not has the admin role then add to it.
         if (!await _userManager.IsInRoleAsync(adminUser, adminRole.Name))
         {
             var addToRoleResult = await _userManager

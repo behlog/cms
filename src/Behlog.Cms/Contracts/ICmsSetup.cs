@@ -5,5 +5,6 @@ namespace Behlog.Cms.Contracts;
 public interface ICmsSetup
 {
 
-    Task SetupAsync(WebsiteSeedData data, CancellationToken cancellationToken = default);
+    Task SetupAsync(
+        WebsiteSeedData data, bool ensureDbCreated = false, CancellationToken cancellationToken = default);
 }
