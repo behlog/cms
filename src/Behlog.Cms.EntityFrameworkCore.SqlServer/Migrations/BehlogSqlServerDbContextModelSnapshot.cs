@@ -22,124 +22,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Behlog.Cms.Domain.Block", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Attributes")
-                        .HasMaxLength(4000)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(4000)");
-
-                    b.Property<string>("Author")
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("AuthorEmail")
-                        .HasMaxLength(1000)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("BlockType")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Category")
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("CoverPhoto")
-                        .HasMaxLength(2000)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("CreatedByIp")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CreatedByUserId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("Example")
-                        .IsUnicode(true)
-                        .HasColumnType("nTEXT");
-
-                    b.Property<string>("IconName")
-                        .HasMaxLength(100)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsRtl")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Keywords")
-                        .HasMaxLength(500)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid>("LangId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastUpdatedByIp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastUpdatedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("Template")
-                        .IsRequired()
-                        .IsUnicode(true)
-                        .HasColumnType("nTEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ViewPath")
-                        .HasMaxLength(4000)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(4000)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LangId");
-
-                    b.ToTable("Block", (string)null);
-                });
-
             modelBuilder.Entity("Behlog.Cms.Domain.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -226,6 +108,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Attributes")
+                        .HasColumnType("nTEXT");
+
                     b.Property<string>("Author")
                         .HasMaxLength(256)
                         .IsUnicode(true)
@@ -242,6 +127,22 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("ComponentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -250,8 +151,29 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<bool>("IsRtl")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Keywords")
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid>("LangId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("LastUpdated")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedByIp")
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastUpdatedByUserId")
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -273,10 +195,17 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("ViewPath")
+                        .HasMaxLength(2000)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(2000)");
+
                     b.Property<Guid>("WebsiteId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LangId");
 
                     b.HasIndex("WebsiteId");
 
@@ -498,6 +427,58 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ContentTag", (string)null);
+                });
+
+            modelBuilder.Entity("Behlog.Cms.Domain.ContentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<Guid>("LangId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastStatusChangedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("SystemName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LangId");
+
+                    b.ToTable("ContentType", (string)null);
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.FileUpload", b =>
@@ -759,134 +740,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Website", (string)null);
                 });
 
-            modelBuilder.Entity("Behlog.Core.ContentType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<Guid>("LangId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastStatusChangedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("SystemName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LangId");
-
-                    b.ToTable("ContentType", (string)null);
-                });
-
-            modelBuilder.Entity("Behlog.Cms.Domain.Block", b =>
-                {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LangId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsMany("Behlog.Cms.Domain.BlockMeta", "Meta", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<string>("Category")
-                                .HasMaxLength(256)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.Property<string>("Description")
-                                .HasMaxLength(2000)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(2000)");
-
-                            b1.Property<Guid?>("LangId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("MetaKey")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.Property<string>("MetaType")
-                                .HasMaxLength(100)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<string>("MetaValue")
-                                .HasMaxLength(4000)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(4000)");
-
-                            b1.Property<int>("OrderNum")
-                                .HasColumnType("int");
-
-                            b1.Property<Guid>("OwnerId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Status")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasDefaultValue(1);
-
-                            b1.Property<string>("Title")
-                                .HasMaxLength(256)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("OwnerId");
-
-                            b1.ToTable("BlockMeta", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("OwnerId");
-                        });
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Meta");
-                });
-
             modelBuilder.Entity("Behlog.Cms.Domain.Comment", b =>
                 {
                     b.HasOne("Behlog.Cms.Domain.Content", "Content")
@@ -900,6 +753,12 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.Component", b =>
                 {
+                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LangId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Behlog.Cms.Domain.Website", "Website")
                         .WithMany()
                         .HasForeignKey("WebsiteId")
@@ -971,6 +830,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasForeignKey("OwnerId");
                         });
 
+                    b.Navigation("Language");
+
                     b.Navigation("Meta");
 
                     b.Navigation("Website");
@@ -978,7 +839,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
                 {
-                    b.HasOne("Behlog.Core.ContentType", "ContentType")
+                    b.HasOne("Behlog.Cms.Domain.ContentType", "ContentType")
                         .WithMany()
                         .HasForeignKey("ContentTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -989,67 +850,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .HasForeignKey("LangId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.OwnsMany("Behlog.Cms.Domain.ContentBlock", "Blocks", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<Guid>("BlockId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("BodyType")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasDefaultValue(1);
-
-                            b1.Property<Guid>("ContentId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool>("Deleted")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("Hidden")
-                                .HasColumnType("bit");
-
-                            b1.Property<int>("OrderNum")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Properties")
-                                .HasMaxLength(4000)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(4000)");
-
-                            b1.Property<string>("Source")
-                                .IsRequired()
-                                .IsUnicode(true)
-                                .HasColumnType("nTEXT");
-
-                            b1.Property<string>("TextContent")
-                                .HasMaxLength(4000)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(4000)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("BlockId");
-
-                            b1.HasIndex("ContentId");
-
-                            b1.ToTable("ContentBlock", (string)null);
-
-                            b1.HasOne("Behlog.Cms.Domain.Block", null)
-                                .WithMany()
-                                .HasForeignKey("BlockId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.WithOwner()
-                                .HasForeignKey("ContentId");
-                        });
 
                     b.OwnsMany("Behlog.Cms.Domain.ContentComponent", "Components", b1 =>
                         {
@@ -1247,8 +1047,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                                 .HasForeignKey("OwnerId");
                         });
 
-                    b.Navigation("Blocks");
-
                     b.Navigation("Components");
 
                     b.Navigation("ContentType");
@@ -1264,7 +1062,7 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.ContentCategory", b =>
                 {
-                    b.HasOne("Behlog.Core.ContentType", "ContentType")
+                    b.HasOne("Behlog.Cms.Domain.ContentType", "ContentType")
                         .WithMany()
                         .HasForeignKey("ContentTypeId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1324,6 +1122,17 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                     b.Navigation("Content");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Behlog.Cms.Domain.ContentType", b =>
+                {
+                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LangId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.FileUpload", b =>
@@ -1414,17 +1223,6 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         });
 
                     b.Navigation("Meta");
-                });
-
-            modelBuilder.Entity("Behlog.Core.ContentType", b =>
-                {
-                    b.HasOne("Behlog.Cms.Domain.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LangId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>
