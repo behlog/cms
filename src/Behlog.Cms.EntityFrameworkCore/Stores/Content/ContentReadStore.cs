@@ -20,7 +20,7 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
     {
         return await _set
             .Include(_ => _.Categories)
-            .Include(_ => _.Blocks)
+            .Include(_=> _.Components)
             .Include(_ => _.Components)
             .Include(_ => _.Files)
             .Include(_ => _.Language)
@@ -42,7 +42,7 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
     {
         return await _set
             .Include(_ => _.Categories)
-            .Include(_ => _.Blocks)
+            .Include(_ => _.Components)
             .Include(_ => _.Components)
             .Include(_ => _.Files)
             .Include(_ => _.Language)

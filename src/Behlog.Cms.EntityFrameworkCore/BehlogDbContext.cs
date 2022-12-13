@@ -158,18 +158,11 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Ignore<CommentStatus>();
-        modelBuilder.Ignore<BlockStatus>();
         modelBuilder.Ignore<ContentStatus>();
         modelBuilder.Ignore<EntityStatus>();
         modelBuilder.Ignore<FileUploadStatus>();
         modelBuilder.Ignore<WebsiteStatus>();
         modelBuilder.Ignore<ContentBodyType>();
-        modelBuilder.Ignore<WebpageStatus>();
-        modelBuilder.Ignore<Block>();
-        modelBuilder.Ignore<Webpage>();
-        modelBuilder.Ignore<WebpageBlock>();
-        modelBuilder.Ignore<WebpageMeta>();
-        modelBuilder.Ignore<ContentBlock>();
 
         modelBuilder.AddWebsiteConfiguration();
         modelBuilder.AddLanguageConfiguration();
@@ -179,7 +172,6 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
         modelBuilder.AddCommentConfiguration();
         modelBuilder.AddFileUploadConfiguration();
         modelBuilder.AddTagConfiguration();
-        // modelBuilder.AddBlockConfiguration();
         modelBuilder.AddComponentConfiguration();
         
         base.OnModelCreating(modelBuilder);

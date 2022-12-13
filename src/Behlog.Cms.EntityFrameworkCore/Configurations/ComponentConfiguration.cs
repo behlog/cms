@@ -50,7 +50,7 @@ public static partial class EntityConfigurations
             });
 
             component.OwnsMany(_ => _.Files, f => {
-                f.ToTable(ContentFileTableName)
+                f.ToTable(ComponentFileTableName)
                     .HasKey(_ => new {
                         _.ComponentId, 
                         _.FileId

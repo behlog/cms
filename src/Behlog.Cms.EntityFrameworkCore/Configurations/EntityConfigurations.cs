@@ -34,20 +34,12 @@ public static partial class EntityConfigurations
     public const string TagTableName = nameof(Tag);
 
     public const string ContentTagTableName = nameof(ContentTag);
-
-    public const string BlockTableName = nameof(Block);
-
-    public const string ContentBlockTableName = nameof(ContentBlock);
-
-    public const string BlockMetaTableName = nameof(BlockMeta);
     
-    public const string WebpageTableName = nameof(Webpage);
-    
-    public const string WebpageBlockTableName = nameof(WebpageBlock);
-
     public const string ComponentTableName = nameof(Component);
 
     public const string ComponentMetaTableName = nameof(ComponentMeta);
 
+    public const string ComponentFileTableName = nameof(ComponentFile);
+    
     public const string ContentComponentTableName = nameof(ContentComponent);
 }
