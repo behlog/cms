@@ -6,6 +6,11 @@ namespace Behlog.Cms.Commands;
 
 public class CreateComponentCommand : IBehlogCommand<CommandResult<ComponentResult>>
 {
+    public CreateComponentCommand()
+    {
+        Meta = new List<MetaCommand>();
+    }
+    
     public Guid WebsiteId { get; set; }
     public Guid LangId { get; set; }
     public string Name { get; set; }

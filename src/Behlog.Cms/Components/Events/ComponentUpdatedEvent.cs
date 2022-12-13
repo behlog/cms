@@ -5,16 +5,18 @@ using Behlog.Core.Domain;
 namespace Behlog.Cms.Events;
 
 
-public class ComponentCreatedEvent : BehlogDomainEvent
+public class ComponentUpdatedEvent : BehlogDomainEvent
 {
-    public ComponentCreatedEvent(
-        Guid id, Guid websiteId, string name, string title, string componentType, string category,
+    public ComponentUpdatedEvent(
+        Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
         string? description, string? attributes, EntityStatus status, string? author, string? authorEmail, 
-        Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, 
-        string? createdByUserId, string? createdByIp, IReadOnlyCollection<MetaResult> meta)
+        Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, DateTime? lastUpdated,
+        string? createdByUserId, string? createdByIp, string lastUpdatedByUserId, string lastUpdatedByIp, 
+        IReadOnlyCollection<MetaResult> meta)
     {
         Id = id;
         WebsiteId = websiteId;
+        LangId = langId;
         Name = name;
         Title = title;
         ComponentType = componentType;
@@ -29,8 +31,11 @@ public class ComponentCreatedEvent : BehlogDomainEvent
         Keywords = keywords;
         ViewPath = viewPath;
         CreatedDate = createdDate;
+        LastUpdated = lastUpdated;
         CreatedByUserId = createdByUserId;
         CreatedByIp = createdByIp;
+        LastUpdatedByUserId = lastUpdatedByUserId;
+        LastUpdatedByIp = lastUpdatedByIp;
         Meta = meta;
     }
     
@@ -51,7 +56,10 @@ public class ComponentCreatedEvent : BehlogDomainEvent
     public string? Keywords { get; }
     public string? ViewPath { get; }
     public DateTime CreatedDate { get; }
+    public DateTime? LastUpdated { get; }
     public string? CreatedByUserId { get; }
     public string? CreatedByIp { get; }
+    public string? LastUpdatedByUserId { get; }
+    public string? LastUpdatedByIp { get; }
     public IReadOnlyCollection<MetaResult> Meta { get; }
 }
