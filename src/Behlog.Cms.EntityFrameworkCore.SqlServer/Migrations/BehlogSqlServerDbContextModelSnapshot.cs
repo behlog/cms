@@ -765,6 +765,48 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.OwnsMany("Behlog.Cms.Domain.ComponentFile", "Files", b1 =>
+                        {
+                            b1.Property<Guid>("ComponentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("FileId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasMaxLength(2000)
+                                .IsUnicode(true)
+                                .HasColumnType("nvarchar(2000)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasMaxLength(2000)
+                                .IsUnicode(true)
+                                .HasColumnType("nvarchar(2000)");
+
+                            b1.Property<string>("Title")
+                                .HasMaxLength(1000)
+                                .IsUnicode(true)
+                                .HasColumnType("nvarchar(1000)");
+
+                            b1.HasKey("ComponentId", "FileId");
+
+                            b1.HasIndex("FileId");
+
+                            b1.ToTable("ComponentFile", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ComponentId");
+
+                            b1.HasOne("Behlog.Cms.Domain.FileUpload", "File")
+                                .WithMany()
+                                .HasForeignKey("FileId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.Navigation("File");
+                        });
+
                     b.OwnsMany("Behlog.Cms.Domain.ComponentMeta", "Meta", b1 =>
                         {
                             b1.Property<long>("Id")
@@ -829,6 +871,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("OwnerId");
                         });
+
+                    b.Navigation("Files");
 
                     b.Navigation("Language");
 

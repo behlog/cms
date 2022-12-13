@@ -334,6 +334,33 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ComponentFile",
+                columns: table => new
+                {
+                    ComponentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComponentFile", x => new { x.ComponentId, x.FileId });
+                    table.ForeignKey(
+                        name: "FK_ComponentFile_Component_ComponentId",
+                        column: x => x.ComponentId,
+                        principalTable: "Component",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ComponentFile_FileUpload_FileId",
+                        column: x => x.FileId,
+                        principalTable: "FileUpload",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comment",
                 columns: table => new
                 {
@@ -539,6 +566,11 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
                 column: "WebsiteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ComponentFile_FileId",
+                table: "ComponentFile",
+                column: "FileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ComponentMeta_OwnerId",
                 table: "ComponentMeta",
                 column: "OwnerId");
@@ -623,6 +655,9 @@ namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comment");
+
+            migrationBuilder.DropTable(
+                name: "ComponentFile");
 
             migrationBuilder.DropTable(
                 name: "ComponentMeta");
