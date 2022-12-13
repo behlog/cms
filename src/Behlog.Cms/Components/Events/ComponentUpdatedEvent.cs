@@ -11,7 +11,7 @@ public class ComponentUpdatedEvent : BehlogDomainEvent
         Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
         string? description, string? attributes, EntityStatus status, string? author, string? authorEmail, 
         Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, DateTime? lastUpdated,
-        string? createdByUserId, string? createdByIp, string lastUpdatedByUserId, string lastUpdatedByIp, 
+        string? createdByUserId, string? createdByIp, string? lastUpdatedByUserId, string? lastUpdatedByIp, 
         IReadOnlyCollection<MetaResult> meta)
     {
         Id = id;

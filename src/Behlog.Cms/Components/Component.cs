@@ -6,11 +6,10 @@ namespace Behlog.Cms.Domain;
 /// <summary>
 /// Represents Behlog's WebComponents.
 /// </summary>
-public class Component : AggregateRoot<Guid>, IHasMetadata
+public partial class Component : AggregateRoot<Guid>, IHasMetadata
 {
     private Component() : base() { }
-
-
+    
     #region props
     public Guid WebsiteId { get; protected set; }
     public Guid LangId { get; protected set; }
@@ -41,7 +40,7 @@ public class Component : AggregateRoot<Guid>, IHasMetadata
     public Website Website { get; protected set; }
     public Language Language { get; protected set; }
 
-    public IEnumerable<ComponentMeta> Meta { get; protected set; }
+    public IReadOnlyCollection<ComponentMeta> Meta { get; protected set; }
 
     #endregion
 }

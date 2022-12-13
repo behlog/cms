@@ -8,13 +8,14 @@ namespace Behlog.Cms.Events;
 public class ComponentCreatedEvent : BehlogDomainEvent
 {
     public ComponentCreatedEvent(
-        Guid id, Guid websiteId, string name, string title, string componentType, string category,
+        Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
         string? description, string? attributes, EntityStatus status, string? author, string? authorEmail, 
         Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, 
         string? createdByUserId, string? createdByIp, IReadOnlyCollection<MetaResult> meta)
     {
         Id = id;
         WebsiteId = websiteId;
+        LangId = langId;
         Name = name;
         Title = title;
         ComponentType = componentType;

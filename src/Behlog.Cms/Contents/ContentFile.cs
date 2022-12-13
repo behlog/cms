@@ -1,4 +1,5 @@
 using Behlog.Core.Domain;
+using Idyfa.Core.Extensions;
 
 namespace Behlog.Cms.Domain;
 
@@ -49,13 +50,13 @@ public class ContentFile : ValueObject
 
     public ContentFile WithTitle(string? title)
     {
-        Title = title;
+        Title = title?.CorrectYeKe().Trim();
         return this;
     }
 
     public ContentFile WithDescription(string? description)
     {
-        Description = description;
+        Description = description?.CorrectYeKe();
         return this;
     }
 

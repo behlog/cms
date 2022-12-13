@@ -1,4 +1,6 @@
+using Behlog.Cms.Commands;
 using Behlog.Cms.Domain;
+using Behlog.Core;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Models;
@@ -34,5 +36,22 @@ internal static class ComponentMappers
         }
 
         return result;
+    }
+
+    
+    public static IReadOnlyCollection<ComponentMeta> Convert(this ICollection<MetaCommand>? meta, Guid componentId)
+    {
+        return meta?.ToList()
+            .Select(_ => ComponentMeta
+                .New(_.MetaKey, _.MetaValue)
+                .WithCategory(_.Category)
+                .WithStatus(_.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
+                .WithTitle(_.Title)
+                .WithDescription(_.Description)
+                .WithLangId(_.LangId)
+                .WithOrderNum(_.OrderNum)
+                .WithOwnerId(componentId)
+                .Build()
+            ).ToList();
     }
 }
