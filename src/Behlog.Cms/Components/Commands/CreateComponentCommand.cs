@@ -9,6 +9,7 @@ public class CreateComponentCommand : IBehlogCommand<CommandResult<ComponentResu
     public CreateComponentCommand()
     {
         Meta = new List<MetaCommand>();
+        Files = new List<ComponentFileCommand>();
     }
     
     public Guid WebsiteId { get; set; }
@@ -26,4 +27,5 @@ public class CreateComponentCommand : IBehlogCommand<CommandResult<ComponentResu
     public string? Keywords { get; set; }
     public string? ViewPath { get; set; }
     public ICollection<MetaCommand> Meta { get; set; }
+    public ICollection<ComponentFileCommand> Files { get; set; }
 }

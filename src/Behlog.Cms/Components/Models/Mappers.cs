@@ -54,4 +54,15 @@ internal static class ComponentMappers
                 .Build()
             ).ToList();
     }
+
+
+    public static IReadOnlyCollection<ComponentFile> Convert(this ICollection<ComponentFileCommand>? files, Guid componentId)
+    {
+        return files?.ToList()
+            .Select(file => ComponentFile.New(componentId, file.FileId)
+                .WithFileName(file.FileName)
+                .WithTitle(file.Title)
+                .WithDescription(file.Description))
+            .ToList()!;
+    }
 }

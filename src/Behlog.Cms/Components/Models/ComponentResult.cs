@@ -65,6 +65,11 @@ public class ComponentResult
     public string? LastUpdatedByIp { get; }
     
     public IReadOnlyCollection<MetaResult> Meta { get; set; }
+    
+    public IReadOnlyCollection<ComponentFileResult> Files { get; set; }
+    
+    public string LangCode { get; set; }
+    public string LangTitle { get; set; }
     #endregion
 
 
@@ -105,6 +110,36 @@ public class ComponentResult
     public ComponentResult WithMeta(IReadOnlyCollection<ComponentMeta> meta)
     {
         Meta = meta?.Select(_ => _.ToResult()).ToList()!;
+        return this;
+    }
+    
+    public ComponentResult WithLanguage(Language? language)
+    {
+        if (language is null) return this;
+        
+        LangCode = language.Code;
+        LangTitle = language.Title;
+        return this;
+    }
+
+    public ComponentResult WithFiles(IReadOnlyCollection<ComponentFile> files)
+    {
+        var result = new List<ComponentFileResult>();
+        foreach (var file in files)
+        {
+            result.Add(new ComponentFileResult(
+                file.ComponentId, file.FileId, file.Title, file.FileName, file.Description)
+                .WithFile(file.File));
+        }
+        
+        Files = result.ToList();
+        return this;
+    }
+
+
+    public ComponentResult WithFiles(IReadOnlyCollection<ComponentFileResult> files)
+    {
+        Files = files;
         return this;
     }
 }

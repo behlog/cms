@@ -8,7 +8,7 @@ public class ComponentFile : ValueObject
 {
     
     private ComponentFile() { }
-
+    
 
     private ComponentFile(Guid componentId, Guid fileId)
     {
@@ -34,7 +34,7 @@ public class ComponentFile : ValueObject
         return this;
     }
 
-    public ComponentFile WithDescription(string description)
+    public ComponentFile WithDescription(string? description)
     {
         Description = description?.CorrectYeKe();
         return this;

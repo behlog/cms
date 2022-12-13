@@ -47,6 +47,7 @@ public partial class Component
         };
         
         component.Meta = command.Meta.Convert(component.Id);
+        
         component.AddCreatedEvent();
         
         return await Task.FromResult(component);

@@ -11,6 +11,7 @@ public partial class Component : AggregateRoot<Guid>, IHasMetadata
     private Component() : base() { }
     
     #region props
+    
     public Guid WebsiteId { get; protected set; }
     public Guid LangId { get; protected set; }
     public string Name { get; protected set; }
@@ -33,6 +34,7 @@ public partial class Component : AggregateRoot<Guid>, IHasMetadata
     public string? LastUpdatedByUserId { get; protected set; }
     public string? CreatedByIp { get; protected set; }
     public string? LastUpdatedByIp { get; protected set; }
+    
     #endregion
     
     #region Navigations
@@ -41,6 +43,8 @@ public partial class Component : AggregateRoot<Guid>, IHasMetadata
     public Language Language { get; protected set; }
 
     public IReadOnlyCollection<ComponentMeta> Meta { get; protected set; }
+    
+    public IReadOnlyCollection<ComponentFile> Files { get; protected set; }
 
     #endregion
 }
