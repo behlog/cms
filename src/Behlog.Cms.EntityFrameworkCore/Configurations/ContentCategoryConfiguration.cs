@@ -51,7 +51,7 @@ public static partial class EntityConfigurations
 
             item.HasOne(_ => _.Category)
                 .WithMany(_ => _.Contents)
-                .HasForeignKey(_ => _.ContentId)
+                .HasForeignKey(_ => _.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }
