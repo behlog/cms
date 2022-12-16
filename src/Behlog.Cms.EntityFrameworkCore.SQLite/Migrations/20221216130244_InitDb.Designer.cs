@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 {
     [DbContext(typeof(BehlogSQLiteDbContext))]
-    [Migration("20221213143046_InitDb")]
+    [Migration("20221216130244_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
