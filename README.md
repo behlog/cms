@@ -1,2 +1,3 @@
-# cms
-Behlog content management library package
+# Behlog.Cms
+## Behlog content management library package
+This is the library for **Behlog Content Management System** which currently is under development (heavily). It is designed to be deployed over nuget as seperate packages for diffrent uses cases in building full featured online websites, blogs, shops and every softwares that needs to manage contents over the internet. It is developed with domain-driven design approach with CQRS pattern and using latest .NET 6.0 and ASP.NET CORE as the framework. It can write and store data in various RDBMS databases with seperation of read & write operations using Command/Query pattern. You can use EF Core for commands (write) and Dapper for queries (read) to gain both development speed and performance. It's offer much more features that we will cover in this repository soon.
