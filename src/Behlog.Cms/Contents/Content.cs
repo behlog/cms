@@ -160,17 +160,19 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     /// <summary>
     /// Mark a <see cref="Content"/> as <see cref="ContentStatus.Deleted"/>.
     /// When soft deleted, the Content wont displayed anymore and the user must
-    /// find it on recycle bin.
+    /// find it on the recycle bin.
     /// </summary>
     public async Task SoftDeleteAsync(
-        IIdyfaUserContext userContext, ISystemDateTime dateTime)
+        IIdyfaUserContext userContext, IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         
         Status = ContentStatus.Deleted;
         LastStatusChangedDate = dateTime.UtcNow;
         LastUpdatedByUserId = userContext.UserId;
+        LastUpdatedByIp = appContext.IpAddress;
         
         var e = new ContentSoftDeletedEvent(Id);
         Enqueue(e);

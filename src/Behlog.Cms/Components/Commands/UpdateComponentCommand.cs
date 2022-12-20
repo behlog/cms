@@ -3,9 +3,9 @@ using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
-public class ModifyComponentCommand : IBehlogCommand<CommandResult>
+public class UpdateComponentCommand : IBehlogCommand<CommandResult>
 {
-    public ModifyComponentCommand()
+    public UpdateComponentCommand()
     {
         Meta = new List<MetaCommand>();
         Files = new List<ComponentFileCommand>();

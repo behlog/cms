@@ -108,7 +108,7 @@ public class ContentCommandHandlers :
 
         var content = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         content.ThrowExceptionIfReferenceIsNull(nameof(content));
-        await content.SoftDeleteAsync(_userContext, _dateTime);
+        await content.SoftDeleteAsync(_userContext, _appContext, _dateTime);
         
         _writeStore.MarkForUpdate(content);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

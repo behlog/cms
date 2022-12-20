@@ -1,11 +1,11 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Contracts;
+using Behlog.Core;
+using Behlog.Extensions;
 using Behlog.Cms.Events;
 using Behlog.Cms.Models;
-using Behlog.Core;
-using Behlog.Core.Contracts;
-using Behlog.Extensions;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
 using Idyfa.Core.Contracts;
+using Behlog.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
 
@@ -52,10 +52,64 @@ public partial class Component
         
         return await Task.FromResult(component);
     }
-
-
     
     
+    public async Task UpdateAsync(
+        UpdateComponentCommand command, IBehlogApplicationContext appContext,
+        IIdyfaUserContext userContext, ISystemDateTime dateTime, IComponentService service)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        service.ThrowExceptionIfArgumentIsNull(nameof(service));
+
+        LangId = command.LangId;
+        Name = command.Name;
+        Title = command.Title;
+        ComponentType = command.ComponentType;
+        Category = command.Category;
+        Attributes = command.Attributes;
+        Description = command.Description;
+        Author = command.Author;
+        AuthorEmail = command.AuthorEmail;
+        ParentId = command.ParentId;
+        Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
+        IsRtl = command.IsRtl;
+        Keywords = command.Keywords;
+        ViewPath = command.ViewPath;
+        Meta = command.Meta?.Convert(Id)!;
+        Files = command.Files?.Convert(Id)!;
+        
+        AddUpdatedEvent();
+    }
+
+    /// <summary>
+    /// Mark a <see cref="Component"/> as <see cref="EntityStatus.Deleted"/>.
+    /// When soft deleted, the Component wont be displayed anymore across website.
+    /// but it can be recycled.
+    /// </summary>
+    public async Task SoftDeleteAsync(
+        IIdyfaUserContext userContext, IBehlogApplicationContext appContext, ISystemDateTime dateTime)
+    {
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
+        Status = EntityStatus.Deleted;
+        LastUpdated = dateTime.UtcNow;
+        LastUpdatedByIp = appContext.IpAddress;
+        LastUpdatedByUserId = userContext.UserId;
+        
+        AddSoftDeletedEvent();
+    }
+
+
+    public void Remove()
+    {
+        AddRemovedEvent();
+    }
+     
     #region events
 
 
@@ -68,8 +122,7 @@ public partial class Component
         
         Enqueue(e);
     }
-
-
+    
     private void AddUpdatedEvent()
     {
         var e = new ComponentUpdatedEvent(
