@@ -14,8 +14,8 @@ namespace Behlog.Cms.Components.Handlers;
 public class ComponentCommandHandlers :
     IBehlogCommandHandler<CreateComponentCommand, CommandResult<ComponentResult>>,
     IBehlogCommandHandler<UpdateComponentCommand, CommandResult>,
-    IBehlogCommandHandler<SoftDeleteComponentCommand>,
-    IBehlogCommandHandler<RemoveComponentCommand>
+    IBehlogCommandHandler<SoftDeleteComponentCommand, CommandResult>,
+    IBehlogCommandHandler<RemoveComponentCommand, CommandResult>
 {
     private readonly IIdyfaUserContext _userContext;
     private readonly IBehlogApplicationContext _appContext;
@@ -92,13 +92,31 @@ public class ComponentCommandHandlers :
         return CommandResult.Success();
     }
 
-    public Task HandleAsync(SoftDeleteComponentCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<CommandResult> HandleAsync(
+        SoftDeleteComponentCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var component = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        component.ThrowExceptionIfReferenceIsNull(nameof(component));
+
+        component.SoftDelete(_userContext, _appContext, _dateTime);
+        await _writeStore.UpdateAsync(component, cancellationToken).ConfigureAwait(false);
+        
+        return CommandResult.Success();
     }
 
-    public Task HandleAsync(RemoveComponentCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<CommandResult> HandleAsync(
+        RemoveComponentCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var component = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        component.ThrowExceptionIfReferenceIsNull(nameof(component));
+        
+        component.Remove();
+        await _writeStore.DeleteAsync(component, cancellationToken).ConfigureAwait(false);
+        
+        return CommandResult.Success();
     }
 }

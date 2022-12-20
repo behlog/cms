@@ -89,7 +89,7 @@ public partial class Component
     /// When soft deleted, the Component wont be displayed anymore across website.
     /// but it can be recycled.
     /// </summary>
-    public async Task SoftDeleteAsync(
+    public void SoftDelete(
         IIdyfaUserContext userContext, IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
