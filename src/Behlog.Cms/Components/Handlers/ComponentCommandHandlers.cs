@@ -66,9 +66,30 @@ public class ComponentCommandHandlers :
         }
     }
 
-    public Task<CommandResult> HandleAsync(UpdateComponentCommand message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<CommandResult> HandleAsync(
+        UpdateComponentCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var validation = new UpdateComponentCommandValidator().Validate(command);
+        if (validation.HasError)
+        {
+            return CommandResult.Failed(validation.Errors);
+        }
+
+        try
+        {
+            var component = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            component.ThrowExceptionIfReferenceIsNull(nameof(component));
+
+            await component.UpdateAsync(command, _appContext, _userContext, _dateTime, _service);
+            await _writeStore.UpdateAsync(component, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+        
+        return CommandResult.Success();
     }
 
     public Task HandleAsync(SoftDeleteComponentCommand message, CancellationToken cancellationToken = new CancellationToken())
