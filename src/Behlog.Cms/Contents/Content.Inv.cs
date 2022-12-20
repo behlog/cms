@@ -7,10 +7,10 @@ namespace Behlog.Cms.Domain;
 public partial class Content
 {
     
-    private static async Task CheckForDuplicateSlug(
+    private static async Task GuardAgainstDuplicateSlug(
         Guid contentId, Guid websiteId, string slug, IContentService service)
     {
-        if (await service.SlugExistedInWebsiteAsync(websiteId, contentId, slug))
+        if (await service.SlugExistInWebsiteAsync(websiteId, contentId, slug))
             throw new ContentSlugAlreadyExistedException(websiteId, slug);
     }
 }

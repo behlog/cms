@@ -12,7 +12,7 @@ public interface IContentService
     /// <param name="contentId"></param>
     /// <param name="slug"></param>
     /// <returns></returns>
-    Task<bool> SlugExistedInWebsiteAsync(
+    Task<bool> SlugExistInWebsiteAsync(
         Guid websiteId, Guid contentId, string slug);
     
     

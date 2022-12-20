@@ -110,7 +110,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             LangCode = "" //TODO : add langcode
         };
         
-        await CheckForDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
+        await GuardAgainstDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
         
         content.Categories = command.Categories.Convert(content.Id);
         content.Meta = command.Meta.Convert(content.Id);
@@ -132,7 +132,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
 
-        await CheckForDuplicateSlug(Id, WebsiteId, command.Slug, service);
+        await GuardAgainstDuplicateSlug(Id, WebsiteId, command.Slug, service);
         
         Title = command.Title.Trim().CorrectYeKe();
         Slug = command.Slug?.MakeSlug().CorrectYeKe()!;

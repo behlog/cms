@@ -18,7 +18,7 @@ public class ContentService : IContentService
     }
     
     /// <inheritdoc /> 
-    public async Task<bool> SlugExistedInWebsiteAsync(Guid websiteId, Guid contentId, string slug)
+    public async Task<bool> SlugExistInWebsiteAsync(Guid websiteId, Guid contentId, string slug)
     {
         if (websiteId == default)
             throw new BehlogInvalidEntityIdException(nameof(Website));

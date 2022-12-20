@@ -6,7 +6,7 @@ public class ContentSlugAlreadyExistedException : BehlogException
 {
 
     public ContentSlugAlreadyExistedException(Guid websiteId, string slug)
-        : base($"The Website with Id: [{websiteId.ToString()}] already have a content with slug '{slug}'. The Content slug must be unique across Websites.")
+        : base($"The Website with Id: [{websiteId.ToString()}] already has a content with slug '{slug}'. The Content slug must be unique across a Website.")
     {
         WebsiteId = websiteId;
         ExistedSlug = slug;
