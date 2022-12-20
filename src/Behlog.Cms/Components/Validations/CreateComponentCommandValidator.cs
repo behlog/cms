@@ -4,11 +4,12 @@ using Behlog.Core.Contracts;
 using Behlog.Core.Models;
 using Behlog.Core.Validations;
 using Behlog.Extensions;
+using static Behlog.Cms.Components.Validations.ComponentErrorCodes;
 
 namespace Behlog.Cms.Components.Validations;
 
-public class CreateComponentCommandValidator :
-    IBehlogCommandValidator<CreateComponentCommand, CommandResult<ComponentResult>>
+public class CreateComponentCommandValidator 
+    : IBehlogCommandValidator<CreateComponentCommand, CommandResult<ComponentResult>>
 {
     
     public ValidatorResult Validate(CreateComponentCommand command)
@@ -17,56 +18,46 @@ public class CreateComponentCommandValidator :
 
         return ValidatorResult.Create()
                 .IsRequired(command.Name, nameof(command.Name),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.NameIsNull)!,
-                    ComponentErrorCodes.NameIsNull)
+                    GetMessage(NameIsNull)!, NameIsNull)
 
                 .HasMaxLenght(command.Name, 256, nameof(command.Name),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.NameMaxLen)!,
-                    ComponentErrorCodes.NameMaxLen)
+                    GetMessage(NameMaxLen)!, NameMaxLen)
 
                 .IsRequired(command.Title, nameof(command.Title),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.TitleIsNull)!,
-                    ComponentErrorCodes.TitleIsNull)
+                    GetMessage(TitleIsNull)!, TitleIsNull)
 
                 .HasMaxLenght(command.Title, 256, nameof(command.Title),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.TitleMaxLen)!,
-                    ComponentErrorCodes.TitleMaxLen)
+                    GetMessage(TitleMaxLen)!, TitleMaxLen)
 
                 .IsRequired(command.Category, nameof(command.Category),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.CategoryIsNull)!,
-                    ComponentErrorCodes.CategoryIsNull)
+                    GetMessage(CategoryIsNull)!, CategoryIsNull)
 
                 .HasMaxLenght(command.Category, 256, nameof(command.Category),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.CategoryMaxLen)!,
-                    ComponentErrorCodes.CategoryMaxLen)
+                    GetMessage(CategoryMaxLen)!, CategoryMaxLen)
                 
                 .IsRequired(command.ComponentType, nameof(command.ComponentType),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.ComponentTypeIsNull)!,
-                    ComponentErrorCodes.ComponentTypeMaxLen)
+                    GetMessage(ComponentTypeIsNull)!, ComponentTypeMaxLen)
             
                 .HasMaxLenght(command.Description, 1000, nameof(command.Description),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.DescriptionMaxLen)!,
-                    ComponentErrorCodes.DescriptionMaxLen)
+                    GetMessage(DescriptionMaxLen)!, DescriptionMaxLen)
                 
                 .HasMaxLenght(command.Author, 256, nameof(command.Author),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.AuthorMaxLen)!,
-                    ComponentErrorCodes.AuthorMaxLen)
+                    GetMessage(AuthorMaxLen)!, AuthorMaxLen)
                 
                 .HasMaxLenght(command.AuthorEmail, 1000, nameof(command.AuthorEmail),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.AuthorEmailMaxLen)!,
-                    ComponentErrorCodes.AuthorEmailMaxLen)
+                    GetMessage(AuthorEmailMaxLen)!, AuthorEmailMaxLen)
+                
+                .IsEmailFormatCorrect(command.AuthorEmail!, nameof(command.AuthorEmail),
+                    GetMessage(AuthorEmailFormat)!, AuthorEmailFormat)
             
                 .HasMaxLenght(command.Keywords, 256, nameof(command.Keywords),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.KeywordsMaxLen)!,
-                    ComponentErrorCodes.KeywordsMaxLen)
+                    GetMessage(KeywordsMaxLen)!, KeywordsMaxLen)
                 
                 .HasMaxLenght(command.ViewPath, 2000, nameof(command.ViewPath),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.ViewPathMaxLen)!,
-                    ComponentErrorCodes.ViewPathMaxLen)
+                    GetMessage(ViewPathMaxLen)!, ViewPathMaxLen)
             ;
     }
-
-
+    
     public static ValidatorResult Run(CreateComponentCommand command)
         => new CreateComponentCommandValidator().Validate(command);
 }

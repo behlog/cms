@@ -15,6 +15,7 @@ public static class ComponentErrorCodes
     public static string DescriptionMaxLen = "component.desc.maxlen";
     public static string AuthorMaxLen = "component.author.maxlen";
     public static string AuthorEmailMaxLen = "component.author.email.maxlen";
+    public static string AuthorEmailFormat = "component.author.email.format";
     public static string KeywordsMaxLen = "component.keywords.maxlen";
     public static string ViewPathMaxLen = "component.view.maxlen";
     

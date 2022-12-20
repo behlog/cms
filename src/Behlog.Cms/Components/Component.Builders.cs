@@ -45,6 +45,8 @@ public partial class Component
             CreatedByIp = appContext.IpAddress,
             CreatedByUserId = userContext.UserId
         };
+
+        await GuardAgainstDuplicateName(component.Id, component.WebsiteId, component.Name, service);
         
         component.Meta = command.Meta.Convert(component.Id);
         
@@ -64,6 +66,8 @@ public partial class Component
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         service.ThrowExceptionIfArgumentIsNull(nameof(service));
 
+        await GuardAgainstDuplicateName(Id, WebsiteId, command.Name, service);
+        
         LangId = command.LangId;
         Name = command.Name;
         Title = command.Title;

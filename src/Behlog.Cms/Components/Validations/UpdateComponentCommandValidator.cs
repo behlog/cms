@@ -1,10 +1,9 @@
 using Behlog.Cms.Commands;
-using Behlog.Cms.Domain;
-using Behlog.Core;
 using Behlog.Core.Contracts;
 using Behlog.Core.Models;
 using Behlog.Core.Validations;
 using Behlog.Extensions;
+using static Behlog.Cms.Components.Validations.ComponentErrorCodes;
 
 namespace Behlog.Cms.Components.Validations;
 
@@ -19,53 +18,41 @@ public class UpdateComponentCommandValidator
         return ValidatorResult.Create()
                 .ThrowExceptionIfIdIsNotValid(command.Id)
                 
-                .IsRequired(command.Name, nameof(command.Name),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.NameIsNull)!,
-                    ComponentErrorCodes.NameIsNull)
+                .IsRequired(command.Name, nameof(command.Name), 
+                    GetMessage(NameIsNull)!, NameIsNull)
 
                 .HasMaxLenght(command.Name, 256, nameof(command.Name),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.NameMaxLen)!,
-                    ComponentErrorCodes.NameMaxLen)
+                    GetMessage(NameMaxLen)!, NameMaxLen)
 
                 .IsRequired(command.Title, nameof(command.Title),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.TitleIsNull)!,
-                    ComponentErrorCodes.TitleIsNull)
+                    GetMessage(TitleIsNull)!, TitleIsNull)
 
                 .HasMaxLenght(command.Title, 256, nameof(command.Title),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.TitleMaxLen)!,
-                    ComponentErrorCodes.TitleMaxLen)
+                    GetMessage(TitleMaxLen)!, TitleMaxLen)
 
                 .IsRequired(command.Category, nameof(command.Category),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.CategoryIsNull)!,
-                    ComponentErrorCodes.CategoryIsNull)
+                    GetMessage(CategoryIsNull)!, CategoryIsNull)
 
                 .HasMaxLenght(command.Category, 256, nameof(command.Category),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.CategoryMaxLen)!,
-                    ComponentErrorCodes.CategoryMaxLen)
+                    GetMessage(CategoryMaxLen)!, CategoryMaxLen)
                 
                 .IsRequired(command.ComponentType, nameof(command.ComponentType),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.ComponentTypeIsNull)!,
-                    ComponentErrorCodes.ComponentTypeMaxLen)
+                    GetMessage(ComponentTypeIsNull)!, ComponentTypeMaxLen)
             
                 .HasMaxLenght(command.Description, 1000, nameof(command.Description),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.DescriptionMaxLen)!,
-                    ComponentErrorCodes.DescriptionMaxLen)
+                    GetMessage(DescriptionMaxLen)!, DescriptionMaxLen)
                 
                 .HasMaxLenght(command.Author, 256, nameof(command.Author),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.AuthorMaxLen)!,
-                    ComponentErrorCodes.AuthorMaxLen)
+                    GetMessage(AuthorMaxLen)!, AuthorMaxLen)
                 
                 .HasMaxLenght(command.AuthorEmail, 1000, nameof(command.AuthorEmail),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.AuthorEmailMaxLen)!,
-                    ComponentErrorCodes.AuthorEmailMaxLen)
+                    GetMessage(AuthorEmailMaxLen)!, AuthorEmailMaxLen)
             
                 .HasMaxLenght(command.Keywords, 256, nameof(command.Keywords),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.KeywordsMaxLen)!,
-                    ComponentErrorCodes.KeywordsMaxLen)
+                    GetMessage(KeywordsMaxLen)!, KeywordsMaxLen)
                 
                 .HasMaxLenght(command.ViewPath, 2000, nameof(command.ViewPath),
-                    ComponentErrorCodes.GetMessage(ComponentErrorCodes.ViewPathMaxLen)!,
-                    ComponentErrorCodes.ViewPathMaxLen);
+                    GetMessage(ViewPathMaxLen)!, ViewPathMaxLen);
         
     }
 }
