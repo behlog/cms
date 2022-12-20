@@ -3,7 +3,7 @@ using Behlog.Extensions;
 using Behlog.Cms.Models;
 using Behlog.Cms.Domain;
 
-namespace Behlog.Cms.Components.Query;
+namespace Behlog.Cms.Query;
 
 
 public class QueryComponentByName : IBehlogQuery<ComponentResult>

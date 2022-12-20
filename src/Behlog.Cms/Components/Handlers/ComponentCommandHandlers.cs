@@ -1,15 +1,16 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Components.Validations;
-using Behlog.Cms.Contracts;
+using Behlog.Core;
+using Behlog.Extensions;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Models;
-using Behlog.Core;
-using Behlog.Core.Contracts;
 using Behlog.Core.Models;
-using Behlog.Extensions;
+using Behlog.Cms.Commands;
+using Behlog.Cms.Contracts;
+using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
+using Behlog.Cms.Validations;
 
-namespace Behlog.Cms.Components.Handlers;
+namespace Behlog.Cms.Handlers;
+
 
 public class ComponentCommandHandlers :
     IBehlogCommandHandler<CreateComponentCommand, CommandResult<ComponentResult>>,

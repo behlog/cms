@@ -1,7 +1,7 @@
-using Behlog.Cms.Models;
 using Behlog.Core;
+using Behlog.Cms.Models;
 
-namespace Behlog.Cms.Components.Query;
+namespace Behlog.Cms.Query;
 
 
 public class QueryComponentById : IBehlogQuery<ComponentResult>

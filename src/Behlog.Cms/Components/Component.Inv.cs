@@ -1,7 +1,8 @@
-using Behlog.Cms.Components.Exceptions;
 using Behlog.Cms.Contracts;
+using Behlog.Cms.Exceptions;
 
 namespace Behlog.Cms.Domain;
+
 
 public partial class Component
 {

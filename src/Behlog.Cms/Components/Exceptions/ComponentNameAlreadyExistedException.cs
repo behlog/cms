@@ -1,6 +1,6 @@
 using Behlog.Core;
 
-namespace Behlog.Cms.Components.Exceptions;
+namespace Behlog.Cms.Exceptions;
 
 public class ComponentNameAlreadyExistedException : BehlogException
 {

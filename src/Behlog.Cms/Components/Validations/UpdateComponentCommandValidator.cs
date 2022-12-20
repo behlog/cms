@@ -3,9 +3,9 @@ using Behlog.Core.Contracts;
 using Behlog.Core.Models;
 using Behlog.Core.Validations;
 using Behlog.Extensions;
-using static Behlog.Cms.Components.Validations.ComponentErrorCodes;
+using static Behlog.Cms.Validations.ComponentErrorCodes;
 
-namespace Behlog.Cms.Components.Validations;
+namespace Behlog.Cms.Validations;
 
 public class UpdateComponentCommandValidator 
     : IBehlogCommandValidator<UpdateComponentCommand, CommandResult>

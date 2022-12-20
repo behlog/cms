@@ -1,6 +1,6 @@
 using Behlog.Cms.Resources;
 
-namespace Behlog.Cms.Components.Validations;
+namespace Behlog.Cms.Validations;
 
 public static class ComponentErrorCodes
 {
