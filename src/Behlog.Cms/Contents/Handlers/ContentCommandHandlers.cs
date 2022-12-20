@@ -8,7 +8,6 @@ using Idyfa.Core.Contracts;
 using Behlog.Cms.Contracts;
 using Behlog.Core.Contracts;
 using Behlog.Cms.Validations;
-using Microsoft.Extensions.Logging;
 
 namespace Behlog.Cms.Handlers;
 
@@ -26,7 +25,6 @@ public class ContentCommandHandlers :
     private readonly IContentWriteStore _writeStore;
     private readonly IContentService _service;
     private readonly ISystemDateTime _dateTime;
-    private readonly ILogger<ContentCommandHandlers> _logger;
     private readonly Behlogger<ContentCommandHandlers> _behlogger;
 
     
@@ -35,7 +33,6 @@ public class ContentCommandHandlers :
         IContentWriteStore writeStore, IBehlogApplicationContext appContext, IContentService contentService, 
         ISystemDateTime dateTime)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _service = contentService ?? throw new ArgumentNullException(nameof(contentService));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
