@@ -22,13 +22,33 @@ public class ComponentQueryHandlers
         QueryComponentById query, CancellationToken cancellationToken = default)
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
-        
-        
+
+        var component = await _readStore.GetByIdAsync(query.Id, cancellationToken).ConfigureAwait(false);
+        component.ThrowExceptionIfReferenceIsNull(nameof(component));
+
+        var result = component.ToResult()
+            .WithFiles(component.Files)
+            .WithLanguage(component.Language)
+            .WithMeta(component.Meta);
+
+        return await Task.FromResult(result);
     }
 
-    public Task<ComponentResult> HandleAsync(
+    public async Task<ComponentResult> HandleAsync(
         QueryComponentByName query, CancellationToken cancellationToken = new CancellationToken())
     {
-        throw new NotImplementedException();
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var component = await _readStore.GetByNameAsync(
+                query.WebsiteId, query.Name, cancellationToken)
+            .ConfigureAwait(false);
+        component.ThrowExceptionIfReferenceIsNull(nameof(component));
+        
+        var result = component.ToResult()
+            .WithFiles(component.Files)
+            .WithLanguage(component.Language)
+            .WithMeta(component.Meta);
+
+        return await Task.FromResult(result);
     }
 }
