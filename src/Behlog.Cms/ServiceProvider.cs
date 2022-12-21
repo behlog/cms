@@ -36,6 +36,7 @@ public static class ServiceProvider
         services.AddScoped<ICmsSetup, CmsSetup>();
         services.AddScoped<IContentService, ContentService>();
         services.AddScoped<IContentTypeService, ContentTypeService>();
+        
         services.AddScoped<IWebsiteService, WebsiteService>();
     }
     
