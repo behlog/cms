@@ -8,7 +8,11 @@ namespace Behlog.Cms.Domain;
 /// </summary>
 public partial class Component : AggregateRoot<Guid>, IHasMetadata
 {
-    private Component() : base() { }
+    private Component() : base()
+    {
+        _meta = new List<ComponentMeta>();
+        _files = new List<ComponentFile>();
+    }
     
     #region props
     
@@ -42,9 +46,11 @@ public partial class Component : AggregateRoot<Guid>, IHasMetadata
     public Website Website { get; protected set; }
     public Language Language { get; protected set; }
 
-    public IReadOnlyCollection<ComponentMeta> Meta { get; protected set; }
-    
-    public IReadOnlyCollection<ComponentFile> Files { get; protected set; }
+    private List<ComponentMeta> _meta;
+    public IReadOnlyCollection<ComponentMeta> Meta => _meta;
+
+    private List<ComponentFile> _files;
+    public IReadOnlyCollection<ComponentFile> Files => _files;
 
     #endregion
 }

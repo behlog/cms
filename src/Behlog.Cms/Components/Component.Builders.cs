@@ -47,8 +47,33 @@ public partial class Component
         };
 
         await GuardAgainstDuplicateName(component.Id, component.WebsiteId, component.Name, service);
-        
-        component.Meta = command.Meta.Convert(component.Id);
+
+        if (command.Files.Any())
+        {
+            command.Files.ToList().ForEach(
+                _=> component._files.Add(ComponentFile
+                        .New(component.Id, _.FileId)
+                        .WithTitle(_.Title)
+                        .WithFileName(_.FileName)
+                        .WithDescription(_.Description))
+                );
+        }
+
+        if (command.Meta.Any())
+        {
+            command.Meta.ToList().ForEach(
+                _=> component._meta.Add(ComponentMeta
+                        .New(_.MetaKey, _.MetaValue!)
+                        .WithCategory(_.Category)
+                        .WithTitle(_.Title)
+                        .WithDescription(_.Description)
+                        .WithLangId(_.LangId)
+                        .WithOrderNum(_.OrderNum)
+                        .WithOwnerId(component.Id)
+                        .WithStatus(_.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
+                        .Build())
+                );
+        }
         
         component.AddCreatedEvent();
         
@@ -82,8 +107,8 @@ public partial class Component
         IsRtl = command.IsRtl;
         Keywords = command.Keywords;
         ViewPath = command.ViewPath;
-        Meta = command.Meta?.Convert(Id)!;
-        Files = command.Files?.Convert(Id)!;
+        
+        
         
         AddUpdatedEvent();
     }
@@ -108,6 +133,40 @@ public partial class Component
         AddSoftDeletedEvent();
     }
 
+
+    public void AddFiles(
+        IReadOnlyCollection<ComponentFileCommand> files, IIdyfaUserContext userContext, 
+        IBehlogApplicationContext appContext, ISystemDateTime dateTime)
+    {
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+
+        addFiles(files);
+        
+        LastUpdated = dateTime.UtcNow;
+        LastUpdatedByIp = appContext.IpAddress;
+        LastUpdatedByUserId = userContext.UserId;
+        //TODO : raise proper event
+    }
+
+
+    public void AddMeta(
+        IReadOnlyCollection<MetaCommand> meta, IIdyfaUserContext userContext,
+        IBehlogApplicationContext appContext, ISystemDateTime dateTime)
+    {
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
+        addMeta(meta);
+        
+        LastUpdated = dateTime.UtcNow;
+        LastUpdatedByIp = appContext.IpAddress;
+        LastUpdatedByUserId = userContext.UserId;
+        //TODO : raise proper event
+    }
+    
 
     public void Remove()
     {
@@ -149,6 +208,79 @@ public partial class Component
         var e = new ComponentRemovedEvent(Id);
         Enqueue(e);
     }
-
+    
+    private void addFiles(IReadOnlyCollection<ComponentFileCommand> files)
+    {
+        if (files is null || !files.Any())
+            throw new ArgumentNullException(nameof(files));
+        
+        foreach (var file in files)
+        {
+            if (!_files.Any(_ => _.FileId == file.FileId))
+            {
+                _files.Add(ComponentFile
+                    .New(Id, file.FileId)
+                    .WithTitle(file.Title)
+                    .WithFileName(file.FileName)
+                    .WithDescription(file.Description));
+                continue;
+            }
+            
+            int idx = 0;
+            foreach (var _file in _files)
+            {
+                if (file.FileId == _file.FileId)
+                {
+                    _files[idx].WithDescription(file.Description);
+                    _files[idx].WithTitle(file.Title);
+                    _files[idx].WithFileName(file.FileName);
+                    break;
+                }
+                idx++;
+            }
+        }
+    }
+    
+    private void addMeta(IReadOnlyCollection<MetaCommand> meta)
+    {
+        if (meta is null || !meta.Any())
+            throw new ArgumentNullException(nameof(meta));
+        
+        foreach (var m in meta)
+        {
+            if (!_meta.Any(_ => _.MetaKey.ToUpper() == m.MetaKey.ToUpper()))
+            {
+                _meta.Add(ComponentMeta.New(m.MetaKey, m.MetaValue!)
+                    .WithTitle(m.Title!)
+                    .WithDescription(m.Description!)
+                    .WithCategory(m.Category!)
+                    .WithStatus(m.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
+                    .WithLangId(m.LangId)
+                    .WithOrderNum(m.OrderNum)
+                    .WithOwnerId(Id)
+                    .Build());
+                continue;
+            }
+            
+            int idx = 0;
+            foreach (var _m in _meta)
+            {
+                if (m.MetaKey.ToUpper() == _m.MetaKey.ToUpper())
+                {
+                    _meta[idx].WithTitle(m.Title);
+                    _meta[idx].WithDescription(m.Description!);
+                    _meta[idx].WithCategory(m.Category!);
+                    _meta[idx].WithStatus(m.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled);
+                    _meta[idx].WithLangId(m.LangId);
+                    _meta[idx].WithValue(m.MetaValue!);
+                    _meta[idx].WithOrderNum(m.OrderNum);
+                    
+                    break;
+                }
+                idx++;
+            }
+        }
+    }
+    
     #endregion
 }

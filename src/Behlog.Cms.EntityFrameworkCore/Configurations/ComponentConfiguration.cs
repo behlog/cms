@@ -47,6 +47,7 @@ public static partial class EntityConfigurations
                 m.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Index).HasColumnName("IndexNumber").IsRequired();
+                m.Metadata.DependentToPrincipal.SetField("_meta");
             });
 
             component.OwnsMany(_ => _.Files, f => {
@@ -60,6 +61,7 @@ public static partial class EntityConfigurations
                 f.Property(_ => _.FileName).HasMaxLength(2000).IsUnicode().IsRequired();
                 f.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired(false);
                 f.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
+                f.Metadata.DependentToPrincipal.SetField("_files");
             });
             
             component.HasOne(_ => _.Website)
