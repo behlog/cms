@@ -18,7 +18,8 @@ public class ComponentCommandHandlers :
     IBehlogCommandHandler<UpdateComponentCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteComponentCommand, CommandResult>,
     IBehlogCommandHandler<RemoveComponentCommand, CommandResult>,
-    IBehlogCommandHandler<UpsertComponentCommand, CommandResult<ComponentResult>>
+    IBehlogCommandHandler<UpsertComponentCommand, CommandResult<ComponentResult>>,
+    IBehlogCommandHandler<CreateComponentFilesCommand, CommandResult>
 {
     private readonly IIdyfaUserContext _userContext;
     private readonly IBehlogApplicationContext _appContext;
@@ -148,5 +149,23 @@ public class ComponentCommandHandlers :
                 .Create()
                 .With(existingComponent.ToResult());
         }
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        CreateComponentFilesCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var component = await _readStore.GetByIdAsync(command.ComponentId, cancellationToken).ConfigureAwait(false);
+        component.ThrowExceptionIfReferenceIsNull(nameof(component));
+
+        var files = command.Files.Select(
+            _ => new ComponentFileCommand(_.FileId, _.FileName, _.Title, _.Description)
+            ).ToList();
+        component.AddFiles(files, _userContext, _appContext, _dateTime);
+
+        await _writeStore.UpdateAsync(component, cancellationToken).ConfigureAwait(false);
+        
+        return CommandResult.Success();
     }
 }
