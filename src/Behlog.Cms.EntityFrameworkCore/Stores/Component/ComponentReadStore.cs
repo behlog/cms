@@ -23,6 +23,19 @@ public class ComponentReadStore : BehlogReadStore<Component, Guid>, IComponentRe
     }
 
     /// <inheritdoc />
+    public async Task<Component?> GetByNameAsync(
+        Guid websiteId, string name, CancellationToken cancellationToken = default)
+    {
+        return await _set
+            .Include(_ => _.Files)
+            .Include(_ => _.Meta)
+            .Include(_ => _.Language)
+            .FirstOrDefaultAsync(_ => _.WebsiteId == websiteId &&
+                                      _.Name.ToUpper() == name.ToUpper(), cancellationToken
+            ).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
     public async Task<IReadOnlyCollection<Component>> GetByComponentTypeAsync(
         string componentType, CancellationToken cancellationToken = default)
     {

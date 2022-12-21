@@ -10,6 +10,10 @@ public interface IComponentReadStore : IBehlogReadStore<Component, Guid>
         Guid id, CancellationToken cancellationToken = default);
 
 
+    Task<Component?> GetByNameAsync(
+        Guid websiteId, string name, CancellationToken cancellationToken = default);
+    
+
     Task<IReadOnlyCollection<Component>> GetByComponentTypeAsync(
         string componentType, CancellationToken cancellationToken = default);
 
