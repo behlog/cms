@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Behlog.Core;
 using Behlog.Extensions;
 using Behlog.Cms.Domain;
@@ -16,7 +17,8 @@ public class ComponentCommandHandlers :
     IBehlogCommandHandler<CreateComponentCommand, CommandResult<ComponentResult>>,
     IBehlogCommandHandler<UpdateComponentCommand, CommandResult>,
     IBehlogCommandHandler<SoftDeleteComponentCommand, CommandResult>,
-    IBehlogCommandHandler<RemoveComponentCommand, CommandResult>
+    IBehlogCommandHandler<RemoveComponentCommand, CommandResult>,
+    IBehlogCommandHandler<UpsertComponentCommand, CommandResult<ComponentResult>>
 {
     private readonly IIdyfaUserContext _userContext;
     private readonly IBehlogApplicationContext _appContext;
@@ -119,5 +121,32 @@ public class ComponentCommandHandlers :
         await _writeStore.DeleteAsync(component, cancellationToken).ConfigureAwait(false);
         
         return CommandResult.Success();
+    }
+
+    public async Task<CommandResult<ComponentResult>> HandleAsync(
+        UpsertComponentCommand command, CancellationToken cancellationToken = default)
+    {
+        var validation = UpsertComponentCommandValidator.Run(command);
+        if (validation.HasError)
+        {
+            return CommandResult<ComponentResult>.Failed(validation.Errors);
+        }
+
+        var existingComponent = await _readStore.GetByNameAsync(
+            command.WebsiteId, command.Name, cancellationToken).ConfigureAwait(false);
+        if (existingComponent is null)
+        {
+            return await HandleAsync(command.ConvertToCreateCommand(), cancellationToken);
+        }
+        else
+        {
+            var updateCommand = command.ConvertToUpdateCommand(existingComponent.Id);
+            await existingComponent.UpdateAsync(updateCommand, _appContext, _userContext, _dateTime, _service);
+            await _writeStore.UpdateAsync(existingComponent, cancellationToken).ConfigureAwait(false);
+
+            return CommandResult<ComponentResult>
+                .Create()
+                .With(existingComponent.ToResult());
+        }
     }
 }
