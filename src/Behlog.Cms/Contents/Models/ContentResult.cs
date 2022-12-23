@@ -1,4 +1,3 @@
-using Behlog.Core;
 using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.Models;
@@ -6,6 +5,8 @@ namespace Behlog.Cms.Models;
 
 public class ContentResult
 {
+
+    public ContentResult() { }
 
     public ContentResult(
         Guid id, string title, string slug, Guid contentTypeId, Guid langId, string body,
@@ -124,39 +125,39 @@ public class ContentResult
         return this;
     }
     
-    public Guid Id { get; }
-    public string Title { get; }
-    public string Slug { get; }
-    public Guid ContentTypeId { get; }
-    public string? ContentTypeTitle { get; private set; }
-    public string? ContentTypeSlug { get; private set; }
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Slug { get; set; }
+    public Guid ContentTypeId { get; set; }
+    public string? ContentTypeTitle { get; set; }
+    public string? ContentTypeSlug { get; set; }
     public Guid LangId { get; }
-    public string? LangTitle { get; private set; }
-    public string? LangCode { get; private set; }
-    public string Body { get; }
-    public ContentBodyType BodyType { get; }
-    public string AuthorUserId { get; }
-    public string? AuthorUserName { get; private set; }
-    public string? AuthorUserDisplayName { get; private set; }
-    public string Summary { get; }
-    public ContentStatus Status { get; }
-    public DateTime? LastStatusChangedDate { get; }
-    public DateTime? PublishDate { get; }
-    public string? AltTitle { get; }
-    public int OrderNum { get; }
-    public string? IconName { get; }
-    public string? ViewPath { get; }
-    public DateTime CreatedDate { get; } 
-    public DateTime? LastUpdated { get; }
-    public string? CreatedByUserId { get; }
-    public string? LastUpdatedByUserId { get; }
-    public string? CreatedByIp { get; }
-    public string? LastUpdatedByIp { get; }
+    public string? LangTitle { get; set; }
+    public string? LangCode { get; set; }
+    public string Body { get; set; }
+    public ContentBodyType BodyType { get; set; }
+    public string AuthorUserId { get; set; }
+    public string? AuthorUserName { get; set; }
+    public string? AuthorUserDisplayName { get; set; }
+    public string Summary { get; set; }
+    public ContentStatus Status { get; set; }
+    public DateTime? LastStatusChangedDate { get; set; }
+    public DateTime? PublishDate { get; set; }
+    public string? AltTitle { get; set; }
+    public int OrderNum { get; set; }
+    public string? IconName { get; set; }
+    public string? ViewPath { get; set; }
+    public DateTime CreatedDate { get; set; } 
+    public DateTime? LastUpdated { get; set; }
+    public string? CreatedByUserId { get; set; }
+    public string? LastUpdatedByUserId { get; set; }
+    public string? CreatedByIp { get; set; }
+    public string? LastUpdatedByIp { get; set; }
     
-    public IReadOnlyCollection<ContentCategoryItemResult> Categories { get; private set; }
-    public IReadOnlyCollection<MetaResult> Meta { get; private set; }
-    public IReadOnlyCollection<ContentFileResult> Files { get; private set; }
-    public IReadOnlyCollection<ContentTagResult> Tags { get; private set; }
-    public int LikesCount { get; private set; }
+    public IReadOnlyCollection<ContentCategoryItemResult> Categories { get; set; }
+    public IReadOnlyCollection<MetaResult> Meta { get; set; }
+    public IReadOnlyCollection<ContentFileResult> Files { get; set; }
+    public IReadOnlyCollection<ContentTagResult> Tags { get; set; }
+    public int LikesCount { get; set; }
     
 }
