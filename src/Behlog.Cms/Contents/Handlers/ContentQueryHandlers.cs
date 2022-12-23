@@ -135,6 +135,7 @@ public class ContentQueryHandlers :
         content.ThrowExceptionIfReferenceIsNull(nameof(content));
 
         return content!.ToResult()
+            .WithFiles(content!.Files?.ToList())
             .WithCategories(content!.Categories?.ToList())
             .WithLanguage(content!.Language)
             .WithContentType(content!.ContentType)

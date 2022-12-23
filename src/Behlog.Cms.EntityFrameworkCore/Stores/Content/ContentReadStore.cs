@@ -113,7 +113,9 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
             query = query.Where(_ => _.LangId == model.LangId.Value);
         }
 
-        return await query.Include(_ => _.Categories)
+        return await query
+            .Include(_=> _.Files)
+            .Include(_ => _.Categories)
             .Include(_ => _.Language)
             .Include(_ => _.ContentType)
             .Include(_ => _.Tags)
