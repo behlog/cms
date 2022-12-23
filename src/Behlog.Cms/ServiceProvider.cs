@@ -15,17 +15,17 @@ public static class ServiceProvider
     /// </summary>
     public static void AddBehlogCms(this IServiceCollection services)
     {
-        var myassembly = typeof(Website).Assembly;
+        //var myassembly = typeof(Website).Assembly;
         
-        services.AddBehlogManager(new[]
-        {
-            myassembly
-        });
+        //services.AddBehlogManager(new[]
+        //{
+        //    myassembly
+        //});
         
-        services.AddBehlogMiddleware(new[]
-        {
-            myassembly
-        });
+        //services.AddBehlogMiddleware(new[]
+        //{
+        //    myassembly
+        //});
         
         services.AddBehlogCmsServices();
     }
