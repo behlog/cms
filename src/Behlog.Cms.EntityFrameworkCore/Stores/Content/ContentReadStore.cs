@@ -114,11 +114,14 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
         }
 
         return await query
-            .Include(_=> _.Files)
             .Include(_ => _.Categories)
+            .ThenInclude(_=> _.Category)
             .Include(_ => _.Language)
             .Include(_ => _.ContentType)
             .Include(_ => _.Tags)
+            .ThenInclude(_=> _.Tag)
+            .Include(_ => _.Files)
+            .ThenInclude(_=> _.File)
             .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
 

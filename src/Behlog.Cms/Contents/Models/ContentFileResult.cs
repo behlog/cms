@@ -19,8 +19,9 @@ public class ContentFileResult
     {
         if (file is null) return this;
 
-        FilePath = file.FilePath;
-        AlternateFilePath = file.AlternateFilePath;
+        //TODO : is this best solution!? to get the FilePath working in all situations.
+        FilePath = file.FilePath?.Replace("~", "");
+        AlternateFilePath = file.AlternateFilePath?.Replace("~", "");
         Extension = file.Extension;
         FileSize = file.FileSize;
         AltTitle = file.AltTitle;
