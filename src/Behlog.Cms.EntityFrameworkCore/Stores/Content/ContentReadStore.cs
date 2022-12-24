@@ -74,8 +74,12 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
         model.ThrowExceptionIfArgumentIsNull(nameof(model));
 
         var query = _set
+            .Include(_=> _.Files)
+            .ThenInclude(_=> _.File)
             .Include(_=> _.Categories)
+            .ThenInclude(_=> _.Category)
             .Include(_=> _.Tags)
+            .ThenInclude(_=> _.Tag)
             .Include(_=> _.ContentType)
             .Include(_=> _.Language)
             .Where(_ => _.WebsiteId == model.WebsiteId)
