@@ -11,12 +11,20 @@ public static class ContentMappers
     {
         content.ThrowExceptionIfArgumentIsNull(nameof(content));
 
-        return new ContentResult(
+        var result = new ContentResult(
             content.Id, content.Title, content.Slug, content.ContentTypeId, content.LangId,
-            content.Body!, content.BodyType, content.AuthorUserId, content.Summary, content.Status,
-            content.AltTitle, content.OrderNum, content.LastStatusChangedDate, content.PublishDate,
-            content.IconName, content.ViewPath, content.CreatedDate, content.LastUpdated, 
+            content.Body!, content.BodyType, content.AuthorUserId, content.Summary!, content.Status,
+            content.AltTitle!, content.OrderNum, content.LastStatusChangedDate, content.PublishDate,
+            content.CoverPhoto, content.IconName, content.ViewPath, content.CreatedDate, content.LastUpdated, 
             content.CreatedByUserId, content.LastUpdatedByUserId, content.CreatedByIp, content.LastUpdatedByIp);
+
+        return result
+            .WithCategories(content.Categories?.ToList()!)
+            .WithContentType(content.ContentType)
+            .WithFiles(content.Files?.ToList()!)
+            .WithLanguage(content.Language)
+            .WithMeta(content.Meta?.ToList()!)
+            .WithTags(content.Tags?.ToList()!);
     }
 
 
@@ -25,7 +33,7 @@ public static class ContentMappers
         meta.ThrowExceptionIfArgumentIsNull(nameof(meta));
 
         return new MetaResult(
-            meta.OwnerId, meta.Title, meta.MetaKey, meta.MetaValue, meta.MetaType,
-            meta.Status, meta.LangId, meta.Description, meta.Category, meta.OrderNum);
+            meta.OwnerId, meta.Title!, meta.MetaKey, meta.MetaValue!, meta.MetaType!,
+            meta.Status, meta.LangId, meta.Description!, meta.Category!, meta.OrderNum);
     }
 }

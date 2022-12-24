@@ -146,7 +146,7 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
                         .AddConditionIfNotNull(model.Title,
                             _=> _.Title.ToUpper().Contains(model.Title!))
                         .AddConditionIfNotNull(model.Status,
-                            _=> _.Status.Id == model.Status!.Id)
+                            _=> _.Status.Id.ToString() == model.Status.Id.ToString())
                         .AddConditionIfNotNull(model.Search,
                             _=> _.Title.ToUpper().Contains(model.Search!) ||
                                 _.Body!.ToUpper().Contains(model.Search!) ||
@@ -159,9 +159,14 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
             .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false))
             .WithResults(await query
                 .Include(_=> _.Categories)
+                .ThenInclude(_=> _.Category)
                 .Include(_=> _.Tags)
+                .ThenInclude(_=> _.Tag)
                 .Include(_=> _.ContentType)
                 .Include(_=> _.Language)
+                .Include(_=> _.Files)
+                .ThenInclude(_=> _.File)
+                .Include(_=> _.Meta)
                 .SortBy(model.Filter.OrderBy, model.Filter.OrderDesc)
                 .Skip(model.Filter.StartIndex)
                 .Take(model.Filter.PageSize)
