@@ -46,7 +46,8 @@ public partial class Component
             CreatedByUserId = userContext.UserId
         };
 
-        await GuardAgainstDuplicateName(component.Id, component.WebsiteId, component.Name, service);
+        await GuardAgainstDuplicateName(
+            component.Id, component.WebsiteId, component.LangId, component.Name, service);
 
         if (command.Files.Any())
         {
@@ -91,7 +92,7 @@ public partial class Component
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         service.ThrowExceptionIfArgumentIsNull(nameof(service));
 
-        await GuardAgainstDuplicateName(Id, WebsiteId, command.Name, service);
+        await GuardAgainstDuplicateName(Id, WebsiteId, command.LangId, command.Name, service);
         
         LangId = command.LangId;
         Name = command.Name;
@@ -107,9 +108,7 @@ public partial class Component
         IsRtl = command.IsRtl;
         Keywords = command.Keywords;
         ViewPath = command.ViewPath;
-        
-        
-        
+
         AddUpdatedEvent();
     }
 

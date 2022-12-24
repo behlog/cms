@@ -18,14 +18,15 @@ public class ComponentService : IComponentService
     }
 
     /// <inheritdoc /> 
-    public async Task<bool> ComponentNameExistInWebsiteAsync(Guid websiteId, Guid componentId, string componentName)
+    public async Task<bool> ComponentNameExistInWebsiteAsync(
+        Guid websiteId, Guid langId, Guid componentId, string componentName)
     {
         websiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Website)));
         componentId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Component)));
         if (componentName.IsNullOrEmptySpace())
             throw new ArgumentNullException(nameof(componentName));
 
-        var query = new QueryComponentByName(websiteId, componentName);
+        var query = new QueryComponentByName(websiteId, langId, componentName);
         var result = await _mediator.PublishAsync(query).ConfigureAwait(false);
 
         return result != null;

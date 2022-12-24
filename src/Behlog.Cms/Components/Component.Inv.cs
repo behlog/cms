@@ -8,9 +8,9 @@ public partial class Component
 {
 
     private static async Task GuardAgainstDuplicateName(
-        Guid componentId, Guid websiteId, string name, IComponentService service)
+        Guid componentId, Guid websiteId, Guid langId, string name, IComponentService service)
     {
-        if (await service.ComponentNameExistInWebsiteAsync(websiteId, componentId, name))
+        if (await service.ComponentNameExistInWebsiteAsync(websiteId, langId, componentId, name))
             throw new ComponentNameAlreadyExistedException(websiteId, name);
     }
 }

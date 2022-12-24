@@ -9,11 +9,13 @@ namespace Behlog.Cms.Query;
 public class QueryComponentByName : IBehlogQuery<ComponentResult>
 {
 
-    public QueryComponentByName(Guid websiteId, string name)
+    public QueryComponentByName(Guid websiteId, Guid langId, string name)
     {
-        WebsiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Component)));
+        websiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Component)));
+        langId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Language)));
         
         WebsiteId = websiteId;
+        LangId = langId;
         Name = name;
     }
     

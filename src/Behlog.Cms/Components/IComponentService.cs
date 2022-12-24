@@ -12,6 +12,6 @@ public interface IComponentService
     /// <param name="componentId"></param>
     /// <param name="componentName"></param>
     Task<bool> ComponentNameExistInWebsiteAsync(
-        Guid websiteId, Guid componentId, string componentName);
+        Guid websiteId, Guid langId, Guid componentId, string componentName);
     
 }
