@@ -18,5 +18,6 @@ public class QueryComponentByName : IBehlogQuery<ComponentResult>
     }
     
     public Guid WebsiteId { get; }
+    public Guid LangId { get; }
     public string Name { get; }
 }

@@ -133,7 +133,7 @@ public class ComponentCommandHandlers :
         }
 
         var existingComponent = await _readStore.GetByNameAsync(
-            command.WebsiteId, command.Name, cancellationToken).ConfigureAwait(false);
+            command.WebsiteId, command.LangId, command.Name, cancellationToken).ConfigureAwait(false);
         if (existingComponent is null)
         {
             return await HandleAsync(command.ConvertToCreateCommand(), cancellationToken);

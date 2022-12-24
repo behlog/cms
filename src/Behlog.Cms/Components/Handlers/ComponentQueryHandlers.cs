@@ -35,17 +35,17 @@ public class ComponentQueryHandlers
     }
 
     public async Task<ComponentResult> HandleAsync(
-        QueryComponentByName query, CancellationToken cancellationToken = new CancellationToken())
+        QueryComponentByName query, CancellationToken cancellationToken = default)
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
         var component = await _readStore.GetByNameAsync(
-                query.WebsiteId, query.Name, cancellationToken)
+                query.WebsiteId, query.LangId, query.Name, cancellationToken)
             .ConfigureAwait(false);
         component.ThrowExceptionIfReferenceIsNull(nameof(component));
         
-        var result = component.ToResult()
-            .WithFiles(component.Files)
+        var result = component!.ToResult()
+            .WithFiles(component!.Files)
             .WithLanguage(component.Language)
             .WithMeta(component.Meta);
 
