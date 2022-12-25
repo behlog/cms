@@ -17,7 +17,7 @@ public class ContentComponent : ValueObject
     public Guid ComponentId { get; protected set; }
     public Component Component { get; protected set; }
     public int OrderNum { get; protected set; }
-    public EntityStatus Status { get; protected set; }
+    public EntityStatusEnum Status { get; protected set; }
     public bool IsRtl { get; protected set; }
     public string? ViewPath { get; protected set; }
     public string? Params { get; protected set; }

@@ -58,7 +58,8 @@ public class FileUploadCommandHandlers :
         }
         
         var fileUpload = FileUpload.Create(
-            command, uploadResult, alternateUploadResult, _appContext, _userContext);
+            command, uploadResult, alternateUploadResult,
+            _dateTime, _appContext, _userContext);
         
         _writeStore.MarkForAdd(fileUpload);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

@@ -16,10 +16,7 @@ public static partial class EntityConfigurations
             tag.Property(_ => _.Id).ValueGeneratedNever();
             tag.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired();
             tag.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
-            tag.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
-                .HasConversion<int>(
-                    s => s.Id,
-                    s => EntityStatus.FromValue<EntityStatus>(s));
+            tag.Property(_ => _.Status).HasDefaultValue(EntityStatusEnum.Enabled);
             tag.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
             tag.Property(_ => _.CreatedByIp).HasMaxLength(50).IsRequired(false);
 

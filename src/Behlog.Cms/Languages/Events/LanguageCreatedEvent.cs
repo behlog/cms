@@ -7,7 +7,7 @@ public class LanguageCreatedEvent : BehlogDomainEvent
 {
     public LanguageCreatedEvent(
         Guid id, string title, string name, 
-        string code, EntityStatus status)
+        string code, EntityStatusEnum status)
     {
         Id = id;
         Title = title;
@@ -20,5 +20,5 @@ public class LanguageCreatedEvent : BehlogDomainEvent
     public string Title { get; protected set; }
     public string Name { get; protected set; }
     public string Code { get; protected set; }
-    public EntityStatus Status { get; protected set; }
+    public EntityStatusEnum Status { get; protected set; }
 }

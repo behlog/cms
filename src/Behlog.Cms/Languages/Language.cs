@@ -17,7 +17,7 @@ public class Language : AggregateRoot<Guid>
     public string Name { get; protected set; }
     public string Code { get; protected set; }
     public string? IsoCode { get; protected set; }
-    public EntityStatus Status { get; protected set; }
+    public EntityStatusEnum Status { get; protected set; }
 
     #endregion
 
@@ -34,7 +34,7 @@ public class Language : AggregateRoot<Guid>
             Code = command.Code,
             Name = command.Name.Trim(),
             Title = command.Title?.Trim().CorrectYeKe()!,
-            Status = EntityStatus.Enabled
+            Status = EntityStatusEnum.Enabled
         };
         lang.AddCreatedEvent();
         

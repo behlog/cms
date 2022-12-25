@@ -71,7 +71,7 @@ public partial class Component
                         .WithLangId(_.LangId)
                         .WithOrderNum(_.OrderNum)
                         .WithOwnerId(component.Id)
-                        .WithStatus(_.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
+                        .WithStatus(_.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
                         .Build())
                 );
         }
@@ -253,7 +253,7 @@ public partial class Component
                     .WithTitle(m.Title!)
                     .WithDescription(m.Description!)
                     .WithCategory(m.Category!)
-                    .WithStatus(m.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
+                    .WithStatus(m.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
                     .WithLangId(m.LangId)
                     .WithOrderNum(m.OrderNum)
                     .WithOwnerId(Id)
@@ -269,7 +269,7 @@ public partial class Component
                     _meta[idx].WithTitle(m.Title);
                     _meta[idx].WithDescription(m.Description!);
                     _meta[idx].WithCategory(m.Category!);
-                    _meta[idx].WithStatus(m.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled);
+                    _meta[idx].WithStatus(m.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled);
                     _meta[idx].WithLangId(m.LangId);
                     _meta[idx].WithValue(m.MetaValue!);
                     _meta[idx].WithOrderNum(m.OrderNum);

@@ -68,7 +68,7 @@ public class ContentMeta : MetaBase<Guid>
         return this;
     }
 
-    public ContentMeta WithStatus(EntityStatus status)
+    public ContentMeta WithStatus(EntityStatusEnum status)
     {
         Status = status;
         return this;

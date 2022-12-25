@@ -41,5 +41,5 @@ public class ComponentFileResult
     public long? FileSize { get; private set; }
     public string? AltTitle { get; private set; }
     public string? Url { get; private set; }
-    public FileType? FileType { get; private set; }
+    public FileTypeEnum? FileType { get; private set; }
 }

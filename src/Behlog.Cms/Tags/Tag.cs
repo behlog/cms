@@ -16,7 +16,7 @@ public class Tag : AggregateRoot<Guid>
     public string Title { get; protected set; }
     public string Slug { get; protected set; }
     public Guid LangId { get; protected set; }
-    public EntityStatus Status { get; protected set; }
+    public EntityStatusEnum Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public string? CreatedByUserId { get; protected set; }
     public string? CreatedByIp { get; protected set; }
@@ -39,7 +39,7 @@ public class Tag : AggregateRoot<Guid>
         tag.Id = Guid.NewGuid();
         tag.Title = command.Title?.CorrectYeKe().Trim()!;
         tag.Slug = tag.Title?.MakeSlug()!;
-        tag.Status = EntityStatus.Enabled;
+        tag.Status = EntityStatusEnum.Enabled;
         tag.CreatedDate = DateTime.UtcNow;
         tag.CreatedByUserId = null; //read from UserContext
         tag.CreatedByIp = null; //TODO : read from HttpContext
@@ -57,7 +57,7 @@ public class Tag : AggregateRoot<Guid>
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         
-        Status = EntityStatus.Deleted;
+        Status = EntityStatusEnum.Deleted;
         Enqueue(new TagSoftDeletedEvent(Id, Title, Slug));
     }
     

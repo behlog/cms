@@ -1,5 +1,5 @@
-using Behlog.Cms.Domain;
 using Behlog.Core;
+using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.Events;
 
@@ -13,7 +13,7 @@ public class WebsiteUpdatedEvent : IBehlogEvent
     public string? Url { get; set; }
     public string OwnerUserId { get; set; }
     public Guid? DefaultLangId { get; set; }
-    public WebsiteStatus Status { get; set; }
+    public WebsiteStatusEnum Status { get; set; }
     public DateTime CreatedDate { get; set; }
     public string? Password { get; set; }
     public bool IsReadOnly { get; set; }

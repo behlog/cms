@@ -25,7 +25,7 @@ public partial class Website : AggregateRoot<Guid>
     public string? Url { get; protected set; }
     public string OwnerUserId { get; protected set; }
     public Guid? DefaultLangId { get; protected set; }
-    public WebsiteStatus Status { get; protected set; }
+    public WebsiteStatusEnum Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public string? Password { get; protected set; }
     public bool IsReadOnly { get; protected set; }
@@ -47,7 +47,6 @@ public partial class Website : AggregateRoot<Guid>
 
     #region Builders
 
-
     public static async Task<Website> CreateAsync(
         CreateWebsiteCommand command, IWebsiteService service)
     {
@@ -63,7 +62,7 @@ public partial class Website : AggregateRoot<Guid>
             Email = command.Email?.Trim(),
             Title = command.Title?.Trim().CorrectYeKe()!,
             Password = command.Password,
-            Status = WebsiteStatus.Online,
+            Status = WebsiteStatusEnum.Online,
             Description = command.Description,
             Keywords = command.Keywords,
             Url = command.Url,
@@ -71,7 +70,7 @@ public partial class Website : AggregateRoot<Guid>
             CreatedDate = DateTime.UtcNow,
             DefaultLangId = command.DefaultLangId,
             IsReadOnly = command.IsReadOnly,
-            OwnerUserId = "", //TODO : Set UserId
+            OwnerUserId = command.OwnerUserId
         };
         
         var createdEvent = website.GetCreatedEvent();
@@ -117,17 +116,17 @@ public partial class Website : AggregateRoot<Guid>
         IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
     {
         //TODO : check if can softdelete
-        ChangeStatus(WebsiteStatus.Deleted, userContext.UserId, applicationContext.IpAddress);
+        ChangeStatus(WebsiteStatusEnum.Deleted, userContext.UserId, applicationContext.IpAddress);
         var e = new WebsiteSoftDeletedEvent(Id);
         Enqueue(e);
     }
 
 
     public void SetStatus(
-        WebsiteStatus status, IIdyfaUserContext userContext, 
+        WebsiteStatusEnum status, IIdyfaUserContext userContext, 
         IBehlogApplicationContext applicationContext)
     {
-        if (Equals(status, WebsiteStatus.Deleted))
+        if (Equals(status, WebsiteStatusEnum.Deleted))
             throw new BehlogException("Use SoftDeleteWebsiteCommand instead.");
         
         ChangeStatus(status, userContext.UserId, applicationContext.IpAddress);
@@ -141,13 +140,13 @@ public partial class Website : AggregateRoot<Guid>
     }
     
     private void ChangeStatus(
-        WebsiteStatus status, string? userId, string? ipAddress = null)
+        WebsiteStatusEnum status, string? userId, string? ipAddress = null)
     {
         if (Equals(Status, status))
             return;
 
         //TODO : change To InvalidStatusException
-        if (Equals(Status, WebsiteStatus.Deleted))
+        if (Equals(Status, WebsiteStatusEnum.Deleted))
             throw new BehlogException("Cannot change status of a Deleted Website");
 
         Status = status;

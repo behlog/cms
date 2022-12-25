@@ -1,6 +1,7 @@
 using Behlog.Cms.Domain;
 using Behlog.Core.Models;
 using Behlog.Extensions;
+using Behlog.Cms.Extensions;
 
 namespace Behlog.Cms.FileUploads.Internal;
 
@@ -34,7 +35,7 @@ internal class FileUploader
         return contentTypeDirPath;
     }
     
-    public FileUploaderResult Upload(IFormFile fileData, string contentType, FileType fileType)
+    public FileUploaderResult Upload(IFormFile fileData, string contentType, FileTypeEnum fileType)
     {
         var result = getResult(fileData, contentType, fileType);
 
@@ -55,7 +56,7 @@ internal class FileUploader
 
 
     public async Task<FileUploaderResult> UploadAsync(
-        IFormFile fileData, string contentType, FileType fileType)
+        IFormFile fileData, string contentType, FileTypeEnum fileType)
     {
         var result = getResult(fileData, contentType, fileType);
         
@@ -78,7 +79,7 @@ internal class FileUploader
     
 
     private FileUploaderResult getResult(
-        IFormFile fileData, string contentType, FileType fileType)
+        IFormFile fileData, string contentType, FileTypeEnum fileType)
     {
         fileData.ThrowExceptionIfArgumentIsNull(nameof(fileData));
         //TODO : need to check if fileData length is zero !?
@@ -130,12 +131,12 @@ internal class FileUploader
         return result;
     }
     
-    private BehlogFileUploadItemConfig? getConfig(FileType fileType)
+    private BehlogFileUploadItemConfig? getConfig(FileTypeEnum fileType)
     {
         if (_options.FileUploadsConfig == null || _options.FileUploadsConfig.Length == 0)
             return null;
 
         return _options.FileUploadsConfig.FirstOrDefault(
-            _ => _.Name.ToUpperInvariant() == fileType.Name.ToUpperInvariant());
+            _ => _.Name.ToUpperInvariant() == fileType.GetFileTypeName().ToUpperInvariant());
     }
 }

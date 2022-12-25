@@ -18,7 +18,6 @@ public class CreateWebsiteCommand : IBehlogCommand<CommandResult<WebsiteResult>>
     public bool IsReadOnly { get; set; }
     public string? Email { get; set; }
     public string? CopyrightText { get; set; }
-
     
     public CreateWebsiteCommand() { }
     

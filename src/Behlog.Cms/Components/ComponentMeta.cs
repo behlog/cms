@@ -62,7 +62,7 @@ public class ComponentMeta : MetaBase<Guid>
         return this;
     }
 
-    public ComponentMeta WithStatus(EntityStatus status) {
+    public ComponentMeta WithStatus(EntityStatusEnum status) {
         Status = status;
         return this;
     }

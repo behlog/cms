@@ -43,16 +43,16 @@ internal static class ComponentMappers
     {
         return meta?.ToList()
             .Select(_ => ComponentMeta
-                .New(_.MetaKey, _.MetaValue)
-                .WithCategory(_.Category)
-                .WithStatus(_.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
+                .New(_.MetaKey, _.MetaValue!)
+                .WithCategory(_.Category!)
+                .WithStatus(_.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
                 .WithTitle(_.Title)
-                .WithDescription(_.Description)
+                .WithDescription(_.Description!)
                 .WithLangId(_.LangId)
                 .WithOrderNum(_.OrderNum)
                 .WithOwnerId(componentId)
                 .Build()
-            ).ToList();
+            ).ToList()!;
     }
 
 

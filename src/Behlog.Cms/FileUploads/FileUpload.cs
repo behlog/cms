@@ -99,7 +99,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             Description = command.Description,
             WebsiteId = command.WebsiteId,
             FileType = command.FileType,
-            Status = FileUploadStatus.Created,
+            Status = FileUploadStatusEnum.Created,
             Title = command.Title,
             AltTitle = command.AltTitle,
             CreatedDate = dateTime.UtcNow,
@@ -127,9 +127,9 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         LastUpdatedByUserId = userContext.UserId;
         LastUpdated = dateTime.UtcNow;
 
-        if (command.Hidden && Status != FileUploadStatus.Hidden)
+        if (command.Hidden && Status != FileUploadStatusEnum.Hidden)
         {
-            ChangeStatus(FileUploadStatus.Hidden, appContext, userContext, dateTime);
+            ChangeStatus(FileUploadStatusEnum.Hidden, appContext, userContext, dateTime);
         }
         
         AddUpdatedEvent();
@@ -140,7 +140,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         IBehlogApplicationContext appContext, 
         ISystemDateTime dateTime)
     {
-        ChangeStatus(FileUploadStatus.Deleted, appContext, userContext, dateTime);
+        ChangeStatus(FileUploadStatusEnum.Deleted, appContext, userContext, dateTime);
         AddSoftDeletedEvent();
     }
 
@@ -149,7 +149,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         IBehlogApplicationContext appContext, 
         ISystemDateTime dateTime)
     {
-        ChangeStatus(FileUploadStatus.Archived, appContext, userContext, dateTime);
+        ChangeStatus(FileUploadStatusEnum.Archived, appContext, userContext, dateTime);
         AddArchivedEvent();
     }
 
@@ -217,7 +217,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     #region helpers
 
     private void ChangeStatus(
-        FileUploadStatus status, IBehlogApplicationContext appContext, 
+        FileUploadStatusEnum status, IBehlogApplicationContext appContext, 
         IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));

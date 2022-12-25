@@ -10,7 +10,7 @@ public class TagResult
     public string Slug { get; protected set; }
     public Guid LangId { get; protected set; }
     public string LangCode { get; protected set; }
-    public EntityStatus Status { get; protected set; }
+    public EntityStatusEnum Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public string CreatedByUserId { get; protected set; }
     public string CreatedByUserIp { get; protected set; }
