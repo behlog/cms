@@ -25,8 +25,8 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     public long FileSize { get; protected set; }
     public string? AltTitle { get; protected set; }
     public string? Url { get; protected set; }
-    public FileUploadStatus Status { get; protected set; }
-    public FileType FileType { get; protected set; }
+    public FileUploadStatusEnum Status { get; protected set; }
+    public FileTypeEnum FileType { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
     public string? Description { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
@@ -47,11 +47,12 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
 
     public static FileUpload Create(
         CreateFileUploadCommand command, FileUploaderResult uploaderResult,
-        FileUploaderResult? alternateFileUploadResult,
+        FileUploaderResult? alternateFileUploadResult, ISystemDateTime dateTime,
         IBehlogApplicationContext appContext, IIdyfaUserContext userContext)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         uploaderResult.ThrowExceptionIfArgumentIsNull(nameof(uploaderResult));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
 
@@ -59,10 +60,10 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         {
             Id = Guid.NewGuid(),
             Title = command.Title?.Trim().CorrectYeKe()!,
-            Status = FileUploadStatus.Created,
+            Status = FileUploadStatusEnum.Created,
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Description = command.Description?.CorrectYeKe()!,
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = dateTime.UtcNow,
             FileName = uploaderResult.FileName,
             Extension = uploaderResult.Extension,
             FileSize = uploaderResult.FileSize,

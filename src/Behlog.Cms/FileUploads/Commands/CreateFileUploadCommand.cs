@@ -9,7 +9,7 @@ namespace Behlog.Cms.Commands;
 public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadResult>>
 {
     public CreateFileUploadCommand(
-        IFormFile fileData, string contentType, FileType fileType, Guid websiteId, 
+        IFormFile fileData, string contentType, FileTypeEnum fileType, Guid websiteId, 
         string title, string description)
     {
         FileData = fileData;
@@ -21,7 +21,7 @@ public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadRe
     }
 
     public CreateFileUploadCommand(
-        IFormFile fileData, FileType fileType, Guid websiteId, 
+        IFormFile fileData, FileTypeEnum fileType, Guid websiteId, 
         IFormFile alternateFileData, string title, string altTitle, string description)
     {
         FileData = fileData;
@@ -34,7 +34,7 @@ public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadRe
     }
 
     public IFormFile FileData { get; }
-    public FileType FileType { get; }
+    public FileTypeEnum FileType { get; }
     public string Title { get; }
     public IFormFile AlternateFileData { get; }
     public string AltTitle { get; }
@@ -47,7 +47,7 @@ public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadRe
 public class CreateFileWithUrlCommand : IBehlogCommand<FileUploadResult>
 {
     public CreateFileWithUrlCommand(
-        string url, FileType fileType, Guid websiteId, 
+        string url, FileTypeEnum fileType, Guid websiteId, 
         string title, string altTitle, string description)
     {
         Url = url;
@@ -61,7 +61,7 @@ public class CreateFileWithUrlCommand : IBehlogCommand<FileUploadResult>
     public string Title { get; }
     public string AltTitle { get; }
     public string Url { get; }
-    public FileType FileType { get; }
+    public FileTypeEnum FileType { get; }
     public Guid WebsiteId { get; }
     public string Description { get; }
 }
