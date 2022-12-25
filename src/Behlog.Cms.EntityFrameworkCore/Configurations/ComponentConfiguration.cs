@@ -24,10 +24,7 @@ public static partial class EntityConfigurations
             component.Property(_ => _.AuthorEmail).HasMaxLength(1000).IsUnicode().IsRequired(false);
             component.Property(_ => _.Keywords).HasMaxLength(256).IsUnicode().IsRequired(false);
             component.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode().IsRequired(false);
-            component.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled)
-                .HasConversion<int>(
-                    s => s.Id,
-                    s => EntityStatus.FromValue<EntityStatus>(s));
+            component.Property(_ => _.Status).HasDefaultValue(EntityStatusEnum.Enabled);
             component.Property(_ => _.CreatedByIp).HasMaxLength(50).IsUnicode().IsRequired(false);
             component.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsUnicode().IsRequired(false);
             component.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsUnicode().IsRequired(false);

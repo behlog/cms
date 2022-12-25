@@ -18,8 +18,8 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
 
     public string? Title { get; protected set; }
     public string Body { get; protected set; }
-    public ContentBodyType BodyType { get; protected set; }
-    public CommentStatus Status { get; protected set; }
+    public ContentBodyTypeEnum BodyType { get; protected set; }
+    public CommentStatusEnum Status { get; protected set; }
     public string? Email { get; protected set; }
     public string? WebUrl { get; protected set; }
     public string? AuthorUserId { get; protected set; }
@@ -54,7 +54,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
             Email = command.Email?.Trim()!,
             AuthorName = command.AuthorName?.Trim().CorrectYeKe()!,
             BodyType = command.BodyType,
-            Status = CommentStatus.Created,
+            Status = CommentStatusEnum.Created,
             ContentId = command.ContentId,
             CreatedDate = DateTime.UtcNow,
             WebUrl = command.WebUrl?.Trim().CorrectYeKe()!,
@@ -87,7 +87,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     public void SoftDelete()
     {
         //TODO : Check if comment can be soft deleted
-        ChangeStatus(CommentStatus.Deleted);
+        ChangeStatus(CommentStatusEnum.Deleted);
 
         AddSoftDeletedEvent();
     }
@@ -103,9 +103,9 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     /// </summary>
     public void Approve()
     {
-        if(Status == CommentStatus.Approved) return;
+        if(Status == CommentStatusEnum.Approved) return;
         
-        ChangeStatus(CommentStatus.Approved);
+        ChangeStatus(CommentStatusEnum.Approved);
         AddApprovedEvent();
     }
 
@@ -115,27 +115,27 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     /// <param name="manager"></param>
     public void Reject()
     {
-        if(Status == CommentStatus.Rejected) return;
+        if(Status == CommentStatusEnum.Rejected) return;
         
-        ChangeStatus(CommentStatus.Rejected);
+        ChangeStatus(CommentStatusEnum.Rejected);
         AddRejectedEvent();
     }
 
 
     public void Block()
     {
-        if(Status == CommentStatus.Blocked) return;
+        if(Status == CommentStatusEnum.Blocked) return;
         
-        ChangeStatus(CommentStatus.Blocked);
+        ChangeStatus(CommentStatusEnum.Blocked);
         AddBlockedEvent();
     }
 
 
     public void MarkAsSpam()
     {
-        if(Status == CommentStatus.Spam) return;
+        if(Status == CommentStatusEnum.Spam) return;
         
-        ChangeStatus(CommentStatus.Spam);
+        ChangeStatus(CommentStatusEnum.Spam);
         AddSpammedEvent();
     }
 
@@ -216,7 +216,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    private void ChangeStatus(CommentStatus status)
+    private void ChangeStatus(CommentStatusEnum status)
     {
         Status = status;
         LastStatusChangedOn = DateTime.UtcNow;

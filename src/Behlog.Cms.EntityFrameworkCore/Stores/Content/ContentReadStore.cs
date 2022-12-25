@@ -142,7 +142,7 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
                         .AddConditionIfNotNull(model.Title,
                             _=> _.Title.ToUpper().Contains(model.Title!))
                         .AddConditionIfNotNull(model.Status,
-                            _=> _.Status.Id == model.Status!.Id)
+                            _=> _.Status == model.Status)
                         .AddConditionIfNotNull(model.Search,
                             _=> _.Title.ToUpper().Contains(model.Search!) ||
                                 _.Body!.ToUpper().Contains(model.Search!) ||
@@ -150,17 +150,17 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
                                 _.AltTitle!.ToUpper().Contains(model.Search!));
 
         return QueryResult<Content>.Create()
-            .WithPageNumber(model.Filter.PageNumber)
-            .WithPageSize(model.Filter.PageSize)
+            .WithPageNumber(model.Options.PageNumber)
+            .WithPageSize(model.Options.PageSize)
             .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false))
             .WithResults(await query
                 .Include(_=> _.Categories)
                 .Include(_=> _.Tags)
                 .Include(_=> _.ContentType)
                 .Include(_=> _.Language)
-                .SortBy(model.Filter.OrderBy, model.Filter.OrderDesc)
-                .Skip(model.Filter.StartIndex)
-                .Take(model.Filter.PageSize)
+                .SortBy(model.Options.OrderBy, model.Options.OrderDesc)
+                .Skip(model.Options.StartIndex)
+                .Take(model.Options.PageSize)
                 .ToListAsync(cancellationToken).ConfigureAwait(false));
     }
 

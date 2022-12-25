@@ -12,7 +12,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public CreateContentCommand(
         Guid websiteId,
         string title, string slug, Guid contentTypeId, Guid langId, 
-        string body, ContentBodyType bodyType, 
+        string body, ContentBodyTypeEnum bodyType, 
         string summary, string altTitle, int orderNum, 
         IEnumerable<Guid> categories, IEnumerable<MetaCommand> meta,
         IEnumerable<ContentFileCommand> files)
@@ -37,7 +37,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public string Slug { get; }
     public Guid ContentTypeId { get; }
     public string Body { get; }
-    public ContentBodyType BodyType { get; }
+    public ContentBodyTypeEnum BodyType { get; }
     public string Summary { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }

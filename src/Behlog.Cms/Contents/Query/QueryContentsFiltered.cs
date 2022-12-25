@@ -12,12 +12,12 @@ public class QueryContentsFiltered : IBehlogQuery<QueryResult<ContentResult>>
     public QueryContentsFiltered(Guid websiteId)
     {
         WebsiteId = websiteId;
-        Filter = new QueryFilter();
+        Options = new QueryOptions();
     }
     
     public Guid WebsiteId { get; }
     
-    public QueryFilter Filter { get; set; }
+    public QueryOptions Options { get; set; }
     
     public Guid? LangId { get; set; }
     
@@ -27,7 +27,7 @@ public class QueryContentsFiltered : IBehlogQuery<QueryResult<ContentResult>>
     
     public string? AuthorUserId { get; set; }
     
-    public ContentStatus? Status { get; set; }
+    public ContentStatusEnum? Status { get; set; }
 
     private string? _search;
     public string? Search

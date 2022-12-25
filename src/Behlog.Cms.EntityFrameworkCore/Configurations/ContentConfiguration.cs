@@ -17,19 +17,11 @@ public static partial class EntityConfigurations
             content.Property(_ => _.Id).ValueGeneratedNever();
             content.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired();
             content.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
-            content.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false); //TODO : It's for SQL Server, what about other RBDMSes?
+            content.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false);
             content.Property(_ => _.AuthorUserId).HasMaxLength(100).IsRequired();
             content.Property(_ => _.Summary).HasMaxLength(2000).IsUnicode().IsRequired(false);
-            content.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML)
-                .HasConversion<int>(
-                    b => b.Id,
-                    b => ContentBodyType.Find(b)
-                );
-            content.Property(_ => _.Status).HasDefaultValue(ContentStatus.Draft)
-                .HasConversion<int>(
-                    s => s.Id,
-                    s => ContentStatus.Find(s)
-                );
+            content.Property(_ => _.BodyType).HasDefaultValue(ContentBodyTypeEnum.HTML);
+            content.Property(_ => _.Status).HasDefaultValue(ContentStatusEnum.Draft);
             content.Property(_ => _.AltTitle).HasMaxLength(1000).IsUnicode().IsRequired(false);
             content.Property(_ => _.Password).HasMaxLength(100).IsUnicode().IsRequired(false);
             content.Property(_ => _.IconName).HasMaxLength(256).IsUnicode().IsRequired(false);

@@ -6,11 +6,11 @@ namespace Behlog.Cms.Exceptions;
 public class ContentCannotPublishedException : BehlogException
 {
 
-    public ContentCannotPublishedException(ContentStatus currentStatus)
-        : base(message: $"The content cannot published because current status is : '{currentStatus.Title}'!")
+    public ContentCannotPublishedException(ContentStatusEnum currentStatus)
+        : base(message: $"The content cannot published because current status is : '{(int)currentStatus}'!")
     {
         CurrentContentStatus = currentStatus;
     }
     
-    public ContentStatus CurrentContentStatus { get; }
+    public ContentStatusEnum CurrentContentStatus { get; }
 }

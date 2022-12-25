@@ -9,7 +9,7 @@ public class ComponentUpdatedEvent : BehlogDomainEvent
 {
     public ComponentUpdatedEvent(
         Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
-        string? description, string? attributes, EntityStatus status, string? author, string? authorEmail, 
+        string? description, string? attributes, EntityStatusEnum status, string? author, string? authorEmail, 
         Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, DateTime? lastUpdated,
         string? createdByUserId, string? createdByIp, string? lastUpdatedByUserId, string? lastUpdatedByIp, 
         IReadOnlyCollection<MetaResult> meta)
@@ -48,7 +48,7 @@ public class ComponentUpdatedEvent : BehlogDomainEvent
     public string Category { get; }
     public string? Description { get; }
     public string? Attributes { get; }
-    public EntityStatus Status { get; }
+    public EntityStatusEnum Status { get; }
     public string? Author { get; }
     public string? AuthorEmail { get; }
     public Guid? ParentId { get; }

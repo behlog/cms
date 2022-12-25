@@ -10,10 +10,10 @@ public class QueryFileUploadsByWebsiteId : IBehlogQuery<QueryResult<FileUploadRe
     public QueryFileUploadsByWebsiteId(Guid websiteId)
     {
         WebsiteId = websiteId;
-        Filter = new QueryFilter();
+        Filter = new QueryOptions();
     }
     
     public Guid WebsiteId { get; }
     
-    public QueryFilter Filter { get; set; }
+    public QueryOptions Filter { get; set; }
 }

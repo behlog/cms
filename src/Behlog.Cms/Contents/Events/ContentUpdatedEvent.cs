@@ -12,10 +12,10 @@ public class ContentUpdatedEvent : BehlogDomainEvent
         string slug,
         Guid contentTypeId,
         string body,
-        ContentBodyType bodyType,
+        ContentBodyTypeEnum bodyType,
         string authorUserId,
         string summary,
-        ContentStatus status,
+        ContentStatusEnum status,
         string altTitle,
         int orderNum,
         IReadOnlyCollection<Guid> categories,
@@ -43,10 +43,10 @@ public class ContentUpdatedEvent : BehlogDomainEvent
     public string Slug { get; }
     public Guid ContentTypeId { get; }
     public string Body { get; }
-    public ContentBodyType BodyType { get; }
+    public ContentBodyTypeEnum BodyType { get; }
     public string AuthorUserId { get; }
     public string Summary { get; }
-    public ContentStatus Status { get; }
+    public ContentStatusEnum Status { get; }
     public string AltTitle { get; }
     public int OrderNum { get; }
     public IReadOnlyCollection<Guid> Categories { get; }

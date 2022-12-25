@@ -1,14 +1,13 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Behlog.Cms.Commands;
 using Behlog.Core;
 using Behlog.Extensions;
 using Behlog.Cms.Events;
-using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
-using Idyfa.Core;
+using Behlog.Cms.Commands;
+using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
+
 
 public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata 
 {
@@ -36,7 +35,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
             Title = command.Title?.Trim().CorrectYeKe()!,
             Slug = command.Slug?.Trim().CorrectYeKe().MakeSlug()!,
             LangId = command.LangId,
-            Status = EntityStatus.Enabled,
+            Status = EntityStatusEnum.Enabled,
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             ParentId = command.ParentId,
             ContentTypeId = command.ContentTypeId,
@@ -70,7 +69,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         Description = command.Description?.CorrectYeKe()!;
         
         ChangeStatus(
-            command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled, 
+            command.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled, 
             userContext, appContext, dateTime);
         
         LastUpdatedByIp = appContext.IpAddress;
@@ -82,7 +81,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
 
     public void SoftDelete()
     {
-        Status = EntityStatus.Deleted;
+        Status = EntityStatusEnum.Deleted;
         LastStatusChangedOn = DateTime.UtcNow;
 
         AddSoftDeletedEvent();
@@ -96,7 +95,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
     }
 
     private void ChangeStatus(
-        EntityStatus status, IIdyfaUserContext userContext, 
+        EntityStatusEnum status, IIdyfaUserContext userContext, 
         IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         if (this.Status == status) return;
@@ -118,7 +117,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
     public Guid? ParentId { get; protected set; }
     public string? Description { get; protected set; }
     public Guid? ContentTypeId { get; protected set; }
-    public EntityStatus Status { get; protected set; }
+    public EntityStatusEnum Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     

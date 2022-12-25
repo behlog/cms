@@ -27,10 +27,10 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public string? Body { get; protected set; }
     public Guid LangId { get; protected set; }
     public string? LangCode { get; protected set; }
-    public ContentBodyType BodyType { get; protected set; }
+    public ContentBodyTypeEnum BodyType { get; protected set; }
     public string AuthorUserId { get; protected set; }
     public string? Summary { get; protected set; }
-    public ContentStatus Status { get; protected set; }
+    public ContentStatusEnum Status { get; protected set; }
     public DateTime? LastStatusChangedDate { get; protected set; }
     public DateTime? PublishDate { get; protected set; }
     public string? AltTitle { get; protected set; }
@@ -45,6 +45,13 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public string? CreatedByIp { get; protected set; }
     public string? LastUpdatedByIp { get; protected set; }
     #endregion
+
+    #region Status
+
+    public bool CanBePublished => Status != ContentStatusEnum.Deleted; 
+
+    #endregion
+    
 
     #region Navigations
 
@@ -98,7 +105,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             AuthorUserId = userContext.UserId!,
             Summary = command.Summary?.CorrectYeKe()!,
             OrderNum = command.OrderNum,
-            Status = ContentStatus.Draft,
+            Status = ContentStatusEnum.Draft,
             BodyType = command.BodyType,
             CreatedByIp = appContext.IpAddress, 
             CreatedByUserId = userContext.UserId,
@@ -169,7 +176,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         
-        Status = ContentStatus.Deleted;
+        Status = ContentStatusEnum.Deleted;
         LastStatusChangedDate = dateTime.UtcNow;
         LastUpdatedByUserId = userContext.UserId;
         LastUpdatedByIp = appContext.IpAddress;
@@ -187,12 +194,12 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         
-        if (!Status.CanPublished())
+        if (!CanBePublished)
         {
             throw new ContentCannotPublishedException(Status);
         }
         
-        Status = ContentStatus.Published;
+        Status = ContentStatusEnum.Published;
         var publishDate = dateTime.UtcNow;
         PublishDate = publishDate;
         LastStatusChangedDate = publishDate;

@@ -33,7 +33,7 @@ public partial class Component
             Keywords = command.Keywords,
             LangId = command.LangId,
             Name = command.Name,
-            Status = EntityStatus.Enabled,
+            Status = EntityStatusEnum.Enabled,
             Title = command.Title?.CorrectYeKe().Trim()!,
             AuthorEmail = command.AuthorEmail?.Trim(),
             ComponentType = command.ComponentType.Trim(),
@@ -104,7 +104,7 @@ public partial class Component
         Author = command.Author;
         AuthorEmail = command.AuthorEmail;
         ParentId = command.ParentId;
-        Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
+        Status = command.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled;
         IsRtl = command.IsRtl;
         Keywords = command.Keywords;
         ViewPath = command.ViewPath;
@@ -124,7 +124,7 @@ public partial class Component
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         
-        Status = EntityStatus.Deleted;
+        Status = EntityStatusEnum.Deleted;
         LastUpdated = dateTime.UtcNow;
         LastUpdatedByIp = appContext.IpAddress;
         LastUpdatedByUserId = userContext.UserId;

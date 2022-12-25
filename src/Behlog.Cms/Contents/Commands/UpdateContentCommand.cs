@@ -10,7 +10,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     
     public UpdateContentCommand(
         Guid id, string title, string slug, string body, 
-        ContentBodyType bodyType, ContentStatus status, 
+        ContentBodyTypeEnum bodyType, ContentStatusEnum status, 
         Guid contentTypeId, string authorUserId, string summary, 
         string altTitle, int orderNum, IEnumerable<Guid> categories, 
         IEnumerable<MetaCommand> meta, IEnumerable<ContentFileCommand> files)
@@ -35,8 +35,8 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public string Title { get; }
     public string Slug { get; }
     public string Body { get; }
-    public ContentBodyType BodyType { get; }
-    public ContentStatus Status { get; }
+    public ContentBodyTypeEnum BodyType { get; }
+    public ContentStatusEnum Status { get; }
     public Guid ContentTypeId { get; }
     public string AuthorUserId { get; }
     public string Summary { get; }
