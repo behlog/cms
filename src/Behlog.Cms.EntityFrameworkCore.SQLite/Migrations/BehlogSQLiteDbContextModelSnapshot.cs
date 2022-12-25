@@ -234,6 +234,11 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                     b.Property<Guid>("ContentTypeId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CoverPhoto")
+                        .HasMaxLength(2000)
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("TEXT");
 
@@ -405,6 +410,8 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ContentId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ContentCategoryItem", (string)null);
                 });
@@ -1119,14 +1126,14 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
 
             modelBuilder.Entity("Behlog.Cms.Domain.ContentCategoryItem", b =>
                 {
-                    b.HasOne("Behlog.Cms.Domain.Content", "Content")
-                        .WithMany("Categories")
-                        .HasForeignKey("ContentId")
+                    b.HasOne("Behlog.Cms.Domain.ContentCategory", "Category")
+                        .WithMany("Contents")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Behlog.Cms.Domain.ContentCategory", "Category")
-                        .WithMany("Contents")
+                    b.HasOne("Behlog.Cms.Domain.Content", "Content")
+                        .WithMany("Categories")
                         .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

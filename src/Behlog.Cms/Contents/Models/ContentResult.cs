@@ -11,13 +11,13 @@ public class ContentResult
     public ContentResult(
         Guid id, string title, string slug, Guid contentTypeId, Guid langId, string body,
         ContentBodyTypeEnum bodyType, string authorUserId, string summary, ContentStatusEnum status, string altTitle,
-        int orderNum, DateTime? lastStatusChangedDate, DateTime? publishDate, string? iconName, string? viewPath, 
-        DateTime createdDate, DateTime? lastUpdated, string? createdByUserId, string? lastUpdatedByUserId, 
+        int orderNum, DateTime? lastStatusChangedDate, DateTime? publishDate, string? coverPhoto, string? iconName, 
+        string? viewPath, DateTime createdDate, DateTime? lastUpdated, string? createdByUserId, string? lastUpdatedByUserId,
         string? createdByIp, string? lastUpdatedByIp)
     {
         Id = id;
         Title = title;
-        Slug = slug;;
+        Slug = slug;
         ContentTypeId = contentTypeId;
         LangId = langId;
         Body = body;
@@ -29,6 +29,7 @@ public class ContentResult
         OrderNum = orderNum;
         LastStatusChangedDate = lastStatusChangedDate;
         PublishDate = publishDate;
+        CoverPhoto = coverPhoto;
         IconName = iconName;
         ViewPath = viewPath;
         CreatedDate = createdDate;
@@ -38,7 +39,6 @@ public class ContentResult
         CreatedByIp = createdByIp;
         LastUpdatedByIp = lastUpdatedByIp;
     }
-
 
     public ContentResult WithLanguage(Language language)
     {
@@ -153,7 +153,7 @@ public class ContentResult
     public string? LastUpdatedByUserId { get; set; }
     public string? CreatedByIp { get; set; }
     public string? LastUpdatedByIp { get; set; }
-    
+    public string? CoverPhoto { get; set; }
     public IReadOnlyCollection<ContentCategoryItemResult> Categories { get; set; }
     public IReadOnlyCollection<MetaResult> Meta { get; set; }
     public IReadOnlyCollection<ContentFileResult> Files { get; set; }

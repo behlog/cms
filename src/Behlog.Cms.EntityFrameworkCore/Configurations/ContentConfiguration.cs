@@ -26,6 +26,7 @@ public static partial class EntityConfigurations
             content.Property(_ => _.Password).HasMaxLength(100).IsUnicode().IsRequired(false);
             content.Property(_ => _.IconName).HasMaxLength(256).IsUnicode().IsRequired(false);
             content.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            content.Property(_ => _.CoverPhoto).HasMaxLength(2000).IsUnicode().IsRequired(false);
             content.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
             content.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
             content.Property(_ => _.LangCode).HasMaxLength(10).IsUnicode().IsRequired(false);
