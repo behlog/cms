@@ -14,7 +14,12 @@ namespace Behlog.Cms.Handlers;
 public class CommentCommandHandlers :
     IBehlogCommandHandler<CreateCommentCommand, CommandResult<CommentResult>>,
     IBehlogCommandHandler<UpdateCommentCommand, CommandResult>,
-    IBehlogCommandHandler<ApproveCommentCommand>
+    IBehlogCommandHandler<ApproveCommentCommand>,
+    IBehlogCommandHandler<RejectCommentCommand>,
+    IBehlogCommandHandler<BlockCommentCommand>,
+    IBehlogCommandHandler<SoftDeleteCommentCommand>,
+    IBehlogCommandHandler<RemoveCommentCommand>,
+    IBehlogCommandHandler<MarkCommentAsSpamCommand>
 {
     
     private readonly ICommentWriteStore _writeStore;
@@ -74,6 +79,7 @@ public class CommentCommandHandlers :
         try
         {
             var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
             comment.Update(command, _applicationContext, _userContext, _dateTime);
             
             _writeStore.MarkForUpdate(comment);
@@ -97,6 +103,7 @@ public class CommentCommandHandlers :
         try
         {
             var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
             comment.Approve(_applicationContext, _userContext, _dateTime);
 
             await _writeStore.UpdateAsync(comment, cancellationToken).ConfigureAwait(false);
@@ -107,7 +114,100 @@ public class CommentCommandHandlers :
             throw;
         }
     }
-    
-    
-    
+
+
+    public async Task HandleAsync(
+        RejectCommentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        try
+        {
+            var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
+            comment.Reject(_applicationContext, _userContext, _dateTime);
+
+            await _writeStore.UpdateAsync(comment, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+    }
+
+
+    public async Task HandleAsync(
+        BlockCommentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        try
+        {
+            var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
+            comment.Block(_applicationContext, _userContext, _dateTime);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+    }
+
+    public async Task HandleAsync(
+        SoftDeleteCommentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        try
+        {
+            var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
+            comment.SoftDelete(_applicationContext, _userContext, _dateTime);
+
+            await _writeStore.UpdateAsync(comment, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+    }
+
+    public async Task HandleAsync(RemoveCommentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        try
+        {
+            var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
+            comment.Remove();
+            await _writeStore.DeleteAsync(comment, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+    }
+
+    public async Task HandleAsync(MarkCommentAsSpamCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        try
+        {
+            var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.ThrowExceptionIfReferenceIsNull(nameof(comment));
+            comment.MarkAsSpam(_applicationContext, _userContext, _dateTime);
+            await _writeStore.UpdateAsync(comment, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+    }
 }

@@ -180,7 +180,7 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    public void AddRemovedEvent()
+    private void AddRemovedEvent()
     {
         var e = new CommentRemovedEvent(Id);
         Enqueue(e);
