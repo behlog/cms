@@ -37,7 +37,7 @@ public class UpdateCommentCommandValidator
     }
     
     
-    public ValidatorResult Run(UpdateCommentCommand command)
+    public static ValidatorResult Run(UpdateCommentCommand command)
     {
         return new UpdateCommentCommandValidator().Validate(command);
     }

@@ -1,7 +1,6 @@
-using Behlog.Core;
-using Behlog.Core.Models;
+using Behlog.Cms.Domain;
 
-namespace Behlog.Cms.Domain.Models;
+namespace Behlog.Cms.Models;
 
 public class CommentResult
 {
@@ -19,10 +18,4 @@ public class CommentResult
     public string LastUpdatedByUserId { get; set; }
     public string CreatedByIp { get; set; }
     public string LastUpdatedByIp { get; set; }
-}
-
-public class CommentCommandResult : CommandResult
-{
-
-    
 }

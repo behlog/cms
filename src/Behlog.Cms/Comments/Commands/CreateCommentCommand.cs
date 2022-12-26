@@ -1,6 +1,6 @@
 using Behlog.Core;
 using Behlog.Cms.Domain;
-using Behlog.Cms.Domain.Models;
+using Behlog.Cms.Models;
 using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;

@@ -1,5 +1,4 @@
 using Behlog.Cms.Domain;
-using Behlog.Cms.Domain.Models;
 using Behlog.Extensions;
 
 namespace Behlog.Cms.Models;

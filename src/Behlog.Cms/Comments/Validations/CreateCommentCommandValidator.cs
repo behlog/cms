@@ -1,9 +1,9 @@
+using Behlog.Extensions;
+using Behlog.Cms.Models;
 using Behlog.Core.Models;
 using Behlog.Cms.Commands;
 using Behlog.Core.Contracts;
-using Behlog.Cms.Domain.Models;
 using Behlog.Core.Validations;
-using Behlog.Extensions;
 using static Behlog.Cms.Validations.CommentErrorCodes;
 
 namespace Behlog.Cms.Validations;
@@ -41,7 +41,7 @@ public class CreateCommentCommandValidator :
     }
 
 
-    public ValidatorResult Run(CreateCommentCommand command)
+    public static ValidatorResult Run(CreateCommentCommand command)
     {
         return new CreateCommentCommandValidator().Validate(command);
     }
