@@ -3,6 +3,7 @@ using Behlog.Extensions;
 using Behlog.Cms.Events;
 using Behlog.Core.Domain;
 using Behlog.Cms.Commands;
+using Behlog.Cms.Exceptions;
 using Behlog.Core.Contracts;
 using Idyfa.Core.Contracts;
 
@@ -42,7 +43,9 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
 
     #region Builders
 
-    public static Comment Create(CreateCommentCommand command)
+    public static Comment Create(
+        CreateCommentCommand command, IBehlogApplicationContext appContext,
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
@@ -56,11 +59,11 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
             BodyType = command.BodyType,
             Status = CommentStatusEnum.Created,
             ContentId = command.ContentId,
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = dateTime.UtcNow,
             WebUrl = command.WebUrl?.Trim().CorrectYeKe()!,
-            AuthorUserId = "", //TODO : read from UserContext
-            CreatedByIp = "", //TODO : read from HttpContext
-            CreatedByUserId = ""
+            AuthorUserId = userContext.UserId,
+            CreatedByIp = appContext.IpAddress,
+            CreatedByUserId = userContext.UserId
         };
         
         comment.AddCreatedEvent();
@@ -68,7 +71,9 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     }
 
 
-    public void Update(UpdateCommentCommand command)
+    public void Update(
+        UpdateCommentCommand command, IBehlogApplicationContext appContext,
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
@@ -77,17 +82,24 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         BodyType = command.BodyType;
         Email = command.Email?.Trim().CorrectYeKe()!;
         WebUrl = command.WebUrl?.Trim().CorrectYeKe()!;
-        LastUpdated = DateTime.UtcNow;
-        LastUpdatedByIp = ""; //TODO : read from Context
-        LastUpdatedByUserId = ""; //TODO : read from context
+        LastUpdated = dateTime.UtcNow;
+        LastUpdatedByIp = appContext.IpAddress;
+        LastUpdatedByUserId = userContext.UserId;
 
         AddUpdatedEvent();
     }
     
-    public void SoftDelete()
+    public void SoftDelete(
+        IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         //TODO : Check if comment can be soft deleted
-        ChangeStatus(CommentStatusEnum.Deleted);
+        if (Status == CommentStatusEnum.Deleted)
+        {
+            throw new BehlogAlreadySoftDeletedException();
+        }
+        
+        ChangeStatus(CommentStatusEnum.Deleted, appContext, userContext, dateTime);
 
         AddSoftDeletedEvent();
     }
@@ -101,61 +113,49 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     /// <summary>
     /// Approve the <see cref="Comment"/>
     /// </summary>
-    public void Approve()
+    public void Approve(
+        IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         if(Status == CommentStatusEnum.Approved) return;
         
-        ChangeStatus(CommentStatusEnum.Approved);
+        ChangeStatus(CommentStatusEnum.Approved, appContext, userContext, dateTime);
         AddApprovedEvent();
     }
 
     /// <summary>
     /// Reject the <see cref="Comment"/>
     /// </summary>
-    /// <param name="manager"></param>
-    public void Reject()
+    public void Reject(
+        IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         if(Status == CommentStatusEnum.Rejected) return;
         
-        ChangeStatus(CommentStatusEnum.Rejected);
+        ChangeStatus(CommentStatusEnum.Rejected, appContext, userContext, dateTime);
         AddRejectedEvent();
     }
 
 
-    public void Block()
+    public void Block(
+        IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         if(Status == CommentStatusEnum.Blocked) return;
         
-        ChangeStatus(CommentStatusEnum.Blocked);
+        ChangeStatus(CommentStatusEnum.Blocked, appContext, userContext, dateTime);
         AddBlockedEvent();
     }
 
 
-    public void MarkAsSpam()
+    public void MarkAsSpam(
+        IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         if(Status == CommentStatusEnum.Spam) return;
         
-        ChangeStatus(CommentStatusEnum.Spam);
+        ChangeStatus(CommentStatusEnum.Spam, appContext, userContext, dateTime);
         AddSpammedEvent();
-    }
-
-    #endregion
-
-    #region Methods
-
-    public void SetIdentityOnAdd(
-        IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
-    {
-        CreatedByUserId = userContext.UserId;
-        AuthorUserId = userContext.UserId;
-        CreatedByIp = applicationContext.IpAddress;
-    }
-
-    public void SetIdentityOnUpdate(
-        IIdyfaUserContext userContext, IBehlogApplicationContext applicationContext)
-    {
-        LastUpdatedByUserId = userContext.UserId;
-        LastUpdatedByIp = applicationContext.IpAddress;
     }
 
     #endregion
@@ -216,12 +216,14 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
         Enqueue(e);
     }
     
-    private void ChangeStatus(CommentStatusEnum status)
+    private void ChangeStatus(
+        CommentStatusEnum status, IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         Status = status;
-        LastStatusChangedOn = DateTime.UtcNow;
-        LastUpdatedByUserId = ""; //TODO : from userContext
-        LastUpdatedByIp = ""; //TODO : from HttpContext
+        LastStatusChangedOn = dateTime.UtcNow;
+        LastUpdatedByUserId = userContext.UserId;
+        LastUpdatedByIp = appContext.IpAddress;
     }
     
     #endregion

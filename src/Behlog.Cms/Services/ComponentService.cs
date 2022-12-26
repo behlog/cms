@@ -9,12 +9,12 @@ namespace Behlog.Cms.Services;
 
 public class ComponentService : IComponentService
 {
-    private readonly IBehlogMediator _mediator;
+    private readonly IBehlogMediator _behlog;
 
 
-    public ComponentService(IBehlogMediator mediator)
+    public ComponentService(IBehlogMediator behlog)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _behlog = behlog ?? throw new ArgumentNullException(nameof(behlog));
     }
 
     /// <inheritdoc /> 
@@ -27,7 +27,7 @@ public class ComponentService : IComponentService
             throw new ArgumentNullException(nameof(componentName));
 
         var query = new QueryComponentByName(websiteId, langId, componentName);
-        var result = await _mediator.PublishAsync(query).ConfigureAwait(false);
+        var result = await _behlog.PublishAsync(query).ConfigureAwait(false);
 
         return result != null;
     }

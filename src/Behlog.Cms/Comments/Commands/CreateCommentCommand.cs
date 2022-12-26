@@ -1,11 +1,12 @@
 using Behlog.Core;
 using Behlog.Cms.Domain;
 using Behlog.Cms.Domain.Models;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Commands;
 
 
-public class CreateCommentCommand : IBehlogCommand<CommentCommandResult>
+public class CreateCommentCommand : IBehlogCommand<CommandResult<CommentResult>>
 {
     
     public Guid ContentId { get; }
