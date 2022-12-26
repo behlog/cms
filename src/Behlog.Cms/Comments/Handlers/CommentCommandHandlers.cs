@@ -13,7 +13,8 @@ namespace Behlog.Cms.Handlers;
 
 public class CommentCommandHandlers :
     IBehlogCommandHandler<CreateCommentCommand, CommandResult<CommentResult>>,
-    IBehlogCommandHandler<UpdateCommentCommand, CommandResult>
+    IBehlogCommandHandler<UpdateCommentCommand, CommandResult>,
+    IBehlogCommandHandler<ApproveCommentCommand>
 {
     
     private readonly ICommentWriteStore _writeStore;
@@ -86,4 +87,27 @@ public class CommentCommandHandlers :
         
         return CommandResult.Success();
     }
+
+
+    public async Task HandleAsync(
+        ApproveCommentCommand command, CancellationToken cancellationToken = default)
+    {
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        try
+        {
+            var comment = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+            comment.Approve(_applicationContext, _userContext, _dateTime);
+
+            await _writeStore.UpdateAsync(comment, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _behlogger.LogException(ex);
+            throw;
+        }
+    }
+    
+    
+    
 }
