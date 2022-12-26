@@ -1,24 +1,23 @@
+using Behlog.Extensions;
 using Behlog.Core.Models;
 using Behlog.Cms.Commands;
 using Behlog.Core.Contracts;
-using Behlog.Cms.Domain.Models;
 using Behlog.Core.Validations;
-using Behlog.Extensions;
 using static Behlog.Cms.Validations.CommentErrorCodes;
 
 namespace Behlog.Cms.Validations;
 
 
-public class CreateCommentCommandValidator :
-    IBehlogCommandValidator<CreateCommentCommand, CommandResult<CommentResult>>
+public class UpdateCommentCommandValidator 
+    : IBehlogCommandValidator<UpdateCommentCommand, CommandResult>
 {
-
-    public ValidatorResult Validate(CreateCommentCommand command)
+    
+    public ValidatorResult Validate(UpdateCommentCommand command)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
 
         return ValidatorResult.Create()
-                .ThrowExceptionIfIdIsNotValid(command.ContentId)
+                .ThrowExceptionIfIdIsNotValid(command.Id)
 
                 .IsRequired(command.Body, nameof(command.Body),
                     BodyIsNull, GetMessage(BodyIsNull)!)
@@ -34,16 +33,12 @@ public class CreateCommentCommandValidator :
 
                 .HasMaxLenght(command.WebUrl, 2000, nameof(command.WebUrl),
                     WebUrlMaxLen, GetMessage(WebUrlMaxLen)!)
-
-                .HasMaxLenght(command.AuthorName, 256, nameof(command.AuthorName),
-                    AuthorNameMaxLen, GetMessage(AuthorNameMaxLen)!)
             ;
     }
-
-
-    public ValidatorResult Run(CreateCommentCommand command)
+    
+    
+    public ValidatorResult Run(UpdateCommentCommand command)
     {
-        return new CreateCommentCommandValidator().Validate(command);
+        return new UpdateCommentCommandValidator().Validate(command);
     }
-
-} 
+}
