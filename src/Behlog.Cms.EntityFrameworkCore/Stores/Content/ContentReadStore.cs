@@ -179,7 +179,32 @@ public class ContentReadStore : BehlogEntityFrameworkCoreReadStore<Content, Guid
         return await _set.AnyAsync(_ => _.WebsiteId == websiteId && _.Slug.ToUpper() == slug.ToUpper());
     }
 
-    public Task<QueryResult<Content>> QueryAsync(Guid websiteId, string contentTypeName, ContentStatusEnum status, QueryOptions options, CancellationToken cancellationToken = default) {
-        throw new NotImplementedException();
+    /// <inheritdoc />
+    public async Task<QueryResult<Content>> QueryAsync(
+        Guid websiteId, Guid langId, string contentTypeName, ContentStatusEnum status, 
+        QueryOptions options, CancellationToken cancellationToken = default) {
+
+        var query = _set.Where(_ => _.WebsiteId == websiteId)
+                        .Where(_=> _.LangId == langId)
+                        .Where(_=> _.ContentType.SystemName.ToUpper() == contentTypeName.ToUpper())
+                        .Where(_=> _.Status == status);
+
+        return QueryResult<Content>.Create()
+            .WithPageNumber(options.PageNumber)
+            .WithPageSize(options.PageSize)
+            .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false))
+            .WithResults(await query
+                .Include(_ => _.Categories)
+                .ThenInclude(_ => _.Category)
+                .Include(_ => _.Tags)
+                .ThenInclude(_ => _.Tag)
+                .Include(_ => _.ContentType)
+                .Include(_ => _.Language)
+                .SortBy(options.OrderBy, options.OrderDesc)
+                .Skip(options.StartIndex)
+                .Take(options.PageSize)
+                .ToListAsync(cancellationToken).ConfigureAwait(false)
+            );
     }
+
 }

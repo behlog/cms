@@ -81,7 +81,7 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
 
     /// <summary>
     /// Get Published Contents by ContentTypeName, Website and Status.
-    /// Includes (Tags, Categories)
+    /// Includes (Tags, Categories, ContentType and Language)
     /// </summary>
     /// <param name="websiteId"></param>
     /// <param name="contentTypeName"></param>
@@ -90,6 +90,6 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<QueryResult<Content>> QueryAsync(
-        Guid websiteId, string contentTypeName, ContentStatusEnum status, QueryOptions options,
-        CancellationToken cancellationToken = default);
+        Guid websiteId, Guid langId, string contentTypeName, ContentStatusEnum status, 
+        QueryOptions options, CancellationToken cancellationToken = default);
 }
