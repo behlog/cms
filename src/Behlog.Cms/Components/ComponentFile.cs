@@ -1,5 +1,4 @@
 using Behlog.Core.Domain;
-using Idyfa.Core.Extensions;
 
 namespace Behlog.Cms.Domain;
 
