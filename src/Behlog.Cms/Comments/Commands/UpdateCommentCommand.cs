@@ -1,8 +1,5 @@
-using Behlog.Core;
-using Behlog.Cms.Domain;
-using Behlog.Core.Models;
-
 namespace Behlog.Cms.Commands;
+
 
 public class UpdateCommentCommand : IBehlogCommand<CommandResult>
 {
