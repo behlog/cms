@@ -4,7 +4,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class FileUploadWriteStore : BehlogWriteStore<FileUpload, Guid>, 
+public class FileUploadWriteStore : BehlogEntityFrameworkCoreWriteStore<FileUpload, Guid>, 
     IFileUploadWriteStore
 {
     

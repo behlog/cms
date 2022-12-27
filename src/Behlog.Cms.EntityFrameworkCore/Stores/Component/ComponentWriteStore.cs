@@ -3,7 +3,7 @@ using Behlog.Cms.Domain;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class ComponentWriteStore : BehlogWriteStore<Component, Guid>,
+public class ComponentWriteStore : BehlogEntityFrameworkCoreWriteStore<Component, Guid>,
     IComponentWriteStore
 {
     

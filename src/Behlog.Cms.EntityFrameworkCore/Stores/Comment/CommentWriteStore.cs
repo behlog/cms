@@ -3,7 +3,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class CommentWriteStore : BehlogWriteStore<Comment, Guid>, 
+public class CommentWriteStore : BehlogEntityFrameworkCoreWriteStore<Comment, Guid>, 
     ICommentWriteStore
 {
 

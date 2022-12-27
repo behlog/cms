@@ -4,7 +4,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class WebsiteWriteStore : BehlogWriteStore<Website, Guid>,
+public class WebsiteWriteStore : BehlogEntityFrameworkCoreWriteStore<Website, Guid>,
     IWebsiteWriteStore
 {
     

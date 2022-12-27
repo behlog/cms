@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Behlog.Cms.EntityFrameworkCore;
 
 
-public class BehlogWriteStore<TEntity, TId> 
+public class BehlogEntityFrameworkCoreWriteStore<TEntity, TId> 
     : IBehlogWriteStore<TEntity, TId> where TEntity : AggregateRoot<TId>
 {
     private readonly IBehlogEntityFrameworkDbContext _db;
@@ -14,7 +14,8 @@ public class BehlogWriteStore<TEntity, TId>
     private readonly IBehlogMediator _mediator;
     private ICollection<IBehlogEvent> _stagedEvents;
 
-    public BehlogWriteStore(IBehlogEntityFrameworkDbContext db, IBehlogMediator mediator)
+    public BehlogEntityFrameworkCoreWriteStore(
+        IBehlogEntityFrameworkDbContext db, IBehlogMediator mediator)
     {
         _db = db ?? throw new ArgumentNullException(nameof(db));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

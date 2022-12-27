@@ -4,7 +4,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class TagWriteStore : BehlogWriteStore<Tag, Guid>,
+public class TagWriteStore : BehlogEntityFrameworkCoreWriteStore<Tag, Guid>,
     ITagWriteStore
 {
     

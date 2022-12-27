@@ -4,7 +4,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class LanguageWriteStore : BehlogWriteStore<Language, Guid>,
+public class LanguageWriteStore : BehlogEntityFrameworkCoreWriteStore<Language, Guid>,
     ILanguageWriteStore
 {
     
