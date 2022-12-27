@@ -8,7 +8,7 @@ using Behlog.Cms.EntityFrameworkCore.Extensions;
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 
-public class ContentCategoryReadStore : BehlogReadStore<ContentCategory, Guid>, IContentCategoryReadStore
+public class ContentCategoryReadStore : BehlogEntityFrameworkCoreReadStore<ContentCategory, Guid>, IContentCategoryReadStore
 {
     
     public ContentCategoryReadStore(IBehlogEntityFrameworkDbContext db) 

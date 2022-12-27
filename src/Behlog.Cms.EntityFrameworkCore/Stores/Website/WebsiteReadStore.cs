@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class WebsiteReadStore : BehlogReadStore<Website, Guid>,
+public class WebsiteReadStore : BehlogEntityFrameworkCoreReadStore<Website, Guid>,
     IWebsiteReadStore
 {
     private readonly DbSet<Website> _websites;

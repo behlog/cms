@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 
-public class ComponentReadStore : BehlogReadStore<Component, Guid>, IComponentReadStore
+public class ComponentReadStore : BehlogEntityFrameworkCoreReadStore<Component, Guid>, IComponentReadStore
 {
     
     public ComponentReadStore(IBehlogEntityFrameworkDbContext db) : base(db)

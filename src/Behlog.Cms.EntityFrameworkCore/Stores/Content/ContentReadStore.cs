@@ -8,7 +8,7 @@ using Behlog.Cms.EntityFrameworkCore.Extensions;
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 
-public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStore
+public class ContentReadStore : BehlogEntityFrameworkCoreReadStore<Content, Guid>, IContentReadStore
 {
     public ContentReadStore(IBehlogEntityFrameworkDbContext db) 
         : base(db)
@@ -69,7 +69,7 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
     }
 
     /// <inheritdoc />
-    public async Task<IReadOnlyCollection<Content>> GetLatestByContentTypeAsync(
+    public async Task<IReadOnlyCollection<Content>> QueryAsync(
         QueryLatestContentsByContentType model, CancellationToken cancellationToken = default) {
         model.ThrowExceptionIfArgumentIsNull(nameof(model));
 
@@ -94,7 +94,7 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
     }
 
     /// <inheritdoc />
-    public async Task<Content?> GetByContentTypeAndSlugAsync(
+    public async Task<Content?> QueryAsync(
         QueryContentByContentTypeAndSlug model, CancellationToken cancellationToken = default)
     {
         model.ThrowExceptionIfArgumentIsNull(nameof(model));
@@ -177,5 +177,9 @@ public class ContentReadStore : BehlogReadStore<Content, Guid>, IContentReadStor
         Guid websiteId, string slug, CancellationToken cancellationToken = default)
     {
         return await _set.AnyAsync(_ => _.WebsiteId == websiteId && _.Slug.ToUpper() == slug.ToUpper());
+    }
+
+    public Task<QueryResult<Content>> QueryAsync(Guid websiteId, string contentTypeName, ContentStatusEnum status, QueryOptions options, CancellationToken cancellationToken = default) {
+        throw new NotImplementedException();
     }
 }

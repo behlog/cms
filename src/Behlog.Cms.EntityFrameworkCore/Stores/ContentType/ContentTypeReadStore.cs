@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 
-public class ContentTypeReadStore : BehlogReadStore<ContentType, Guid>, IContentTypeReadStore
+public class ContentTypeReadStore : BehlogEntityFrameworkCoreReadStore<ContentType, Guid>, IContentTypeReadStore
 {
     private readonly DbSet<ContentType> _contentTypes;
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class LanguageReadStore : BehlogReadStore<Language, Guid>,
+public class LanguageReadStore : BehlogEntityFrameworkCoreReadStore<Language, Guid>,
     ILanguageReadStore
 {
 

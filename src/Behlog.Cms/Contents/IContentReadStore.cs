@@ -47,7 +47,7 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// </summary>
     /// <param name="model">The Query params.</param>
     /// <returns></returns>
-    Task<IReadOnlyCollection<Content>> GetLatestByContentTypeAsync(
+    Task<IReadOnlyCollection<Content>> QueryAsync(
         QueryLatestContentsByContentType model, CancellationToken cancellationToken = default);
 
 
@@ -58,7 +58,7 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// <param name="model"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Content?> GetByContentTypeAndSlugAsync(
+    Task<Content?> QueryAsync(
         QueryContentByContentTypeAndSlug model, CancellationToken cancellationToken = default);
 
 
@@ -78,4 +78,18 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// <returns>True if exists, otherwise false.</returns>
     Task<bool> ExistBySlugAsync(
         Guid websiteId, string slug, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get Published Contents by ContentTypeName, Website and Status.
+    /// Includes (Tags, Categories)
+    /// </summary>
+    /// <param name="websiteId"></param>
+    /// <param name="contentTypeName"></param>
+    /// <param name="status"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<QueryResult<Content>> QueryAsync(
+        Guid websiteId, string contentTypeName, ContentStatusEnum status, QueryOptions options,
+        CancellationToken cancellationToken = default);
 }

@@ -113,7 +113,7 @@ public class ContentQueryHandlers :
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
-        var contents = await _readStore.GetLatestByContentTypeAsync(query, cancellationToken).ConfigureAwait(false);
+        var contents = await _readStore.QueryAsync(query, cancellationToken).ConfigureAwait(false);
         
         var result = contents.Select(async _ => _.ToResult()
             .WithCategories(_.Categories?.ToList())
@@ -131,7 +131,7 @@ public class ContentQueryHandlers :
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
-        var content = await _readStore.GetByContentTypeAndSlugAsync(query, cancellationToken).ConfigureAwait(false);
+        var content = await _readStore.QueryAsync(query, cancellationToken).ConfigureAwait(false);
         content.ThrowExceptionIfReferenceIsNull(nameof(content));
 
         return content!.ToResult()

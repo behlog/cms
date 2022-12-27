@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 
-public class FileUploadReadStore : BehlogReadStore<FileUpload, Guid>, IFileUploadReadStore
+public class FileUploadReadStore : BehlogEntityFrameworkCoreReadStore<FileUpload, Guid>, IFileUploadReadStore
 {
     
     public FileUploadReadStore(IBehlogEntityFrameworkDbContext db) : base(db)

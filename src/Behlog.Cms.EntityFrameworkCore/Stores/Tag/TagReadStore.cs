@@ -3,7 +3,7 @@ using Behlog.Cms.Store;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
-public class TagReadStore : BehlogReadStore<Tag, Guid>,
+public class TagReadStore : BehlogEntityFrameworkCoreReadStore<Tag, Guid>,
     ITagReadStore
 {
     
