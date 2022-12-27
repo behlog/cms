@@ -187,6 +187,7 @@ public class ContentReadStore : BehlogEntityFrameworkCoreReadStore<Content, Guid
         var query = _set.Where(_ => _.WebsiteId == websiteId)
                         .Where(_=> _.LangId == langId)
                         .Where(_=> _.ContentType.SystemName.ToUpper() == contentTypeName.ToUpper())
+                        .Where(_=> _.ContentType.LangId == langId)
                         .Where(_=> _.Status == status);
 
         return QueryResult<Content>.Create()
