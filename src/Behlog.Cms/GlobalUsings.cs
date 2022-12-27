@@ -1,4 +1,5 @@
 ﻿global using Behlog.Core;
+global using Behlog.Cms.Query;
 global using Behlog.Extensions;
 global using Behlog.Cms.Domain;
 global using Behlog.Cms.Models;
