@@ -20,5 +20,9 @@ public interface IComponentReadStore : IBehlogReadStore<Component, Guid>
 
     Task<IReadOnlyCollection<Component>> GetByWebsiteIdAsync(
         Guid websiteId, CancellationToken cancellationToken = default);
-    
+
+
+    Task<bool> ExistByNameAsync(
+        Guid websiteId, Guid langId, Guid componentId, string name, CancellationToken cancellationToken = default);
+
 }

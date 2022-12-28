@@ -1,9 +1,3 @@
-using Behlog.Core;
-using Behlog.Cms.Query;
-using Behlog.Extensions;
-using Behlog.Cms.Domain;
-using Behlog.Cms.Contracts;
-
 namespace Behlog.Cms.Services;
 
 
@@ -26,9 +20,9 @@ public class ComponentService : IComponentService
         if (componentName.IsNullOrEmptySpace())
             throw new ArgumentNullException(nameof(componentName));
 
-        var query = new QueryComponentByName(websiteId, langId, componentName);
+        var query = new QueryComponentExistsByName(websiteId, langId, componentId, componentName);
         var result = await _behlog.PublishAsync(query).ConfigureAwait(false);
 
-        return result != null;
+        return result;
     }
 }

@@ -8,7 +8,8 @@ namespace Behlog.Cms.Handlers;
 
 public class ComponentQueryHandlers 
     : IBehlogQueryHandler<QueryComponentById, ComponentResult>,
-        IBehlogQueryHandler<QueryComponentByName, ComponentResult>
+        IBehlogQueryHandler<QueryComponentByName, ComponentResult>,
+        IBehlogQueryHandler<QueryComponentExistsByName, bool>
 {
     private readonly IComponentReadStore _readStore;
     
@@ -50,5 +51,14 @@ public class ComponentQueryHandlers
             .WithMeta(component.Meta);
 
         return await Task.FromResult(result);
+    }
+
+    public async Task<bool> HandleAsync(
+        QueryComponentExistsByName query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        return await _readStore.ExistByNameAsync(
+            query.WebsiteId, query.LangId, query.ComponentId, query.Name, cancellationToken).ConfigureAwait(false);
     }
 }

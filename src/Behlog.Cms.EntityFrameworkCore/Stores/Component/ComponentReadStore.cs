@@ -59,4 +59,14 @@ public class ComponentReadStore : BehlogEntityFrameworkCoreReadStore<Component, 
             .Where(_ => _.WebsiteId == websiteId)
             .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
+
+    public async Task<bool> ExistByNameAsync(
+        Guid websiteId, Guid langId, Guid componentId, string name,
+        CancellationToken cancellationToken = default)
+    {
+        return await _set.AnyAsync(_ => _.WebsiteId == websiteId &&
+                                        _.LangId == langId &&
+                                        _.Id != componentId &&
+                                        _.Name.ToUpper() == name.ToUpper());
+    }
 }
