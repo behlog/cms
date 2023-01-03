@@ -26,6 +26,10 @@ public interface IComponentReadStore : IBehlogReadStore<Component, Guid>
         Guid websiteId, Guid langId, Guid componentId, string name, CancellationToken cancellationToken = default);
 
 
-    Task<Component?> QueryAsync(QueryComponentByName model, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Finds a <see cref="Component"/> by it's name and language within a <see cref="Website"/>.
+    /// Includes: (Files, Meta and Language)
+    /// </summary>
+    Task<Component?> FindAsync(QueryComponentByName model, CancellationToken cancellationToken = default);
 
 }

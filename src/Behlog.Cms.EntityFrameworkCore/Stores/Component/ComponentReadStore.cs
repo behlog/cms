@@ -74,7 +74,7 @@ public class ComponentReadStore : BehlogEntityFrameworkCoreReadStore<Component, 
     }
 
     /// <inheritdoc />
-    public async Task<Component?> QueryAsync(
+    public async Task<Component?> FindAsync(
         QueryComponentByName model, CancellationToken cancellationToken = default)
     {
         model.ThrowExceptionIfArgumentIsNull(nameof(model));

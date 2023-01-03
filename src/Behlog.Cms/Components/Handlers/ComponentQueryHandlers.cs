@@ -1,9 +1,3 @@
-using Behlog.Cms.Domain;
-using Behlog.Cms.Models;
-using Behlog.Cms.Query;
-using Behlog.Core;
-using Behlog.Extensions;
-
 namespace Behlog.Cms.Handlers;
 
 public class ComponentQueryHandlers 
@@ -40,9 +34,7 @@ public class ComponentQueryHandlers
     {
         query.ThrowExceptionIfArgumentIsNull(nameof(query));
 
-        var component = await _readStore.GetByNameAsync(
-                query.WebsiteId, query.LangId, query.Name, cancellationToken)
-            .ConfigureAwait(false);
+        var component = await _readStore.FindAsync(query, cancellationToken).ConfigureAwait(false);
         component.ThrowExceptionIfReferenceIsNull(nameof(component));
         
         var result = component!.ToResult()
