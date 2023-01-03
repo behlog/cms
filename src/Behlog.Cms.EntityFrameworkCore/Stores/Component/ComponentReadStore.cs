@@ -1,4 +1,6 @@
 using Behlog.Cms.Domain;
+using Behlog.Cms.Query;
+using Behlog.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
@@ -60,6 +62,7 @@ public class ComponentReadStore : BehlogEntityFrameworkCoreReadStore<Component, 
             .ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc />
     public async Task<bool> ExistByNameAsync(
         Guid websiteId, Guid langId, Guid componentId, string name,
         CancellationToken cancellationToken = default)
@@ -68,5 +71,26 @@ public class ComponentReadStore : BehlogEntityFrameworkCoreReadStore<Component, 
                                         _.LangId == langId &&
                                         _.Id != componentId &&
                                         _.Name.ToUpper() == name.ToUpper());
+    }
+
+    /// <inheritdoc />
+    public async Task<Component?> QueryAsync(
+        QueryComponentByName model, CancellationToken cancellationToken = default)
+    {
+        model.ThrowExceptionIfArgumentIsNull(nameof(model));
+
+        if (model.LangId != default)
+        {
+            return await GetByNameAsync(model.WebsiteId, model.LangId, model.Name, cancellationToken);
+        }
+
+        return await _set
+            .Include(_ => _.Language)
+            .Include(_ => _.Meta)
+            .Include(_ => _.Files)
+            .Where(_ => _.Language.Code.ToUpper() == model.LangCode.ToUpper())
+            .Where(_ => _.WebsiteId == model.WebsiteId)
+            .Where(_ => _.Name.ToUpper() == model.Name.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

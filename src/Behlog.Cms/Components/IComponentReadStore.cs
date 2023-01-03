@@ -25,4 +25,7 @@ public interface IComponentReadStore : IBehlogReadStore<Component, Guid>
     Task<bool> ExistByNameAsync(
         Guid websiteId, Guid langId, Guid componentId, string name, CancellationToken cancellationToken = default);
 
+
+    Task<Component?> QueryAsync(QueryComponentByName model, CancellationToken cancellationToken = default);
+
 }
