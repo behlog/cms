@@ -41,8 +41,8 @@ public class ContentQueryHandlers :
             .WithLanguage(content.Language)
             .WithMeta(content.Meta?.ToList())
             .WithTags(content.Tags?.ToList())
-            .WithContentType(content.ContentType)
-            .WithLikesCount(await _readStore.CountLikesAsync(content, cancellationToken));
+            .WithContentType(content.ContentType);
+            //.WithLikesCount(await _readStore.CountLikesAsync(content, cancellationToken));
 
         var author = await _userRepo.FindByIdAsync(
             content.AuthorUserId, cancellationToken).ConfigureAwait(false);
@@ -68,15 +68,15 @@ public class ContentQueryHandlers :
         var normalizedSlug = query.Slug.CorrectYeKe().ToUpper().Trim();
         var content = await _readStore.GetBySlugAsync(query.WebsiteId, normalizedSlug, cancellationToken);
         content.ThrowExceptionIfReferenceIsNull(nameof(content));
-        
+
         var result = content.ToResult()
             .WithCategories(content.Categories?.ToList())
             .WithFiles(content.Files?.ToList())
             .WithLanguage(content.Language)
             .WithMeta(content.Meta?.ToList())
             .WithTags(content.Tags?.ToList())
-            .WithContentType(content.ContentType)
-            .WithLikesCount(await _readStore.CountLikesAsync(content, cancellationToken));
+            .WithContentType(content.ContentType);
+            //.WithLikesCount(await _readStore.CountLikesAsync(content, cancellationToken));
 
         var author = await _userRepo.FindByIdAsync(
             content.AuthorUserId, cancellationToken).ConfigureAwait(false);
@@ -102,7 +102,7 @@ public class ContentQueryHandlers :
             .WithTags(_.Tags?.ToList())
             .WithLanguage(_.Language)
             .WithContentType(_.ContentType)
-            .WithLikesCount(await _readStore.CountLikesAsync(_.Id, cancellationToken))
+            //.WithLikesCount(await _readStore.CountLikesAsync(_.Id, cancellationToken))
         ).ToList();
 
         return await Task.WhenAll(result);
@@ -120,7 +120,7 @@ public class ContentQueryHandlers :
             .WithTags(_.Tags?.ToList())
             .WithLanguage(_.Language)
             .WithContentType(_.ContentType)
-            .WithLikesCount(await _readStore.CountLikesAsync(_.Id, cancellationToken))
+            //.WithLikesCount(await _readStore.CountLikesAsync(_.Id, cancellationToken))
         ).ToList();
 
         return await Task.WhenAll(result);

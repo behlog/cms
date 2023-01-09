@@ -32,17 +32,17 @@ public class ContentReadStore : BehlogEntityFrameworkCoreReadStore<Content, Guid
     /// <inheritdoc /> 
     public async Task<int> CountLikesAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var content = await _set.FindAsync(id, cancellationToken).ConfigureAwait(false);
+        var content = await _set.FindAsync(id).ConfigureAwait(false);
         return await CountLikesAsync(content, cancellationToken);
     }
 
 
     public async Task<int> CountLikesAsync(Content content, CancellationToken cancellationToken = default) {
         content.ThrowExceptionIfArgumentIsNull(nameof(content));
-        var totalLikes = await _db.Entry<Content>(content)
+        var totalLikes = await _db.Entry(content)
             .Collection(_ => _.Likes)
             .Query()
-            .CountAsync().ConfigureAwait(false);
+            .CountAsync(cancellationToken).ConfigureAwait(false);
         return totalLikes;
     }
 
