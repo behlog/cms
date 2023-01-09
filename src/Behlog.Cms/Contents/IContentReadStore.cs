@@ -21,6 +21,10 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     /// <returns></returns>
     Task<int> CountLikesAsync(
         Guid id, CancellationToken cancellationToken = default);
+
+
+    Task<int> CountLikesAsync(
+        Content content, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Get Contents with it's Categories, Blocks, Components, Files, Language, Meta and ContentType.

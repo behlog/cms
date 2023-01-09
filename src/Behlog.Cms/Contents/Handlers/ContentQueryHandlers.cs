@@ -42,7 +42,7 @@ public class ContentQueryHandlers :
             .WithMeta(content.Meta?.ToList())
             .WithTags(content.Tags?.ToList())
             .WithContentType(content.ContentType)
-            .WithLikesCount(await _readStore.CountLikesAsync(content.Id, cancellationToken));
+            .WithLikesCount(await _readStore.CountLikesAsync(content, cancellationToken));
 
         var author = await _userRepo.FindByIdAsync(
             content.AuthorUserId, cancellationToken).ConfigureAwait(false);
@@ -76,7 +76,7 @@ public class ContentQueryHandlers :
             .WithMeta(content.Meta?.ToList())
             .WithTags(content.Tags?.ToList())
             .WithContentType(content.ContentType)
-            .WithLikesCount(await _readStore.CountLikesAsync(content.Id, cancellationToken));
+            .WithLikesCount(await _readStore.CountLikesAsync(content, cancellationToken));
 
         var author = await _userRepo.FindByIdAsync(
             content.AuthorUserId, cancellationToken).ConfigureAwait(false);

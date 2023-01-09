@@ -1,5 +1,6 @@
 using Behlog.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Behlog.Cms.EntityFrameworkCore;
 
@@ -20,4 +21,6 @@ public interface IBehlogEntityFrameworkDbContext : IBehlogDbContext
     void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class;
 
     void MarkAsChanged<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+
+    EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 }
