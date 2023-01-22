@@ -1,12 +1,4 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Models;
-using Behlog.Core.Contracts;
-using Behlog.Core.Models;
-using Behlog.Core.Validations;
-using Behlog.Extensions;
-
 namespace Behlog.Cms.Validations;
-
 
 public class CreateContentCategoryCommandValidator :
     IBehlogCommandValidator<CreateContentCategoryCommand, CommandResult<ContentCategoryResult>>
