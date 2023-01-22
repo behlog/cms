@@ -1,16 +1,11 @@
-using Behlog.Core;
-using Behlog.Cms.Query;
-using Behlog.Cms.Store;
-using Behlog.Extensions;
-using Behlog.Cms.Models;
-
 namespace Behlog.Cms.Handlers;
 
 
 public class ContentTypeQueryHandlers :
     IBehlogQueryHandler<QueryContentTypeById, ContentTypeResult>,
     IBehlogQueryHandler<QueryContentTypesByLangId, ContentTypeListResult>,
-    IBehlogQueryHandler<QueryContentTypesByLangCode, ContentTypeListResult>
+    IBehlogQueryHandler<QueryContentTypesByLangCode, ContentTypeListResult>,
+    IBehlogQueryHandler<QueryContentTypeBySystemName, ContentTypeResult>
 {
     private readonly IContentTypeReadStore _readStore;
     private readonly ILanguageReadStore _langReadStore;
@@ -71,5 +66,16 @@ public class ContentTypeQueryHandlers :
             );
     }
 
-    
+
+    public async Task<ContentTypeResult> HandleAsync(
+        QueryContentTypeBySystemName query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var contentType = await _readStore.GetBySystemNameAsync(
+            query.LangId, query.SystemName, cancellationToken).ConfigureAwait(false);
+        contentType.ThrowExceptionIfReferenceIsNull(nameof(contentType));
+
+        return contentType!.ToResult();
+    }
 }
