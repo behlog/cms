@@ -53,8 +53,14 @@ public class TagCommandsHandlers :
     }
 
     public async Task HandleAsync(
-        SoftDeleteTagCommand message, CancellationToken cancellationToken = default)
+        SoftDeleteTagCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+
+        var tag = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        tag.SoftDelete(command);
+        
+        _writeStore.MarkForUpdate(tag);
+        await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }
