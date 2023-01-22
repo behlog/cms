@@ -39,9 +39,17 @@ public class TagCommandsHandlers :
     }
 
     public async Task HandleAsync(
-        RemoveTagCommand message, CancellationToken cancellationToken = default)
+        RemoveTagCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        command.Id.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Tag)));
+
+        var tag = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
+        tag.ThrowExceptionIfReferenceIsNull($"Tag with id: '{command.Id}' not found");
+        
+        tag.Remove();
+
+        await _writeStore.DeleteAsync(tag, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task HandleAsync(

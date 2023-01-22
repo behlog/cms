@@ -108,6 +108,7 @@ public class ContentCategoryCommandHandlers :
 
         var category = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         category.ThrowExceptionIfReferenceIsNull(nameof(category));
+        category.Remove();
 
         await _writeStore.DeleteAsync(category, cancellationToken).ConfigureAwait(false);
     }
