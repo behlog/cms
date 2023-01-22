@@ -1,10 +1,5 @@
-using Behlog.Core;
-using Behlog.Cms.Events;
-using Behlog.Extensions;
-using Behlog.Core.Domain;
-using Behlog.Cms.Commands;
-
 namespace Behlog.Cms.Domain;
+
 
 public class Tag : AggregateRoot<Guid>
 {
@@ -31,22 +26,27 @@ public class Tag : AggregateRoot<Guid>
 
     #region Builders
 
-    public static Tag Create(CreateTagCommand command)
+    public static Tag Create(
+        CreateTagCommand command, IBehlogApplicationContext appContext, 
+        IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
+        appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
+        userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
+        dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
+        
+        var tag = new Tag
+        {
+            Id = Guid.NewGuid(),
+            Title = command.Title?.CorrectYeKe().Trim()!,
+            Status = EntityStatusEnum.Enabled,
+            CreatedDate = dateTime.UtcNow,
+            CreatedByUserId = userContext.UserId,
+            CreatedByIp = appContext.IpAddress,
+            LangId = command.LangId,
+            Slug = command.Title?.MakeSlug()!
+        };
 
-        var tag = new Tag();
-        tag.Id = Guid.NewGuid();
-        tag.Title = command.Title?.CorrectYeKe().Trim()!;
-        tag.Slug = tag.Title?.MakeSlug()!;
-        tag.Status = EntityStatusEnum.Enabled;
-        tag.CreatedDate = DateTime.UtcNow;
-        tag.CreatedByUserId = null; //read from UserContext
-        tag.CreatedByIp = null; //TODO : read from HttpContext
-        tag.LangId = command.LangId;
-        
-        //TODO : add CreatedEvent
-        
         tag.Enqueue(new TagCreatedEvent(
             tag.Id, tag.Title!, tag.Slug, tag.LangId));
         

@@ -1,14 +1,4 @@
-using Behlog.Core;
-using Behlog.Cms.Store;
-using Behlog.Extensions;
-using Behlog.Cms.Models;
-using Behlog.Cms.Domain;
-using Behlog.Core.Models;
-using Behlog.Cms.Commands;
-using Idyfa.Core.Contracts;
-using Behlog.Core.Contracts;
 using Behlog.Cms.FileUploads.Internal;
-using Behlog.Cms.Validations;
 
 namespace Behlog.Cms.Handlers;
 
@@ -48,13 +38,13 @@ public class FileUploadCommandHandlers :
             return CommandResult<FileUploadResult>.Failed(validation.Errors);
         }
         
-        var uploadResult = await _uploader.UploadAsync(
-            command.FileData, command.ContentType, command.FileType);
+        var uploadResult = await _uploader
+            .UploadAsync(command.FileData, command.ContentType, command.FileType);
         FileUploaderResult? alternateUploadResult = null;
         if (command.AlternateFileData.IsNotNullOrEmpty())
         {
-            alternateUploadResult = await _uploader.UploadAsync(
-                command.AlternateFileData, command.ContentType, command.FileType);
+            alternateUploadResult = await _uploader
+                .UploadAsync(command.AlternateFileData, command.ContentType, command.FileType);
         }
         
         var fileUpload = FileUpload.Create(

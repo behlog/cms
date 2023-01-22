@@ -5,15 +5,15 @@ namespace Behlog.Cms.Models;
 public class TagResult  
 {
     
-    public Guid Id { get; protected set; } 
-    public string Title { get; protected set; }
-    public string Slug { get; protected set; }
-    public Guid LangId { get; protected set; }
-    public string LangCode { get; protected set; }
-    public EntityStatusEnum Status { get; protected set; }
-    public DateTime CreatedDate { get; protected set; }
-    public string CreatedByUserId { get; protected set; }
-    public string CreatedByUserIp { get; protected set; }
+    public Guid Id { get; set; } 
+    public string Title { get; set; }
+    public string Slug { get; set; }
+    public Guid LangId { get; set; }
+    public string? LangCode { get; set; }
+    public EntityStatusEnum Status { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public string? CreatedByUserId { get; set; }
+    public string? CreatedByUserIp { get; set; }
     
     
 }

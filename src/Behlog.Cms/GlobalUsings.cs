@@ -1,11 +1,16 @@
 ﻿global using Behlog.Core;
 global using Behlog.Cms.Query;
+global using Behlog.Cms.Store;
+global using Behlog.Cms.Events;
 global using Behlog.Extensions;
 global using Behlog.Cms.Domain;
 global using Behlog.Cms.Models;
 global using Behlog.Core.Domain;
 global using Behlog.Core.Models;
 global using Behlog.Cms.Commands;
+global using Behlog.Cms.Resources;
 global using Behlog.Cms.Contracts;
 global using Behlog.Core.Contracts;
+global using Behlog.Cms.Validations;
 global using Behlog.Core.Validations;
+global using Idyfa.Core.Contracts;

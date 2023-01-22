@@ -1,9 +1,6 @@
-using Behlog.Core;
-using Behlog.Cms.Models;
-
 namespace Behlog.Cms.Commands;
 
-public class CreateTagCommand : IBehlogCommand<TagResult>
+public class CreateTagCommand : IBehlogCommand<CommandResult<TagResult>>
 {
 
     public CreateTagCommand(string title, Guid langId)

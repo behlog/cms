@@ -1,6 +1,3 @@
-using Behlog.Cms.Domain;
-using Behlog.Extensions;
-
 namespace Behlog.Cms.Models;
 
 public static class ContentCategoryMappers
