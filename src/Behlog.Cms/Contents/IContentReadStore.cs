@@ -1,7 +1,3 @@
-using Behlog.Core;
-using Behlog.Cms.Query;
-using Behlog.Core.Models;
-
 namespace Behlog.Cms.Domain;
 
 /// <summary>
@@ -96,4 +92,12 @@ public interface IContentReadStore : IBehlogReadStore<Content, Guid>
     Task<QueryResult<Content>> QueryAsync(
         Guid websiteId, Guid langId, string contentTypeName, ContentStatusEnum status, 
         QueryOptions options, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get <see cref="Content"/>s by ContentType, Website, Language...
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="cancellationToken"></param>
+    Task<QueryResult<Content>> QueryAsync(
+        QueryContentByWebsiteAndContentType model, CancellationToken cancellationToken = default);
 }

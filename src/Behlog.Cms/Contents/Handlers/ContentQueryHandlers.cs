@@ -15,7 +15,8 @@ public class ContentQueryHandlers :
     IBehlogQueryHandler<QueryLatestContentsByWebsite, IReadOnlyCollection<ContentResult>>,
     IBehlogQueryHandler<QueryLatestContentsByContentType, IReadOnlyCollection<ContentResult>>,
     IBehlogQueryHandler<QueryContentByContentTypeAndSlug, ContentResult>,
-    IBehlogQueryHandler<QueryContentsFiltered, QueryResult<ContentResult>>
+    IBehlogQueryHandler<QueryContentsFiltered, QueryResult<ContentResult>>,
+    IBehlogQueryHandler<QueryContentByWebsiteAndContentType, QueryResult<ContentResult>>
 {
     private readonly IContentReadStore _readStore;
     private readonly IIdyfaUserRepository _userRepo;
@@ -154,5 +155,18 @@ public class ContentQueryHandlers :
             .WithPageNumber(queryResult.PageNumber)
             .WithPageSize(queryResult.PageSize)
             .WithTotalCount(queryResult.TotalCount);
+    }
+
+    public async Task<QueryResult<ContentResult>> HandleAsync(
+        QueryContentByWebsiteAndContentType query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var result = await _readStore.QueryAsync(query, cancellationToken).ConfigureAwait(false);
+        return QueryResult<ContentResult>
+            .Create(result.Results.Select(_=> _.ToResult()))
+            .WithPageNumber(result.PageNumber)
+            .WithPageSize(result.PageSize)
+            .WithTotalCount(result.TotalCount);
     }
 }

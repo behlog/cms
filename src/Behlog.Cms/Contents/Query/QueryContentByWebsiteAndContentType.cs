@@ -4,7 +4,7 @@ namespace Behlog.Cms.Query;
 public class QueryContentByWebsiteAndContentType : IBehlogQuery<QueryResult<ContentResult>>
 {
     public QueryContentByWebsiteAndContentType(
-        Guid websiteId, Guid langId, Guid contentTypeId, QueryOptions options)
+        Guid websiteId, Guid langId, Guid contentTypeId, ContentStatus? status = null, QueryOptions options = null)
     {
         WebsiteId = websiteId;
         WebsiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Website)));
@@ -31,5 +31,6 @@ public class QueryContentByWebsiteAndContentType : IBehlogQuery<QueryResult<Cont
     public Guid WebsiteId { get; }
     public Guid LangId { get; }
     public Guid ContentTypeId { get; }
+    public ContentStatusEnum? Status { get; }
     public QueryOptions Options { get; }
 }

@@ -4,6 +4,8 @@ using Behlog.Extensions;
 using Behlog.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Behlog.Cms.EntityFrameworkCore.Extensions;
+using Behlog.Cms.Models;
+using Microsoft.Extensions.Options;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
@@ -219,5 +221,34 @@ public class ContentReadStore : BehlogEntityFrameworkCoreReadStore<Content, Guid
             );
     }
 
-    
+    /// <inheritdoc /> 
+    public async Task<QueryResult<Content>> QueryAsync(
+        QueryContentByWebsiteAndContentType model, CancellationToken cancellationToken = default)
+    {
+        model.ThrowExceptionIfArgumentIsNull(nameof(model));
+
+        var query = _set.Where(_ => _.WebsiteId == model.WebsiteId)
+                        .Where(_ => _.LangId == model.LangId)
+                        .Where(_ => _.ContentTypeId == model.ContentTypeId);
+
+        if (model.Status.HasValue)
+        {
+            query = query.Where(_ => _.Status == model.Status.Value);
+        }
+
+        return QueryResult<Content>.Create()
+            .WithPageNumber(model.Options.PageNumber)
+            .WithPageSize(model.Options.PageSize)
+            .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false))
+            .WithResults(await query
+                .Include(_ => _.Categories)
+                .ThenInclude(_ => _.Category)
+                .Include(_ => _.ContentType)
+                .Include(_ => _.Language)
+                .SortBy(model.Options.OrderBy, model.Options.OrderDesc)
+                .Skip(model.Options.StartIndex)
+                .Take(model.Options.PageSize)
+                .ToListAsync(cancellationToken).ConfigureAwait(false)
+            );
+    }
 }
