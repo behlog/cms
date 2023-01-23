@@ -3,8 +3,8 @@ namespace Behlog.Cms.Commands;
 public class CreateContentCategoryCommand : IBehlogCommand<CommandResult<ContentCategoryResult>>
 {
     public CreateContentCategoryCommand(
-        string title, string altTitle, string slug, Guid langId,
-        Guid? parentId, string description, Guid? contentTypeId, Guid websiteId)
+        string title, string? altTitle, string slug, Guid langId,
+        Guid? parentId, string? description, Guid? contentTypeId, Guid websiteId)
     {
         Title = title;
         AltTitle = altTitle;
@@ -17,11 +17,11 @@ public class CreateContentCategoryCommand : IBehlogCommand<CommandResult<Content
     }
     
     public string Title { get; }
-    public string AltTitle { get; }
+    public string? AltTitle { get; }
     public string Slug { get; }
     public Guid LangId { get; }
     public Guid? ParentId { get; }
-    public string Description { get; }
+    public string? Description { get; }
     public Guid? ContentTypeId { get; }
     public Guid WebsiteId { get; } //TODO : check if better read from context or not!
 }
