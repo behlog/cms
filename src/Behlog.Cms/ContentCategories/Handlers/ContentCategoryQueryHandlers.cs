@@ -11,7 +11,8 @@ public class ContentCategoryQueryHandlers :
     IBehlogQueryHandler<QueryContentCategoryById, ContentCategoryResult>,
     IBehlogQueryHandler<QueryContentCategoryByParentId, IReadOnlyCollection<ContentCategoryResult>>,
     IBehlogQueryHandler<QueryWebsiteContentCategories, ContentCategoryListResult>,
-    IBehlogQueryHandler<QueryContentCategoryByContentType, IReadOnlyCollection<ContentCategoryResult>>
+    IBehlogQueryHandler<QueryContentCategoryByContentType, IReadOnlyCollection<ContentCategoryResult>>,
+    IBehlogQueryHandler<QueryContentCategoriesFiltered, QueryResult<ContentCategoryResult>>
 {
     private readonly IContentCategoryReadStore _readStore;
 
@@ -71,5 +72,19 @@ public class ContentCategoryQueryHandlers :
         return await Task.FromResult(
             categories.Select(_ => _.ToResult()).ToList()
             );
+    }
+
+
+    public async Task<QueryResult<ContentCategoryResult>> HandleAsync(
+        QueryContentCategoriesFiltered query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var result = await _readStore.QueryAsync(query, cancellationToken).ConfigureAwait(false);
+        return QueryResult<ContentCategoryResult>
+            .Create(result.Results.Select(_=> _.ToResult()))
+            .WithPageNumber(result.PageNumber)
+            .WithPageSize(result.PageSize)
+            .WithTotalCount(result.TotalCount);
     }
 }
