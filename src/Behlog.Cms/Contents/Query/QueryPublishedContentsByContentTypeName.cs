@@ -21,13 +21,11 @@ public class QueryPublishedContentsByContentTypeName : IBehlogQuery<QueryResult<
             throw new ArgumentNullException(nameof(contentTypeName));
 
         if (options is null) {
-            options = new QueryOptions
-            {
-                OrderBy = "id",
-                OrderDesc = false,
-                PageNumber = 1,
-                PageSize = 10
-            };
+            options = QueryOptions.New()
+                .WillOrderBy("id")
+                .WithPageSize(1)
+                .WithPageSize(10)
+                .WillOrderDesc();
         }
 
         WebsiteId = websiteId;

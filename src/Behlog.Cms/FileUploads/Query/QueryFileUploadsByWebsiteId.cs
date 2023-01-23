@@ -10,7 +10,11 @@ public class QueryFileUploadsByWebsiteId : IBehlogQuery<QueryResult<FileUploadRe
     public QueryFileUploadsByWebsiteId(Guid websiteId)
     {
         WebsiteId = websiteId;
-        Filter = new QueryOptions();
+        Filter = QueryOptions.New()
+            .WillOrderBy("id")
+            .WithPageSize(1)
+            .WithPageSize(10)
+            .WillOrderDesc();
     }
     
     public Guid WebsiteId { get; }

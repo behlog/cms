@@ -20,13 +20,11 @@ public class QueryContentCategoriesFiltered : IBehlogQuery<QueryResult<ContentCa
 
         if (options is null)
         {
-            options = new QueryOptions
-            {
-                OrderBy = "id",
-                OrderDesc = true,
-                PageNumber = 1,
-                PageSize = 10
-            };
+            options = QueryOptions.New()
+                .WithPageNumber(1)
+                .WithPageSize(10)
+                .WillOrderBy("id")
+                .WillOrderDesc();
         }
 
         Options = options;

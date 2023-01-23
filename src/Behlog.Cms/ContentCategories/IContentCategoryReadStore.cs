@@ -37,4 +37,12 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// <returns>A list of <see cref="ContentCategory"/>(s) with the same ParentId.</returns>
     Task<IReadOnlyCollection<ContentCategory>> FindByParentIdAsync(
         Guid langId, Guid? parentId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get <see cref="ContentCategory"/> based on filter model with pagination support.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="cancellationToken"></param>
+    Task<QueryResult<ContentCategory>> QueryAsync(
+        QueryContentCategoriesFiltered model, CancellationToken cancellationToken = default);
 }

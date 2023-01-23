@@ -6,7 +6,11 @@ public class QueryContentsFiltered : IBehlogQuery<QueryResult<ContentResult>>
     public QueryContentsFiltered(Guid websiteId)
     {
         WebsiteId = websiteId;
-        Options = new QueryOptions();
+        Options = QueryOptions.New()
+            .WillOrderBy("id")
+            .WithPageSize(1)
+            .WithPageSize(10)
+            .WillOrderDesc();
     }
     
     public Guid WebsiteId { get; }

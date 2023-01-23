@@ -18,13 +18,11 @@ public class QueryContentByWebsiteAndContentType : IBehlogQuery<QueryResult<Cont
         Options = options;
         if (Options is null)
         {
-            Options = new QueryOptions
-            {
-                OrderBy = "id",
-                OrderDesc = true,
-                PageNumber = 1,
-                PageSize = 10
-            };
+            Options = QueryOptions.New()
+                .WillOrderBy("id")
+                .WithPageSize(1)
+                .WithPageSize(10)
+                .WillOrderDesc();
         }
     }
     
