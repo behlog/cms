@@ -1,5 +1,4 @@
 using System.Linq;
-using Xunit;
 using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
 using FluentAssertions;
