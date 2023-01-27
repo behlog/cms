@@ -65,7 +65,7 @@ public class ContentCategoryMeta : MetaBase<Guid>
         return this;
     }
 
-    public ContentCategoryMeta WithStatus(EntityStatusEnum status)
+    public ContentCategoryMeta WithStatus(EntityStatus status)
     {
         Status = status;
         return this;

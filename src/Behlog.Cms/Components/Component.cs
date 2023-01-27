@@ -24,7 +24,7 @@ public partial class Component : AggregateRoot<Guid>, IHasMetadata
     public string Category { get; protected set; }
     public string? Attributes { get; protected set; }
     public string? Description { get; protected set; }
-    public EntityStatusEnum Status { get; protected set; }
+    public EntityStatus Status { get; protected set; }
     public string? Author { get; protected set; }
     public string? AuthorEmail { get; protected set; }
     public Guid? ParentId { get; protected set; }

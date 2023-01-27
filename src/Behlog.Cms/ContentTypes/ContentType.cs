@@ -22,7 +22,7 @@ public partial class ContentType : AggregateRoot<Guid> {
     public string Slug { get; protected set; }
     public string? Description { get; protected set; }
     public Guid LangId { get; protected set; }
-    public EntityStatusEnum Status { get; protected set; }
+    public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
@@ -51,7 +51,7 @@ public partial class ContentType : AggregateRoot<Guid> {
             LangId = command.LangId,
             Description = command.Description?.CorrectYeKe()!,
             Slug = command.Slug?.Trim().CorrectYeKe()!,
-            Status = EntityStatusEnum.Enabled,
+            Status = EntityStatus.Enabled,
             Title = command.Title?.Trim().CorrectYeKe()!,
             CreatedDate = dateTime.UtcNow
         };
@@ -73,7 +73,7 @@ public partial class ContentType : AggregateRoot<Guid> {
         Slug = command.Slug?.Trim().MakeSlug().CorrectYeKe()!;
         SystemName = command.SystemName?.Trim()!;
         LangId = command.LangId;
-        ChangeStatus(command.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled);
+        ChangeStatus(command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled);
         Description = command.Description?.CorrectYeKe()!;
         LastUpdated = dateTime.UtcNow;
         
@@ -83,12 +83,12 @@ public partial class ContentType : AggregateRoot<Guid> {
 
     public void SoftDelete()
     {
-        ChangeStatus(EntityStatusEnum.Deleted);
+        ChangeStatus(EntityStatus.Deleted);
         var e = new ContentTypeSoftDeletedEvent(Id);
         Enqueue(e);
     }
 
-    private void ChangeStatus(EntityStatusEnum status)
+    private void ChangeStatus(EntityStatus status)
     {
         if(status == Status) return;
         

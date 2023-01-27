@@ -159,7 +159,6 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
     {
         modelBuilder.Ignore<CommentStatus>();
         modelBuilder.Ignore<ContentStatus>();
-        modelBuilder.Ignore<EntityStatus>();
         modelBuilder.Ignore<FileUploadStatus>();
         modelBuilder.Ignore<WebsiteStatus>();
         modelBuilder.Ignore<ContentBodyType>();

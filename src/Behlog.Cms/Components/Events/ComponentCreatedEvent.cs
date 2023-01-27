@@ -9,7 +9,7 @@ public class ComponentCreatedEvent : BehlogDomainEvent
 {
     public ComponentCreatedEvent(
         Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
-        string? description, string? attributes, EntityStatusEnum status, string? author, string? authorEmail, 
+        string? description, string? attributes, EntityStatus status, string? author, string? authorEmail, 
         Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, 
         string? createdByUserId, string? createdByIp, IReadOnlyCollection<MetaResult> meta)
     {
@@ -44,7 +44,7 @@ public class ComponentCreatedEvent : BehlogDomainEvent
     public string Category { get; }
     public string? Description { get; }
     public string? Attributes { get; }
-    public EntityStatusEnum Status { get; }
+    public EntityStatus Status { get; }
     public string? Author { get; }
     public string? AuthorEmail { get; }
     public Guid? ParentId { get; }

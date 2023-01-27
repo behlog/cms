@@ -5,7 +5,7 @@ public class QueryContentCategoriesFiltered : IBehlogQuery<QueryResult<ContentCa
 
     public QueryContentCategoriesFiltered(
         Guid websiteId, Guid langId, Guid contentTypeId,
-        EntityStatusEnum? status = null, QueryOptions? options = null)
+        EntityStatus? status = null, QueryOptions? options = null)
     {
         websiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Website)));
         WebsiteId = websiteId;
@@ -36,7 +36,7 @@ public class QueryContentCategoriesFiltered : IBehlogQuery<QueryResult<ContentCa
     
     public Guid LangId { get; }
     
-    public EntityStatusEnum? Status { get; }
+    public EntityStatus? Status { get; }
     
     public QueryOptions Options { get; }
 }

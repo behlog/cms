@@ -18,7 +18,7 @@ public static partial class EntityConfigurations
             type.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired();
             type.Property(_ => _.SystemName).HasMaxLength(50).IsUnicode().IsRequired();
             type.Property(_ => _.Slug).HasMaxLength(256).IsUnicode().IsRequired();
-            type.Property(_ => _.Status).HasDefaultValue(EntityStatusEnum.Enabled);
+            type.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
             type.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
 
             type.HasOne(_ => _.Language)

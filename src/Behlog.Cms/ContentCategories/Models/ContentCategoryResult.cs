@@ -14,7 +14,7 @@ public class ContentCategoryResult
     public Guid? ParentId { get; set; }
     public string? Description { get; set; }
     public Guid? ContentTypeId { get; set; }
-    public EntityStatusEnum Status { get; set; }
+    public EntityStatus Status { get; set; }
     public Guid WebsiteId { get; set; }
 
 

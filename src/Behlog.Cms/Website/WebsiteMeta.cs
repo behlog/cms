@@ -64,7 +64,7 @@ public class WebsiteMeta : MetaBase<Guid>
         return this;
     }
 
-    public WebsiteMeta WithStatus(EntityStatusEnum status)
+    public WebsiteMeta WithStatus(EntityStatus status)
     {
         Status = status;
         return this;

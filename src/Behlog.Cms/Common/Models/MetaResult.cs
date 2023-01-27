@@ -7,7 +7,7 @@ public class MetaResult
 {
     public MetaResult(
         Guid ownerId, string title, string metaKey, string metaValue, string metaType,
-        EntityStatusEnum status, Guid? langId, string description, string category, int orderNum)
+        EntityStatus status, Guid? langId, string description, string category, int orderNum)
     {
         OwnerId = ownerId;
         Title = title;
@@ -26,7 +26,7 @@ public class MetaResult
     public string MetaKey { get; }
     public string MetaValue { get; }
     public string MetaType { get; }
-    public EntityStatusEnum Status { get; }
+    public EntityStatus Status { get; }
     public Guid? LangId { get; }
     public string Description { get; }
     public string Category { get; }

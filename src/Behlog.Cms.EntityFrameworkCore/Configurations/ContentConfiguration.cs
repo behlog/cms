@@ -38,7 +38,7 @@ public static partial class EntityConfigurations
                 m.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
                 m.Property(_ => _.MetaValue).HasMaxLength(4000).IsUnicode().IsRequired(false);
-                m.Property(_ => _.Status).HasDefaultValue(EntityStatusEnum.Enabled);
+                m.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
                 m.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
             });
@@ -70,7 +70,7 @@ public static partial class EntityConfigurations
                 comp.ToTable(ContentComponentTableName)
                     .HasKey(_ => _.Id);
                 comp.Property(_ => _.Id).ValueGeneratedOnAdd();
-                comp.Property(_ => _.Status).HasDefaultValue(EntityStatusEnum.Enabled);
+                comp.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
                 comp.Property(_ => _.Params).HasMaxLength(4000).IsUnicode().IsRequired(false);
                 comp.Property(_ => _.ViewPath).HasMaxLength(2000).IsUnicode().IsRequired(false);
                 comp.Property(_ => _.IsRtl).HasDefaultValue(false);

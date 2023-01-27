@@ -35,7 +35,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
             Title = command.Title?.Trim().CorrectYeKe()!,
             Slug = command.Slug?.Trim().CorrectYeKe().MakeSlug()!,
             LangId = command.LangId,
-            Status = EntityStatusEnum.Enabled,
+            Status = EntityStatus.Enabled,
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             ParentId = command.ParentId,
             ContentTypeId = command.ContentTypeId,
@@ -69,7 +69,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
         Description = command.Description?.CorrectYeKe()!;
         
         ChangeStatus(
-            command.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled, 
+            command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled, 
             userContext, appContext, dateTime);
         
         LastUpdatedByIp = appContext.IpAddress;
@@ -81,7 +81,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
 
     public void SoftDelete()
     {
-        Status = EntityStatusEnum.Deleted;
+        Status = EntityStatus.Deleted;
         LastStatusChangedOn = DateTime.UtcNow;
 
         AddSoftDeletedEvent();
@@ -95,7 +95,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
     }
 
     private void ChangeStatus(
-        EntityStatusEnum status, IIdyfaUserContext userContext, 
+        EntityStatus status, IIdyfaUserContext userContext, 
         IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         if (this.Status == status) return;
@@ -117,7 +117,7 @@ public partial class ContentCategory : AggregateRoot<Guid>, IHasMetadata
     public Guid? ParentId { get; protected set; }
     public string? Description { get; protected set; }
     public Guid? ContentTypeId { get; protected set; }
-    public EntityStatusEnum Status { get; protected set; }
+    public EntityStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
     public DateTime? LastUpdated { get; protected set; }
     

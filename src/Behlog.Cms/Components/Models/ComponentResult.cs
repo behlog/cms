@@ -9,7 +9,7 @@ public class ComponentResult
 {
     private ComponentResult(
         Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
-        string? attributes, string? description, EntityStatusEnum status, string? author, string? authorEmail, 
+        string? attributes, string? description, EntityStatus status, string? author, string? authorEmail, 
         Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, DateTime? lastUpdated,
         string? createdByUserId, string? createdByIp, string? lastUpdatedByUserId, string? lastUpdatedByIp
         )
@@ -49,7 +49,7 @@ public class ComponentResult
     public string Category { get; }
     public string? Description { get; }
     public string? Attributes { get; }
-    public EntityStatusEnum Status { get; }
+    public EntityStatus Status { get; }
     public string? Author { get; }
     public string? AuthorEmail { get; }
     public Guid? ParentId { get; }
@@ -75,7 +75,7 @@ public class ComponentResult
 
     public static ComponentResult Create(
         Guid id, Guid websiteId, Guid langId, string name, string title, string componentType, string category,
-        string? attributes, string? description, EntityStatusEnum status, string? author, string? authorEmail, 
+        string? attributes, string? description, EntityStatus status, string? author, string? authorEmail, 
         Guid? parentId, bool isRtl, string? keywords, string? viewPath, DateTime createdDate, DateTime? lastUpdated,
         string? createdByUserId, string? createdByIp, string? lastUpdatedByUserId, string? lastUpdatedByIp)
     {

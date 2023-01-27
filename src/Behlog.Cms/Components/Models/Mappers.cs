@@ -45,7 +45,7 @@ internal static class ComponentMappers
             .Select(_ => ComponentMeta
                 .New(_.MetaKey, _.MetaValue!)
                 .WithCategory(_.Category!)
-                .WithStatus(_.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
+                .WithStatus(_.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
                 .WithTitle(_.Title)
                 .WithDescription(_.Description!)
                 .WithLangId(_.LangId)

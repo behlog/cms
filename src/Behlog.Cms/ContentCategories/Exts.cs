@@ -14,7 +14,7 @@ internal static class ContentCategoryExtensions
             .Select(meta => ContentMeta
                 .New(meta.MetaKey, meta.MetaValue!)
                 .WithCategory(meta.Category!)
-                .WithStatus(meta.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
+                .WithStatus(meta.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
                 .WithTitle(meta.Title)
                 .WithDescription(meta.Description!)
                 .WithLangId(meta.LangId)

@@ -17,7 +17,7 @@ public static partial class EntityConfigurations
             lang.Property(_ => _.Name).HasMaxLength(100).IsUnicode().IsRequired();
             lang.Property(_ => _.Code).HasMaxLength(10).IsUnicode().IsRequired();
             lang.Property(_ => _.IsoCode).HasMaxLength(20).IsUnicode().IsRequired(false);
-            lang.Property(_ => _.Status).HasDefaultValue(EntityStatusEnum.Enabled);
+            lang.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
             lang.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired();
         });
     }

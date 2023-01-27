@@ -33,7 +33,7 @@ public partial class Component
             Keywords = command.Keywords,
             LangId = command.LangId,
             Name = command.Name,
-            Status = EntityStatusEnum.Enabled,
+            Status = EntityStatus.Enabled,
             Title = command.Title?.CorrectYeKe().Trim()!,
             AuthorEmail = command.AuthorEmail?.Trim(),
             ComponentType = command.ComponentType.Trim(),
@@ -71,7 +71,7 @@ public partial class Component
                         .WithLangId(_.LangId)
                         .WithOrderNum(_.OrderNum)
                         .WithOwnerId(component.Id)
-                        .WithStatus(_.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
+                        .WithStatus(_.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
                         .Build())
                 );
         }
@@ -104,7 +104,7 @@ public partial class Component
         Author = command.Author;
         AuthorEmail = command.AuthorEmail;
         ParentId = command.ParentId;
-        Status = command.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled;
+        Status = command.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled;
         IsRtl = command.IsRtl;
         Keywords = command.Keywords;
         ViewPath = command.ViewPath;
@@ -124,7 +124,7 @@ public partial class Component
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         
-        Status = EntityStatusEnum.Deleted;
+        Status = EntityStatus.Deleted;
         LastUpdated = dateTime.UtcNow;
         LastUpdatedByIp = appContext.IpAddress;
         LastUpdatedByUserId = userContext.UserId;
@@ -253,7 +253,7 @@ public partial class Component
                     .WithTitle(m.Title!)
                     .WithDescription(m.Description!)
                     .WithCategory(m.Category!)
-                    .WithStatus(m.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled)
+                    .WithStatus(m.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled)
                     .WithLangId(m.LangId)
                     .WithOrderNum(m.OrderNum)
                     .WithOwnerId(Id)
@@ -269,7 +269,7 @@ public partial class Component
                     _meta[idx].WithTitle(m.Title);
                     _meta[idx].WithDescription(m.Description!);
                     _meta[idx].WithCategory(m.Category!);
-                    _meta[idx].WithStatus(m.Enabled ? EntityStatusEnum.Enabled : EntityStatusEnum.Disabled);
+                    _meta[idx].WithStatus(m.Enabled ? EntityStatus.Enabled : EntityStatus.Disabled);
                     _meta[idx].WithLangId(m.LangId);
                     _meta[idx].WithValue(m.MetaValue!);
                     _meta[idx].WithOrderNum(m.OrderNum);

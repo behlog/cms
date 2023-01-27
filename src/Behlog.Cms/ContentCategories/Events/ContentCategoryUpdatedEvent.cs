@@ -14,7 +14,7 @@ public class ContentCategoryUpdatedEvent : BehlogDomainEvent
         Guid? parentId,
         string description,
         Guid? contentTypeId,
-        EntityStatusEnum status
+        EntityStatus status
     ) : base()
     {
         Id = id;
@@ -34,5 +34,5 @@ public class ContentCategoryUpdatedEvent : BehlogDomainEvent
     public Guid? ParentId { get; }
     public string Description { get; }
     public Guid? ContentTypeId { get; }
-    public EntityStatusEnum Status { get; }
+    public EntityStatus Status { get; }
 }
