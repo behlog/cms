@@ -1,4 +1,3 @@
-using System.Globalization;
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
 using Behlog.Extensions;
@@ -33,8 +32,10 @@ public class ContentTypeReadStore : BehlogEntityFrameworkCoreReadStore<ContentTy
         if (systemName.IsNullOrEmpty())
             throw new ArgumentNullException(nameof(systemName));
 
+        systemName = systemName.ToUpperInvariant();
+        
         return await _set.FirstOrDefaultAsync(_ => _.LangId == langId &&
-            _.SystemName.ToUpper(CultureInfo.InvariantCulture) == systemName.ToUpper(CultureInfo.InvariantCulture),
+                                                    _.SystemName.ToUpper() == systemName,
             cancellationToken).ConfigureAwait(false);
     }
 
