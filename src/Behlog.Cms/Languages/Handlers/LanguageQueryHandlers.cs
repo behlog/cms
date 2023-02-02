@@ -18,6 +18,6 @@ public class LanguageQueryHandlers :
         var result = await _readStore.GetListAsync(
             query.Status, cancellationToken).ConfigureAwait(false);
 
-        return result.Select(_=> _)
+        return result.Select(_ => _.ToResult()).ToList();
     }
 }
