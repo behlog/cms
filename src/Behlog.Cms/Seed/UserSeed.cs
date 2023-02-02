@@ -1,6 +1,4 @@
-using Behlog.Cms.Exceptions;
 using Idyfa.Core;
-using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Seed;
 
