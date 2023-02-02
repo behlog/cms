@@ -3,7 +3,7 @@
 /// <summary>
 /// Query for a <see cref="ContentType"/> which it's status is <see cref="EntityStatus.Enabled"/>
 /// </summary>
-public class QueryActiveContentType : IBehlogQuery<ContentTypeResult>
+public class QueryActiveContentType : IBehlogQuery<ContentTypeResult?>
 {
 
 	public QueryActiveContentType(Guid langId, string systemName) {

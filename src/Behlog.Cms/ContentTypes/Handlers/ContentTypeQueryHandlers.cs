@@ -5,7 +5,9 @@ public class ContentTypeQueryHandlers :
     IBehlogQueryHandler<QueryContentTypeById, ContentTypeResult>,
     IBehlogQueryHandler<QueryContentTypesByLangId, ContentTypeListResult>,
     IBehlogQueryHandler<QueryContentTypesByLangCode, ContentTypeListResult>,
-    IBehlogQueryHandler<QueryContentTypeBySystemName, ContentTypeResult>
+    IBehlogQueryHandler<QueryContentTypeBySystemName, ContentTypeResult>,
+    IBehlogQueryHandler<QueryActiveContentType, ContentTypeResult?>,
+    IBehlogQueryHandler<QueryAdminContentType, QueryResult<ContentTypeResult>>
 {
     private readonly IContentTypeReadStore _readStore;
     private readonly ILanguageReadStore _langReadStore;
@@ -77,5 +79,27 @@ public class ContentTypeQueryHandlers :
         contentType.ThrowExceptionIfReferenceIsNull(nameof(contentType));
 
         return contentType!.ToResult();
+    }
+
+    public async Task<QueryResult<ContentTypeResult>> HandleAsync(
+        QueryAdminContentType query, CancellationToken cancellationToken = default) {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var result = await _readStore.QueryAsync(query, cancellationToken).ConfigureAwait(false);
+
+        return QueryResult<ContentTypeResult>
+            .Create(result.Results.Select(_ => _.ToResult()))
+            .WithPageSize(result.PageSize)
+            .WithPageNumber(result.PageNumber)
+            .WithTotalCount(result.TotalCount);
+    }
+
+    public async Task<ContentTypeResult?> HandleAsync(
+        QueryActiveContentType query, CancellationToken cancellationToken = default) {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var result = await _readStore.QueryAsync(query, cancellationToken).ConfigureAwait(false);
+
+        return await Task.FromResult(result?.ToResult());
     }
 }
