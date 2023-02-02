@@ -1,7 +1,8 @@
-using Behlog.Extensions;
-
 namespace Behlog.Cms.Models;
 
+/// <summary>
+/// Represents list of <see cref="ContentTypeResult"/> for a specific <see cref="Language"/>.
+/// </summary>
 public class ContentTypeListResult
 {
     private Dictionary<Guid, ContentTypeResult> _dictionary = new();
@@ -50,4 +51,7 @@ public class ContentTypeListResult
         foreach(var item in contentTypes)
             Add(item);
     }
+
+    public IReadOnlyCollection<ContentTypeResult> Items
+        => _dictionary.Values;
 }
