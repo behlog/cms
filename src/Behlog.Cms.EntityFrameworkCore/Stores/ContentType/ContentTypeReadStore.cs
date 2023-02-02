@@ -1,3 +1,4 @@
+using Behlog.Core;
 using Behlog.Cms.Store;
 using Behlog.Cms.Domain;
 using Behlog.Extensions;
@@ -8,12 +9,12 @@ namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 public class ContentTypeReadStore : BehlogEntityFrameworkCoreReadStore<ContentType, Guid>, IContentTypeReadStore
 {
-    private readonly DbSet<ContentType> _contentTypes;
+    private readonly IQueryable<ContentType> _contentTypes;
 
     public ContentTypeReadStore(IBehlogEntityFrameworkDbContext db) 
         : base(db)
     {
-        _contentTypes = db.Set<ContentType>();
+        _contentTypes = db.Set<ContentType>().Where(_=> _.Status != EntityStatus.Deleted);
     }
 
 

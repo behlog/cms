@@ -11,6 +11,7 @@ global using Behlog.Cms.Commands;
 global using Behlog.Cms.Resources;
 global using Behlog.Cms.Contracts;
 global using Behlog.Core.Contracts;
+global using Behlog.Cms.Exceptions;
 global using Behlog.Cms.Validations;
 global using Behlog.Core.Validations;
 global using Idyfa.Core.Contracts;

@@ -1,12 +1,3 @@
-using Behlog.Core;
-using Behlog.Extensions;
-using Behlog.Cms.Events;
-using Behlog.Core.Domain;
-using Behlog.Cms.Commands;
-using Behlog.Cms.Exceptions;
-using Behlog.Core.Contracts;
-using Idyfa.Core.Contracts;
-
 namespace Behlog.Cms.Domain;
 
 public class Comment : AggregateRoot<Guid>, IHasMetadata
