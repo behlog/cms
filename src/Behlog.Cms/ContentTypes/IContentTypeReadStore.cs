@@ -1,5 +1,6 @@
 using Behlog.Core;
 using Behlog.Cms.Domain;
+using Behlog.Core.Models;
 
 namespace Behlog.Cms.Store;
 
@@ -20,6 +21,10 @@ public interface IContentTypeReadStore : IBehlogReadStore<ContentType, Guid>
     Task<bool> ExistBySystemNameAsync(
         Guid id, Guid langId, string systemName, CancellationToken cancellationToken = default);
 
-    Task<ContentType> QueryAsync(
+    Task<ContentType?> QueryAsync(
         QueryActiveContentType model, CancellationToken cancellationToken = default);
+
+
+    Task<QueryResult<ContentType>> QueryAsync(
+        QueryAdminContentType model, CancellationToken cancellationToken = default);
 }
