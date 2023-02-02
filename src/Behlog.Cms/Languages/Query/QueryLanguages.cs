@@ -1,7 +1,7 @@
 ﻿namespace Behlog.Cms.Query;
 
 
-public class QueryLanguages : IBehlogQuery<LanguageResult>
+public class QueryLanguages : IBehlogQuery<IReadOnlyCollection<LanguageResult>>
 {
 	public QueryLanguages(EntityStatus? status = null) {
 		Status = status;
