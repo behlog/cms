@@ -19,4 +19,7 @@ public interface IContentTypeReadStore : IBehlogReadStore<ContentType, Guid>
     
     Task<bool> ExistBySystemNameAsync(
         Guid id, Guid langId, string systemName, CancellationToken cancellationToken = default);
+
+    Task<ContentType> QueryAsync(
+        QueryActiveContentType model, CancellationToken cancellationToken = default);
 }
