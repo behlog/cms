@@ -40,7 +40,7 @@ public class ContentTypeQueryHandlers :
         var lang = await _langReadStore.FindAsync(query.LangId, cancellationToken).ConfigureAwait(false);
         lang.ThrowExceptionIfReferenceIsNull(nameof(lang));
         
-        var source = await _readStore.GetByLangIdAsync(lang.Id, cancellationToken).ConfigureAwait(false);
+        var source = await _readStore.GetByLangIdAsync(lang.Id, query.Status, cancellationToken).ConfigureAwait(false);
         if (source is null || !source.Any())
             return new ContentTypeListResult(lang.Id,lang.Code, lang.Title);
         
@@ -58,7 +58,7 @@ public class ContentTypeQueryHandlers :
         var lang = await _langReadStore.GetByCodeAsync(query.LangCode, cancellationToken).ConfigureAwait(false);
         lang.ThrowExceptionIfReferenceIsNull(nameof(lang));
 
-        var source = await _readStore.GetByLangIdAsync(lang.Id, cancellationToken).ConfigureAwait(false);
+        var source = await _readStore.GetByLangIdAsync(lang.Id, query.Status, cancellationToken).ConfigureAwait(false);
         if (source is null || !source.Any())
             return new ContentTypeListResult(lang.Id, lang.Code, lang.Title);
 

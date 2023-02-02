@@ -46,10 +46,14 @@ public class ContentTypeReadStore : BehlogEntityFrameworkCoreReadStore<ContentTy
     
     /// <inheritdoc />
     public async Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(
-        Guid langId, CancellationToken cancellationToken = default)
+        Guid langId, EntityStatus? status = null, CancellationToken cancellationToken = default)
     {
-        return await _contentTypes.Where(_ => _.LangId == langId)
-                                    .ToListAsync(cancellationToken).ConfigureAwait(false);
+        var query = _contentTypes.Where(_ => _.LangId == langId);
+        if(status is not null) {
+            query = query.Where(_ => _.Status == status.Value);
+        }
+
+        return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc /> 

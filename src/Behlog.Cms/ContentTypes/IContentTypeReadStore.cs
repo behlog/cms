@@ -15,7 +15,7 @@ public interface IContentTypeReadStore : IBehlogReadStore<ContentType, Guid>
     
 
     Task<IReadOnlyCollection<ContentType>> GetByLangIdAsync(
-        Guid langId, CancellationToken cancellationToken = default);
+        Guid langId, EntityStatus? status = null, CancellationToken cancellationToken = default);
 
     
     Task<bool> ExistBySystemNameAsync(
