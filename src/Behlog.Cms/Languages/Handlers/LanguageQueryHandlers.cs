@@ -2,7 +2,9 @@
 
 
 public class LanguageQueryHandlers :
-    IBehlogQueryHandler<QueryLanguages, IReadOnlyCollection<LanguageResult>>
+    IBehlogQueryHandler<QueryLanguages, IReadOnlyCollection<LanguageResult>>,
+    IBehlogQueryHandler<QueryLanguageById, LanguageResult>,
+    IBehlogQueryHandler<QueryLanguageByCode, LanguageResult>
 {
     private readonly ILanguageReadStore _readStore;
 
@@ -20,4 +22,28 @@ public class LanguageQueryHandlers :
 
         return result.Select(_ => _.ToResult()).ToList();
     }
+
+    public async Task<LanguageResult> HandleAsync(
+        QueryLanguageById query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var lang = await _readStore.FindAsync(query.Id, cancellationToken).ConfigureAwait(false);
+        lang.ThrowExceptionIfReferenceIsNull($"Language with id: '{query.Id}' not found.");
+
+        return lang.ToResult();
+    }
+
+    public async Task<LanguageResult> HandleAsync(
+        QueryLanguageByCode query, CancellationToken cancellationToken = default)
+    {
+        query.ThrowExceptionIfArgumentIsNull(nameof(query));
+
+        var lang = await _readStore.GetByCodeAsync(query.Code, cancellationToken).ConfigureAwait(false);
+        lang.ThrowExceptionIfReferenceIsNull($"Language with code: '{query.Code}' not found.");
+
+        return lang.ToResult();
+    }
+    
+    
 }
