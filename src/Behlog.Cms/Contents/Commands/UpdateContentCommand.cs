@@ -8,28 +8,14 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     {
         Id = id;
     }
-    
-    public UpdateContentCommand(
-        Guid id, string title, string slug, string body, 
-        ContentBodyTypeEnum bodyType,
-        Guid contentTypeId, string? summary, 
-        string altTitle, int orderNum, IEnumerable<Guid> categories, 
-        IEnumerable<MetaCommand> meta, IEnumerable<ContentFileCommand> files)
+
+    public UpdateContentCommand(Guid id, Guid langId, Guid contentTypeId)
     {
         Id = id;
-        Title = title;
-        Slug = slug;
-        Body = body;
-        BodyType = bodyType;
+        LangId = langId;
         ContentTypeId = contentTypeId;
-        Summary = summary;
-        AltTitle = altTitle;
-        OrderNum = orderNum;
-        Categories = categories?.ToList();
-        Meta = meta?.ToList();
-        Files = files?.ToList();
     }
-    
+
     public Guid Id { get; }
     public string Title { get; set; }
     public string Slug { get; set; }
@@ -37,6 +23,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public ContentBodyTypeEnum BodyType { get; set; }
     public bool IsDraft { get; set; }
     public Guid ContentTypeId { get; set; }
+    public Guid LangId { get; set; }
     public string? Summary { get; set; }
     public string? AltTitle { get; set; }
     public int OrderNum { get; set; }
@@ -59,5 +46,64 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         AltTitle = altTitle;
         return this;
     }
-    
+
+    public UpdateContentCommand WithSlug(string slug)
+    {
+        Slug = slug;
+        return this;
+    }
+
+    public UpdateContentCommand WithSummary(string summary)
+    {
+        Summary = summary;
+        return this;
+    }
+
+    public UpdateContentCommand WithBody(string body)
+    {
+        Body = body;
+        return this;
+    }
+
+    public UpdateContentCommand WithBodyType(ContentBodyTypeEnum bodyType)
+    {
+        BodyType = bodyType;
+        return this;
+    }
+
+    public UpdateContentCommand WithOrderNum(int orderNum)
+    {
+        OrderNum = orderNum;
+        return this;
+    }
+
+    public UpdateContentCommand WillBeDraft()
+    {
+        IsDraft = true;
+        return this;
+    }
+
+    public UpdateContentCommand WillBePublishedOn(DateTime publishDate)
+    {
+        PublishDate = publishDate;
+        return this;
+    }
+
+    public UpdateContentCommand WithPassword(string password)
+    {
+        Password = password;
+        return this;
+    }
+
+    public UpdateContentCommand WithIconName(string iconName)
+    {
+        IconName = iconName;
+        return this;
+    }
+
+    public UpdateContentCommand WithViewPath(string viewPath)
+    {
+        ViewPath = viewPath;
+        return this;
+    }
 }
