@@ -9,12 +9,12 @@ namespace Behlog.Cms.Query;
 public class QueryContentCategoryById : IBehlogQuery<ContentCategoryResult>
 {
 
-    public QueryContentCategoryById(Guid contentCatgoeyId)
+    public QueryContentCategoryById(Guid contentCategoryId)
     {
-        contentCatgoeyId.ThrowIfGuidIsEmpty(
+        contentCategoryId.ThrowIfGuidIsEmpty(
             new BehlogInvalidEntityIdException(nameof(ContentCategory))
             );
-        Id = contentCatgoeyId;
+        Id = contentCategoryId;
     }
     
     public Guid Id { get; }
