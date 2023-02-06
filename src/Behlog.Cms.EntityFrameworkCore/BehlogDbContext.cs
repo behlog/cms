@@ -157,12 +157,6 @@ public class BehlogDbContext : DbContext, IBehlogEntityFrameworkDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Ignore<CommentStatus>();
-        modelBuilder.Ignore<ContentStatus>();
-        modelBuilder.Ignore<FileUploadStatus>();
-        modelBuilder.Ignore<WebsiteStatus>();
-        modelBuilder.Ignore<ContentBodyType>();
-
         modelBuilder.AddWebsiteConfiguration();
         modelBuilder.AddLanguageConfiguration();
         modelBuilder.AddContentTypeConfiguration();

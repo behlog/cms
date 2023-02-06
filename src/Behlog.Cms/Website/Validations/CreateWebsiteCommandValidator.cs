@@ -52,7 +52,7 @@ public class CreateWebsiteCommandValidator
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.OwnerUserNull)!, 
                 WebsiteErrorCodes.OwnerUserNull)
             
-            .CheckWebsiteStatusOnCreate(WebsiteStatus.UnderConstruction,
+            .CheckWebsiteStatusOnCreate(WebsiteStatusEnum.UnderConstruction,
                 WebsiteErrorCodes.GetMessage(WebsiteErrorCodes.InvalidStatus)!,
                 WebsiteErrorCodes.InvalidStatus)
             

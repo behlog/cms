@@ -1,14 +1,3 @@
-using Behlog.Core;
-using Behlog.Cms.Core;
-using Behlog.Cms.Events;
-using Behlog.Extensions;
-using Behlog.Core.Domain;
-using Behlog.Cms.Commands;
-using Behlog.Cms.Exceptions;
-using Behlog.Core.Contracts;
-using Idyfa.Core.Contracts;
-using Behlog.Cms.Contracts;
-
 namespace Behlog.Cms.Domain;
 
 
@@ -93,7 +82,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
-
+        
         var content = new Content
         {
             Id = Guid.NewGuid(),
@@ -115,7 +104,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             ViewPath = command.ViewPath,
             LangId = command.LangId,
             WebsiteId = command.WebsiteId,
-            LangCode = "" //TODO : add langcode
+            LangCode = BehlogSupportedLanguages.GetCodeById(command.LangId),
+            PublishDate = command.PublishDate
         };
         
         await GuardAgainstDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
@@ -147,9 +137,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         ContentTypeId = command.ContentTypeId;
         Body = command.Body?.CorrectYeKe()!;
         BodyType = command.BodyType;
-        AuthorUserId = command.AuthorUserId;
+        AuthorUserId = userContext.UserId!;
         Summary = command.Summary?.CorrectYeKe()!;
-        Status = command.Status;
         AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         OrderNum = command.OrderNum;
         Categories = command.Categories.Convert(Id);
@@ -161,6 +150,11 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         Categories = command.Categories.Convert(Id);
         Meta = command.Meta.Convert(Id);
         Files = command.Files.Convert(Id);
+
+        if (command.IsDraft)
+        {
+            Status = ContentStatusEnum.Draft;
+        }
 
         AddUpdatedEvent();
     }

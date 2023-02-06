@@ -6,7 +6,7 @@ namespace Behlog.Cms.Events;
 
 public class WebsiteStatusChangedEvent : IBehlogEvent
 {
-    public WebsiteStatusChangedEvent(Guid websiteId, WebsiteStatus status)
+    public WebsiteStatusChangedEvent(Guid websiteId, WebsiteStatusEnum status)
     {
         Id = websiteId;
         Status = status;
@@ -14,5 +14,5 @@ public class WebsiteStatusChangedEvent : IBehlogEvent
     
     public Guid Id { get; }
     
-    public WebsiteStatus Status { get; }
+    public WebsiteStatusEnum Status { get; }
 }

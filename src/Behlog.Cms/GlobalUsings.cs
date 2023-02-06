@@ -1,4 +1,5 @@
 ﻿global using Behlog.Core;
+global using Behlog.Cms.Core;
 global using Behlog.Cms.Query;
 global using Behlog.Cms.Store;
 global using Behlog.Cms.Events;
