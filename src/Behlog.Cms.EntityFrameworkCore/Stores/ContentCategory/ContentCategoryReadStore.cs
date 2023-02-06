@@ -81,7 +81,7 @@ public class ContentCategoryReadStore : BehlogEntityFrameworkCoreReadStore<Conte
             query = query.Where(_ => _.Status == model.Status.Value);
         }
 
-        if (model.Options.Search.IsNullOrEmptySpace())
+        if (model.Options.Search.IsNotNullOrEmpty())
         {
             model.Options.Search = model.Options.Search.ToUpper();
             query = query.Where(_ => _.Title.ToUpper().Contains(model.Options.Search) ||
