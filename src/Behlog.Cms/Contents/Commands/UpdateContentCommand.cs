@@ -31,9 +31,9 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public string? IconName { get; set; }
     public string? ViewPath { get; set; }
     public DateTime? PublishDate { get; set; }
-    public IReadOnlyCollection<Guid>? Categories { get; }
-    public IReadOnlyCollection<MetaCommand>? Meta { get; }
-    public IReadOnlyCollection<ContentFileCommand>? Files { get; }
+    public IReadOnlyCollection<Guid>? Categories { get; set; }
+    public IReadOnlyCollection<MetaCommand>? Meta { get; set; }
+    public IReadOnlyCollection<ContentFileCommand>? Files { get; set; }
 
     public UpdateContentCommand WithTitle(string title)
     {
@@ -104,6 +104,24 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public UpdateContentCommand WithViewPath(string viewPath)
     {
         ViewPath = viewPath;
+        return this;
+    }
+
+    public UpdateContentCommand WithCategories(IReadOnlyCollection<Guid> categories)
+    {
+        Categories = categories?.ToList();
+        return this;
+    }
+
+    public UpdateContentCommand WithFiles(IReadOnlyCollection<ContentFileCommand> files)
+    {
+        Files = files?.ToList();
+        return this;
+    }
+
+    public UpdateContentCommand WithMeta(IReadOnlyCollection<MetaCommand> meta)
+    {
+        Meta = meta?.ToList();
         return this;
     }
 }

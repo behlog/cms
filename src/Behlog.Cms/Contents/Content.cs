@@ -105,7 +105,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             LangId = command.LangId,
             WebsiteId = command.WebsiteId,
             LangCode = BehlogSupportedLanguages.GetCodeById(command.LangId),
-            PublishDate = command.PublishDate
+            PublishDate = command.PublishDate,
         };
         
         await GuardAgainstDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
