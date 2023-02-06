@@ -32,8 +32,8 @@ public static partial class EntityConfigurations
             content.Property(_ => _.LangCode).HasMaxLength(10).IsUnicode().IsRequired(false);
 
             content.OwnsMany(_ => _.Meta, m => {
-                m.ToTable(ContentMetaTableName).HasKey("Id");
-                m.Property<long>("Id").ValueGeneratedOnAdd();
+                m.ToTable(ContentMetaTableName).HasKey(_=> _.Id);
+                m.Property(_=> _.Id).ValueGeneratedOnAdd();
                 m.WithOwner().HasForeignKey(_ => _.OwnerId);
                 m.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();

@@ -31,9 +31,8 @@ public static partial class EntityConfigurations
 
             web.OwnsMany(_ => _.Meta, m =>
             {
-                m.ToTable(WebsiteTableName).ToTable(WebsiteMetaTableName)
-                    .HasKey("Id");
-                m.Property<long>("Id").ValueGeneratedOnAdd();
+                m.ToTable(WebsiteMetaTableName).HasKey(_=> _.Id);
+                m.Property(_=> _.Id).ValueGeneratedOnAdd();
                 m.Property(_ => _.Title).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.WithOwner().HasForeignKey(_ => _.OwnerId);
                 m.Property(_ => _.MetaKey).HasMaxLength(256).IsUnicode().IsRequired();
