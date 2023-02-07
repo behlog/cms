@@ -9,6 +9,7 @@ global using Behlog.Cms.Models;
 global using Behlog.Core.Domain;
 global using Behlog.Core.Models;
 global using Behlog.Cms.Commands;
+global using Behlog.Cms.Services;
 global using Behlog.Cms.Resources;
 global using Behlog.Cms.Contracts;
 global using Behlog.Core.Contracts;

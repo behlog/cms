@@ -1,7 +1,6 @@
 using Behlog.Cms.Setup;
-using Behlog.Cms.Domain;
 using Behlog.Cms.Services;
-using Behlog.Cms.Contracts;
+using Behlog.Cms.FileUploads.Internal;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +32,7 @@ public static class ServiceProvider
 
     private static void AddBehlogCmsServices(this IServiceCollection services)
     {
+        services.AddScoped<FileUploader>();
         services.AddScoped<ICmsSetup, CmsSetup>();
         services.AddScoped<IContentService, ContentService>();
         services.AddScoped<IContentTypeService, ContentTypeService>();
