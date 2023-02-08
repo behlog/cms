@@ -7,7 +7,7 @@ public class FileUploadCreatedEvent : BehlogDomainEvent
 {
     public FileUploadCreatedEvent(
         Guid id, string title, string filePath, string fileName, string alternateFilePath, 
-        string extension, long fileSize, string altTitle, string url, FileUploadStatusEnum status, 
+        string extension, long fileSize, string altTitle, string url, FileUploadStatus status, 
         string description, DateTime createdDate, string createdByUserId, 
         string createdByIp)
     {
@@ -36,7 +36,7 @@ public class FileUploadCreatedEvent : BehlogDomainEvent
     public long FileSize { get; }
     public string AltTitle { get; }
     public string Url { get; }
-    public FileUploadStatusEnum Status { get; }
+    public FileUploadStatus Status { get; }
     public string Description { get; }
     public DateTime CreatedDate { get; }
     public string CreatedByUserId { get; }

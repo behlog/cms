@@ -25,7 +25,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     public long FileSize { get; protected set; }
     public string? AltTitle { get; protected set; }
     public string? Url { get; protected set; }
-    public FileUploadStatusEnum Status { get; protected set; }
+    public FileUploadStatus Status { get; protected set; }
     public FileTypeEnum FileType { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
     public string? Description { get; protected set; }
@@ -60,7 +60,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         {
             Id = Guid.NewGuid(),
             Title = command.Title?.Trim().CorrectYeKe()!,
-            Status = FileUploadStatusEnum.Created,
+            Status = FileUploadStatus.Created,
             AltTitle = command.AltTitle?.Trim().CorrectYeKe()!,
             Description = command.Description?.CorrectYeKe()!,
             CreatedDate = dateTime.UtcNow,
@@ -99,7 +99,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             Description = command.Description,
             WebsiteId = command.WebsiteId,
             FileType = command.FileType,
-            Status = FileUploadStatusEnum.Created,
+            Status = FileUploadStatus.Created,
             Title = command.Title,
             AltTitle = command.AltTitle,
             CreatedDate = dateTime.UtcNow,
@@ -127,9 +127,9 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         LastUpdatedByUserId = userContext.UserId;
         LastUpdated = dateTime.UtcNow;
 
-        if (command.Hidden && Status != FileUploadStatusEnum.Hidden)
+        if (command.Hidden && Status != FileUploadStatus.Hidden)
         {
-            ChangeStatus(FileUploadStatusEnum.Hidden, appContext, userContext, dateTime);
+            ChangeStatus(FileUploadStatus.Hidden, appContext, userContext, dateTime);
         }
         
         AddUpdatedEvent();
@@ -140,7 +140,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         IBehlogApplicationContext appContext, 
         ISystemDateTime dateTime)
     {
-        ChangeStatus(FileUploadStatusEnum.Deleted, appContext, userContext, dateTime);
+        ChangeStatus(FileUploadStatus.Deleted, appContext, userContext, dateTime);
         AddSoftDeletedEvent();
     }
 
@@ -149,7 +149,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         IBehlogApplicationContext appContext, 
         ISystemDateTime dateTime)
     {
-        ChangeStatus(FileUploadStatusEnum.Archived, appContext, userContext, dateTime);
+        ChangeStatus(FileUploadStatus.Archived, appContext, userContext, dateTime);
         AddArchivedEvent();
     }
 
@@ -217,7 +217,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     #region helpers
 
     private void ChangeStatus(
-        FileUploadStatusEnum status, IBehlogApplicationContext appContext, 
+        FileUploadStatus status, IBehlogApplicationContext appContext, 
         IIdyfaUserContext userContext, ISystemDateTime dateTime)
     {
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));

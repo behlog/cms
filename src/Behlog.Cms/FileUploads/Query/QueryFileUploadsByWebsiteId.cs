@@ -25,8 +25,24 @@ public class QueryFileUploadsByWebsiteId : IBehlogQuery<QueryResult<FileUploadRe
                 .WithPageSize(10).WillOrderDesc();
         }
     }
+
+    public QueryFileUploadsByWebsiteId WithStatus(FileUploadStatus status)
+    {
+        Status = status;
+        return this;
+    }
+
+    public QueryFileUploadsByWebsiteId WithFileType(FileTypeEnum fileType)
+    {
+        FileType = fileType;
+        return this;
+    }
     
     public Guid WebsiteId { get; }
+    
+    public FileUploadStatus? Status { get; private set; }
+    
+    public FileTypeEnum? FileType { get; private set; }
     
     public QueryOptions Options { get; set; }
 }

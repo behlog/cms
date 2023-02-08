@@ -19,7 +19,7 @@ public static partial class EntityConfigurations
             file.Property(_ => _.AltTitle).HasMaxLength(1000).IsRequired(false);
             file.Property(_ => _.Extension).HasMaxLength(50).IsUnicode().IsRequired(false);
             file.Property(_ => _.Url).HasMaxLength(4000).IsUnicode().IsRequired(false);
-            file.Property(_ => _.Status).HasDefaultValue(FileUploadStatusEnum.Created);
+            file.Property(_ => _.Status).HasDefaultValue(FileUploadStatus.Created);
             file.Property(_ => _.FileType).HasDefaultValue(FileTypeEnum.Common);
             file.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
 

@@ -15,7 +15,7 @@ public class FileUploadResult
     public long FileSize { get; set; }
     public string? AltTitle { get; set; }
     public string? Url { get; set; }
-    public FileUploadStatusEnum Status { get; set; }
+    public FileUploadStatus Status { get; set; }
     public string? Description { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? LastUpdated { get; set; }

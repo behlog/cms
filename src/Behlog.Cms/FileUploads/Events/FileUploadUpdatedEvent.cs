@@ -7,7 +7,7 @@ public class FileUpdatedEvent : BehlogDomainEvent
 {
     public FileUpdatedEvent(
         Guid id, string title, string filePath, string fileName, string alternateFilePath, 
-        string extension, long fileSize, string altTitle, string url, FileUploadStatusEnum status, 
+        string extension, long fileSize, string altTitle, string url, FileUploadStatus status, 
         string description, string createdByUserId, string updatedByUserId, 
         string createdByIp, string updatedByIp, DateTime? lastStatusChangedOn, 
         DateTime createdDate)
@@ -41,7 +41,7 @@ public class FileUpdatedEvent : BehlogDomainEvent
     public long FileSize { get; }
     public string AltTitle { get; }
     public string Url { get; }
-    public FileUploadStatusEnum Status { get; }
+    public FileUploadStatus Status { get; }
     public DateTime? LastStatusChangedOn { get; }
     public string Description { get; }
     public DateTime CreatedDate { get; }

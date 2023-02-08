@@ -11,9 +11,11 @@ namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
 public class FileUploadReadStore : BehlogEntityFrameworkCoreReadStore<FileUpload, Guid>, IFileUploadReadStore
 {
-    
+    private IQueryable<FileUpload> _files; 
+
     public FileUploadReadStore(IBehlogEntityFrameworkDbContext db) : base(db)
     {
+        _files = _set.Where(_ => _.Status != FileUploadStatus.Deleted);
     }
 
     /// <inheritdoc /> 
@@ -22,7 +24,28 @@ public class FileUploadReadStore : BehlogEntityFrameworkCoreReadStore<FileUpload
     {
         model.ThrowExceptionIfArgumentIsNull(nameof(model));
 
-        var query = _set.Where(_ => _.WebsiteId == model.WebsiteId);
+        var query = _files.Where(_ => _.WebsiteId == model.WebsiteId);
+        
+        if (model.Status.HasValue)
+        {
+            query = query.Where(_ => _.Status == model.Status.Value);
+        }
+
+        if (model.FileType.HasValue)
+        {
+            query = query.Where(_ => _.FileType == model.FileType.Value);
+        }
+        
+        if (model.Options.Search.IsNotNullOrEmpty())
+        {
+            var search = model.Options.Search.CorrectYeKe().ToUpper();
+            query = query.Where(_ => _.Title.ToUpper().Contains(search) ||
+                                     _.Url.ToUpper().Contains(search) ||
+                                     _.AltTitle.ToUpper().Contains(search) ||
+                                     _.FileName.ToUpper().Contains(search) ||
+                                     _.AlternateFilePath.ToUpper().Contains(search) ||
+                                     _.Description.ToUpper().Contains(search));
+        }
         
         return QueryResult<FileUpload>.Create(
             await query.SortBy(model.Options.OrderBy, model.Options.OrderDesc)

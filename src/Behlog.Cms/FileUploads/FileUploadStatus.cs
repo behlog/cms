@@ -2,7 +2,7 @@ using Behlog.Core;
 
 namespace Behlog.Cms.Domain;
 
-public enum FileUploadStatusEnum
+public enum FileUploadStatus
 {
     Deleted = -1,
     Created = 0,
