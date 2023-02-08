@@ -1,7 +1,3 @@
-using Behlog.Core;
-using Behlog.Cms.Models;
-using Behlog.Core.Models;
-
 namespace Behlog.Cms.Query;
 
 
@@ -9,15 +5,28 @@ public class QueryFileUploadsByWebsiteId : IBehlogQuery<QueryResult<FileUploadRe
 {
     public QueryFileUploadsByWebsiteId(Guid websiteId)
     {
+        websiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Website)));
         WebsiteId = websiteId;
-        Filter = QueryOptions.New()
-            .WillOrderBy("id")
-            .WithPageSize(1)
-            .WithPageSize(10)
-            .WillOrderDesc();
+        Options = QueryOptions.New()
+            .WillOrderBy("id").WithPageSize(1)
+            .WithPageSize(10).WillOrderDesc();
+    }
+
+    public QueryFileUploadsByWebsiteId(Guid websiteId, QueryOptions options)
+    {
+        websiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Website)));
+        WebsiteId = websiteId;
+
+        Options = options;
+        if (Options is null)
+        {
+            Options = QueryOptions.New()
+                .WillOrderBy("id").WithPageSize(1)
+                .WithPageSize(10).WillOrderDesc();
+        }
     }
     
     public Guid WebsiteId { get; }
     
-    public QueryOptions Filter { get; set; }
+    public QueryOptions Options { get; set; }
 }

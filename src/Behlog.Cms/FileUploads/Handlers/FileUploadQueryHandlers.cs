@@ -27,8 +27,8 @@ public class FileUploadQueryHandlers :
         var files = await _readStore.GetFilesAsync(query, cancellationToken).ConfigureAwait(false);
         
         return QueryResult<FileUploadResult>.Create()
-            .WithPageNumber(query.Filter.PageNumber)
-            .WithPageSize(query.Filter.PageSize)
+            .WithPageNumber(query.Options.PageNumber)
+            .WithPageSize(query.Options.PageSize)
             .WithTotalCount(files.TotalCount)
             .WithResults(files.Results.Select(_=> _.ToResult()).ToList());
     }

@@ -25,10 +25,10 @@ public class FileUploadReadStore : BehlogEntityFrameworkCoreReadStore<FileUpload
         var query = _set.Where(_ => _.WebsiteId == model.WebsiteId);
         
         return QueryResult<FileUpload>.Create(
-            await query.SortBy(model.Filter.OrderBy, model.Filter.OrderDesc)
+            await query.SortBy(model.Options.OrderBy, model.Options.OrderDesc)
                         .ToListAsync(cancellationToken).ConfigureAwait(false))
-            .WithPageNumber(model.Filter.PageNumber)
-            .WithPageSize(model.Filter.PageSize)
+            .WithPageNumber(model.Options.PageNumber)
+            .WithPageSize(model.Options.PageSize)
             .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false));
         
     }
