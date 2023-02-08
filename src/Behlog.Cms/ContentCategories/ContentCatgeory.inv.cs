@@ -9,6 +9,8 @@ namespace Behlog.Cms.Domain;
 public partial class ContentCategory
 {
 
+    
+    
     private static void checkRequiredFields(CreateContentCategoryCommand command) 
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));

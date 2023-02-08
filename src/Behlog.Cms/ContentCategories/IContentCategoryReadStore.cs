@@ -45,4 +45,12 @@ public interface IContentCategoryReadStore : IBehlogReadStore<ContentCategory, G
     /// <param name="cancellationToken"></param>
     Task<QueryResult<ContentCategory>> QueryAsync(
         QueryContentCategoriesFiltered model, CancellationToken cancellationToken = default);
+
+
+    Task<bool> ExistByTitleAsync(
+        Guid websiteId, Guid contentTypeId, Guid contentCategoryId, string title);
+
+
+    Task<bool> ExistBySlugAsync(
+        Guid websiteId, Guid contentTypeId, Guid contentCategoryId, string slug);
 }

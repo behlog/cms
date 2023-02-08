@@ -4,6 +4,7 @@ using Behlog.Cms.Domain;
 using Behlog.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Behlog.Cms.EntityFrameworkCore.Extensions;
+using Behlog.Core;
 using Behlog.Core.Models;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
@@ -12,10 +13,12 @@ namespace Behlog.Cms.EntityFrameworkCore.Stores;
 public class ContentCategoryReadStore : BehlogEntityFrameworkCoreReadStore<ContentCategory, Guid>, 
     IContentCategoryReadStore
 {
+    private readonly IQueryable<ContentCategory> _categories;
     
     public ContentCategoryReadStore(IBehlogEntityFrameworkDbContext db) 
         : base(db)
     {
+        _categories = _set.Where(_=> _.Status != EntityStatus.Deleted);
     }
     
     /// <inheritdoc />
@@ -99,5 +102,23 @@ public class ContentCategoryReadStore : BehlogEntityFrameworkCoreReadStore<Conte
                 .Take(model.Options.PageSize)
                 .ToListAsync(cancellationToken).ConfigureAwait(false)
             );
+    }
+
+    public async Task<bool> ExistByTitleAsync(
+        Guid websiteId, Guid contentTypeId, Guid contentCategoryId, string title)
+    {
+        if (title.IsNullOrEmpty()) throw new ArgumentNullException(nameof(title));
+        
+        var normalizedTitle = title.CorrectYeKe().Trim();
+        return await _categories
+            .AnyAsync(_ => _.WebsiteId == websiteId &&
+                            _.ContentTypeId == contentTypeId &&
+                            _.Id != contentCategoryId &&
+                            _.Title.ToUpper() == normalizedTitle);
+    }
+
+    public Task<bool> ExistBySlugAsync(Guid websiteId, Guid contentTypeId, Guid contentCategoryId, string slug)
+    {
+        throw new NotImplementedException();
     }
 }
