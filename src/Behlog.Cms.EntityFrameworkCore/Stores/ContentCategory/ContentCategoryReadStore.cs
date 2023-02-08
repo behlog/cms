@@ -117,8 +117,16 @@ public class ContentCategoryReadStore : BehlogEntityFrameworkCoreReadStore<Conte
                             _.Title.ToUpper() == normalizedTitle);
     }
 
-    public Task<bool> ExistBySlugAsync(Guid websiteId, Guid contentTypeId, Guid contentCategoryId, string slug)
+    public async Task<bool> ExistBySlugAsync(
+        Guid websiteId, Guid contentTypeId, Guid contentCategoryId, string slug)
     {
-        throw new NotImplementedException();
+        if (slug.IsNullOrEmpty()) throw new ArgumentNullException(nameof(slug));
+        
+        var normalizedSlug = slug.CorrectYeKe().Trim();
+        return await _categories
+            .AnyAsync(_ => _.WebsiteId == websiteId &&
+                           _.ContentTypeId == contentTypeId &&
+                           _.Id != contentCategoryId &&
+                           _.Slug.ToUpper() == normalizedSlug);
     }
 }
