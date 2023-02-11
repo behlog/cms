@@ -9,12 +9,12 @@ public static class WebsiteValidations
 
 
     public static ValidatorResult CheckWebsiteStatusOnCreate(
-        this ValidatorResult result, WebsiteStatusEnum status,
+        this ValidatorResult result, WebsiteStatus status,
         string errorMessage, string errorCode = "")
     {
-        if (status == WebsiteStatusEnum.Deleted ||
-            status == WebsiteStatusEnum.Closed ||
-            status == WebsiteStatusEnum.Online)
+        if (status == WebsiteStatus.Deleted ||
+            status == WebsiteStatus.Closed ||
+            status == WebsiteStatus.Online)
         {
             return result.WithError(ValidationError
                 .Create("Status", errorCode, errorMessage));

@@ -23,7 +23,7 @@ public static partial class EntityConfigurations
             web.Property(_ => _.Keywords).HasMaxLength(1000).IsUnicode().IsRequired(false);
             web.Property(_ => _.Url).HasMaxLength(2000).IsUnicode().IsRequired(false);
             web.Property(_ => _.OwnerUserId).HasMaxLength(100).IsRequired();
-            web.Property(_ => _.Status).HasDefaultValue(WebsiteStatusEnum.UnderConstruction);
+            web.Property(_ => _.Status).HasDefaultValue(WebsiteStatus.UnderConstruction);
             web.Property(_ => _.Password).HasMaxLength(100).IsUnicode().IsRequired(false);
             web.Property(_ => _.Email).HasMaxLength(2000).IsUnicode().IsRequired(false);
             web.Property(_ => _.TemplateName).HasDefaultValue("default").HasMaxLength(256).IsUnicode().IsRequired();

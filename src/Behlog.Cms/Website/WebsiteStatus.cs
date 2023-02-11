@@ -1,8 +1,6 @@
-using Behlog.Core;
-
 namespace Behlog.Cms.Domain;
 
-public enum WebsiteStatusEnum
+public enum WebsiteStatus
 {
     Deleted = -1,
     Offline = 0,

@@ -5,7 +5,7 @@ namespace Behlog.Cms.Commands;
 
 public class SetWebsiteStatusCommand : IBehlogCommand
 {
-    public SetWebsiteStatusCommand(Guid websiteId, WebsiteStatusEnum status)
+    public SetWebsiteStatusCommand(Guid websiteId, WebsiteStatus status)
     {
         Id = websiteId;
         Status = status;
@@ -13,5 +13,5 @@ public class SetWebsiteStatusCommand : IBehlogCommand
     
     public Guid Id { get; }
     
-    public WebsiteStatusEnum Status { get; }
+    public WebsiteStatus Status { get; }
 }
