@@ -1,7 +1,7 @@
 ﻿namespace Behlog.Cms.Domain
 {
 
-	public class WebsiteTag
+	public class WebsiteTag : ValueObject
 	{
 		private WebsiteTag() { }
 
@@ -39,6 +39,14 @@
 		public WebsiteTag WithTagSlug(string tagSlug) {
 			TagSlug = tagSlug;
 			return this;
+		}
+
+		protected override IEnumerable<object> GetEqualityComponents() {
+			yield return WebsiteId;
+			yield return TagId;
+			yield return LangId;
+			yield return TagTitle;
+			yield return TagSlug;
 		}
 	}
 }
