@@ -1258,7 +1258,52 @@ namespace Behlog.Cms.EntityFrameworkCore.SQLite.Migrations
                                 .HasForeignKey("OwnerId");
                         });
 
+                    b.OwnsMany("Behlog.Cms.Domain.WebsiteTag", "Tags", b1 =>
+                        {
+                            b1.Property<Guid>("WebsiteId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid>("TagId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid>("LangId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("TagSlug")
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .IsUnicode(true)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("TagTitle")
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .IsUnicode(true)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("WebsiteId", "TagId");
+
+                            b1.HasIndex("TagId");
+
+                            b1.ToTable("WebsiteTag", (string)null);
+
+                            b1.HasOne("Behlog.Cms.Domain.Tag", "Tag")
+                                .WithMany()
+                                .HasForeignKey("TagId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner("Website")
+                                .HasForeignKey("WebsiteId");
+
+                            b1.Navigation("Tag");
+
+                            b1.Navigation("Website");
+                        });
+
                     b.Navigation("Meta");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Behlog.Cms.Domain.Content", b =>

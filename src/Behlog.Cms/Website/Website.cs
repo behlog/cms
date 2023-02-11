@@ -43,6 +43,8 @@ public partial class Website : AggregateRoot<Guid>
 
     public ICollection<WebsiteMeta> Meta { get; protected set; }
 
+    public ICollection<WebsiteTag> Tags { get; protected set; }
+
     #endregion
 
     #region Builders

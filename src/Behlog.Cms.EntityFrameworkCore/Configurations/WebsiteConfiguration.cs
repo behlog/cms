@@ -8,7 +8,6 @@ namespace Behlog.Cms.EntityFrameworkCore.Configurations;
 public static partial class EntityConfigurations
 {
 
-
     public static void AddWebsiteConfiguration(this ModelBuilder builder)
     {
         builder.Entity<Website>(web =>
@@ -41,6 +40,15 @@ public static partial class EntityConfigurations
                 m.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
                 m.Property(_ => _.Category).HasMaxLength(256).IsUnicode().IsRequired(false);
                 m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            });
+
+            web.OwnsMany(_ => _.Tags, tag => {
+                tag.ToTable(WebsiteTagTableName).HasKey(_=> new {
+                    _.WebsiteId, _.TagId
+                });
+                tag.Property(_ => _.TagTitle).HasMaxLength(1000).IsUnicode().IsRequired();
+                tag.Property(_ => _.TagSlug).HasMaxLength(1000).IsUnicode().IsRequired();
+                tag.WithOwner(_ => _.Website).HasForeignKey(_ => _.WebsiteId);
             });
         });
     }
