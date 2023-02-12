@@ -1,7 +1,7 @@
 ﻿namespace Behlog.Cms.Domain
 {
 
-	public class WebsiteTag : ValueObject
+	public class WebsiteTag : BehlogEntity<long>
 	{
 		private WebsiteTag() { }
 
@@ -17,6 +17,7 @@
 		#region Navigations
 		public Website Website { get; protected set; }
 		public Tag Tag { get; protected set; }
+		public Language Language { get; protected set; }
 		#endregion
 
 		public static WebsiteTag New(Guid websiteId, Guid tagId) {
@@ -40,13 +41,6 @@
 			TagSlug = tagSlug;
 			return this;
 		}
-
-		protected override IEnumerable<object> GetEqualityComponents() {
-			yield return WebsiteId;
-			yield return TagId;
-			yield return LangId;
-			yield return TagTitle;
-			yield return TagSlug;
-		}
+		
 	}
 }

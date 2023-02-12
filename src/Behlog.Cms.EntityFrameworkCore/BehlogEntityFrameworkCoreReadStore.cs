@@ -1,4 +1,5 @@
 using Behlog.Core;
+using Behlog.Core.Contracts;
 using Behlog.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,7 @@ namespace Behlog.Cms.EntityFrameworkCore;
 /// <typeparam name="TEntity">Type of Entity.</typeparam>
 /// <typeparam name="TId">Type of the Entity Identity.</typeparam>
 public class BehlogEntityFrameworkCoreReadStore<TEntity, TId> 
-    : IBehlogReadStore<TEntity, TId> where TEntity : AggregateRoot<TId>
+    : IBehlogReadStore<TEntity, TId> where TEntity : BehlogEntity<TId>
 {
     protected readonly IBehlogEntityFrameworkDbContext _db;
     protected readonly DbSet<TEntity> _set;

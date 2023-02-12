@@ -42,13 +42,35 @@ public static partial class EntityConfigurations
                 m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
             });
 
-            web.OwnsMany(_ => _.Tags, tag => {
-                tag.ToTable(WebsiteTagTableName).HasKey(_=> new {
-                    _.WebsiteId, _.TagId
-                });
+            // web.OwnsMany(_ => _.Tags, tag => {
+            //     tag.ToTable(WebsiteTagTableName).HasKey(_=> new {
+            //         _.WebsiteId, _.TagId
+            //     });
+            //     tag.Property(_ => _.TagTitle).HasMaxLength(1000).IsUnicode().IsRequired();
+            //     tag.Property(_ => _.TagSlug).HasMaxLength(1000).IsUnicode().IsRequired();
+            //     tag.WithOwner(_ => _.Website).HasForeignKey(_ => _.WebsiteId);
+            // });
+
+            builder.Entity<WebsiteTag>(tag =>
+            {
+                tag.ToTable(WebsiteTagTableName).HasKey(_ => _.Id);
                 tag.Property(_ => _.TagTitle).HasMaxLength(1000).IsUnicode().IsRequired();
                 tag.Property(_ => _.TagSlug).HasMaxLength(1000).IsUnicode().IsRequired();
-                tag.WithOwner(_ => _.Website).HasForeignKey(_ => _.WebsiteId);
+
+                tag.HasOne(_ => _.Website)
+                    .WithMany()
+                    .HasForeignKey(_ => _.WebsiteId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                tag.HasOne(_ => _.Tag)
+                    .WithMany()
+                    .HasForeignKey(_ => _.TagId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                tag.HasOne(_ => _.Language)
+                    .WithMany()
+                    .HasForeignKey(_ => _.LangId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         });
     }
