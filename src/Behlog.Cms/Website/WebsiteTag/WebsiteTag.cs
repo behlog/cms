@@ -9,6 +9,8 @@
 		public Guid WebsiteId { get; protected set; }
 		public Guid TagId { get; protected set; }
 		public Guid LangId { get; protected set; }
+		public Guid ContentTypeId { get; protected set; }
+		public Guid ContentId { get; protected set; }
 		public string TagTitle { get; protected set; }
 		public string TagSlug { get; protected set; }
 
