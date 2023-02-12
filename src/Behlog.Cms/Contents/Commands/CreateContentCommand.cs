@@ -22,7 +22,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         string body, ContentBodyTypeEnum bodyType, 
         string summary, string altTitle, int orderNum, 
         IEnumerable<Guid> categories, IEnumerable<MetaCommand> meta,
-        IEnumerable<ContentFileCommand> files)
+        IEnumerable<ContentFileCommand> files, IEnumerable<ContentTagCommand>? tags)
     {
         WebsiteId = websiteId;
         Title = title;
@@ -37,6 +37,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         Categories = categories?.ToList();
         Meta = meta?.ToList();
         Files = files?.ToList();
+        Tags = tags?.ToList();
     }
     
     public Guid WebsiteId { get; }
@@ -59,6 +60,8 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public IReadOnlyCollection<MetaCommand>? Meta { get; set; }
     
     public IReadOnlyCollection<ContentFileCommand>? Files { get; set; }
+    
+    public IReadOnlyCollection<ContentTagCommand>? Tags { get; set; } 
 
     public CreateContentCommand WithTitle(string title)
     {
@@ -89,4 +92,30 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         PublishDate = publishDate;
         return this;
     }
+
+    public CreateContentCommand WithCategories(IReadOnlyCollection<Guid> categories)
+    {
+        Categories = categories;
+        return this;
+    }
+
+    public CreateContentCommand WithMeta(IReadOnlyCollection<MetaCommand> meta)
+    {
+        Meta = meta;
+        return this;
+    }
+
+    public CreateContentCommand WithFiles(IReadOnlyCollection<ContentFileCommand> files)
+    {
+        Files = files;
+        return this;
+    }
+
+    public CreateContentCommand WithTags(IReadOnlyCollection<ContentTagCommand> tags)
+    {
+        Tags = tags;
+        return this;
+    }
+    
+    
 }
