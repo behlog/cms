@@ -20,7 +20,7 @@ public static partial class EntityConfigurations
             content.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false);
             content.Property(_ => _.AuthorUserId).HasMaxLength(100).IsRequired();
             content.Property(_ => _.Summary).HasMaxLength(2000).IsUnicode().IsRequired(false);
-            content.Property(_ => _.BodyType).HasDefaultValue(ContentBodyTypeEnum.HTML);
+            content.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML);
             content.Property(_ => _.Status).HasDefaultValue(ContentStatusEnum.Draft);
             content.Property(_ => _.AltTitle).HasMaxLength(1000).IsUnicode().IsRequired(false);
             content.Property(_ => _.Password).HasMaxLength(100).IsUnicode().IsRequired(false);

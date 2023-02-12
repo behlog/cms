@@ -23,7 +23,7 @@ public static partial class EntityConfigurations
             comment.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
             comment.Property(_ => _.CreatedByIp).HasMaxLength(50).IsRequired(false);
             comment.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsRequired(false);
-            comment.Property(_ => _.BodyType).HasDefaultValue(ContentBodyTypeEnum.HTML);
+            comment.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML);
             comment.Property(_ => _.Status).HasDefaultValue(CommentStatusEnum.Created);
 
             comment.HasOne(_ => _.Content)

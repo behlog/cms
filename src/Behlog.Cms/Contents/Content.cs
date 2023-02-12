@@ -16,7 +16,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public string? Body { get; protected set; }
     public Guid LangId { get; protected set; }
     public string? LangCode { get; protected set; }
-    public ContentBodyTypeEnum BodyType { get; protected set; }
+    public ContentBodyType BodyType { get; protected set; }
     public string AuthorUserId { get; protected set; }
     public string? Summary { get; protected set; }
     public ContentStatusEnum Status { get; protected set; }

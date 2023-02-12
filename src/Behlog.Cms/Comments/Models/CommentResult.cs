@@ -7,7 +7,7 @@ public class CommentResult
     public Guid Id { get; set; }   
     public string Title { get; set; }
     public string Body { get; set; }
-    public ContentBodyTypeEnum BodyType { get; set; }
+    public ContentBodyType BodyType { get; set; }
     public string Email { get; set; }
     public string WebUrl { get; set; }
     public string AuthorUserId { get; set; }

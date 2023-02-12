@@ -1,6 +1,6 @@
 namespace Behlog.Cms.Domain;
 
-public enum ContentBodyTypeEnum
+public enum ContentBodyType
 {
     Text = 0,
     HTML = 1,

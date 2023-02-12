@@ -10,7 +10,7 @@ public class ContentResult
 
     public ContentResult(
         Guid id, string title, string slug, Guid contentTypeId, Guid langId, string body,
-        ContentBodyTypeEnum bodyType, string authorUserId, string summary, ContentStatusEnum status, string altTitle,
+        ContentBodyType bodyType, string authorUserId, string summary, ContentStatusEnum status, string altTitle,
         int orderNum, DateTime? lastStatusChangedDate, DateTime? publishDate, string? coverPhoto, string? iconName, 
         string? viewPath, DateTime createdDate, DateTime? lastUpdated, string? createdByUserId, string? lastUpdatedByUserId,
         string? createdByIp, string? lastUpdatedByIp)
@@ -135,7 +135,7 @@ public class ContentResult
     public string? LangTitle { get; set; }
     public string? LangCode { get; set; }
     public string Body { get; set; }
-    public ContentBodyTypeEnum BodyType { get; set; }
+    public ContentBodyType BodyType { get; set; }
     public string AuthorUserId { get; set; }
     public string? AuthorUserName { get; set; }
     public string? AuthorUserDisplayName { get; set; }

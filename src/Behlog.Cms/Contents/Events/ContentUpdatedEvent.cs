@@ -12,7 +12,7 @@ public class ContentUpdatedEvent : BehlogDomainEvent
         string slug,
         Guid contentTypeId,
         string body,
-        ContentBodyTypeEnum bodyType,
+        ContentBodyType bodyType,
         string authorUserId,
         string summary,
         ContentStatusEnum status,
@@ -43,7 +43,7 @@ public class ContentUpdatedEvent : BehlogDomainEvent
     public string Slug { get; }
     public Guid ContentTypeId { get; }
     public string Body { get; }
-    public ContentBodyTypeEnum BodyType { get; }
+    public ContentBodyType BodyType { get; }
     public string AuthorUserId { get; }
     public string Summary { get; }
     public ContentStatusEnum Status { get; }

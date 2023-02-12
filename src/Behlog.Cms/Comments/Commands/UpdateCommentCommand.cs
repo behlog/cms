@@ -5,7 +5,7 @@ public class UpdateCommentCommand : IBehlogCommand<CommandResult>
 {
     public UpdateCommentCommand(
         Guid id, string title, string body, 
-        ContentBodyTypeEnum bodyType, string email, 
+        ContentBodyType bodyType, string email, 
         string webUrl)
     {
         Id = id;
@@ -19,7 +19,7 @@ public class UpdateCommentCommand : IBehlogCommand<CommandResult>
     public Guid Id { get; }
     public string Title { get; }
     public string Body { get; }
-    public ContentBodyTypeEnum BodyType { get; }
+    public ContentBodyType BodyType { get; }
     public string Email { get; }
     public string WebUrl { get; }
 }

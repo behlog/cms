@@ -20,7 +20,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public string Title { get; set; }
     public string Slug { get; set; }
     public string Body { get; set; }
-    public ContentBodyTypeEnum BodyType { get; set; }
+    public ContentBodyType BodyType { get; set; }
     public bool IsDraft { get; set; }
     public Guid ContentTypeId { get; set; }
     public Guid LangId { get; set; }
@@ -66,7 +66,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         return this;
     }
 
-    public UpdateContentCommand WithBodyType(ContentBodyTypeEnum bodyType)
+    public UpdateContentCommand WithBodyType(ContentBodyType bodyType)
     {
         BodyType = bodyType;
         return this;

@@ -7,7 +7,7 @@ public class CommentUpdatedEvent : BehlogDomainEvent
 {
 
     public CommentUpdatedEvent(
-        Guid id, string? title, string body, ContentBodyTypeEnum bodyType, string? email, 
+        Guid id, string? title, string body, ContentBodyType bodyType, string? email, 
         string? webUrl, string? authorUserId, string authorName, string? createdByUserId, 
         string? lastUpdatedByUserId, string? createdByIp, string? lastUpdatedByIp, 
         DateTime createdDate, DateTime? lastUpdated)
@@ -31,7 +31,7 @@ public class CommentUpdatedEvent : BehlogDomainEvent
     public Guid Id { get; set; }   
     public string? Title { get; set; }
     public string Body { get; set; }
-    public ContentBodyTypeEnum BodyType { get; set; }
+    public ContentBodyType BodyType { get; set; }
     public string? Email { get; set; }
     public string? WebUrl { get; set; }
     public string? AuthorUserId { get; set; }
