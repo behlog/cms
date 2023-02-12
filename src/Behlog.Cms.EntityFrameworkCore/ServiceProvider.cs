@@ -54,6 +54,7 @@ public static class ServiceProvider
         services.AddScoped<ITagWriteStore, TagWriteStore>();
         services.AddScoped<IWebsiteWriteStore, WebsiteWriteStore>();
         services.AddScoped<IComponentWriteStore, ComponentWriteStore>();
+        services.AddScoped<IWebsiteTagWriteStore, WebsiteTagWriteStore>();
         
         return services;
     }

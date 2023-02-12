@@ -33,6 +33,11 @@ public static partial class EntityConfigurations
             tag.Property(_ => _.TagTitle).HasMaxLength(1000).IsUnicode().IsRequired();
             tag.Property(_ => _.TagSlug).HasMaxLength(1000).IsUnicode().IsRequired();
 
+            tag.HasIndex(_ => new
+            {
+                _.TagId, _.ContentTypeId
+            }).IsUnique();
+            
             tag.HasOne(_ => _.ContentType)
                 .WithMany()
                 .HasForeignKey(_ => _.ContentTypeId)
