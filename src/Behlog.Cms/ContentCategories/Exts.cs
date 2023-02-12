@@ -26,7 +26,7 @@ internal static class ContentCategoryExtensions
 
 
 
-    public static ICollection<ContentCategoryItem> Convert(
+    public static ICollection<ContentCategoryItem> GetContentCategoryItems(
         this IReadOnlyCollection<Guid>? categories, Guid contentId)
     {
         return categories?

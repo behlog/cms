@@ -36,4 +36,10 @@ public static class ContentMappers
             meta.OwnerId, meta.Title!, meta.MetaKey, meta.MetaValue!, meta.MetaType!,
             meta.Status, meta.LangId, meta.Description!, meta.Category!, meta.OrderNum);
     }
+
+    public static ICollection<ContentTag>? GetContentTags(this IReadOnlyCollection<Guid> tags, Guid contentId)
+    {
+        return tags?.ToList()
+            .Select(tagId => new ContentTag(contentId, tagId)).ToList()!;
+    }
 }

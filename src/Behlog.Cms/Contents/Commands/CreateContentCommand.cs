@@ -22,7 +22,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         string body, ContentBodyTypeEnum bodyType, 
         string summary, string altTitle, int orderNum, 
         IEnumerable<Guid> categories, IEnumerable<MetaCommand> meta,
-        IEnumerable<ContentFileCommand> files, IEnumerable<ContentTagCommand>? tags)
+        IEnumerable<ContentFileCommand> files, IEnumerable<Guid>? tags)
     {
         WebsiteId = websiteId;
         Title = title;
@@ -61,7 +61,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     
     public IReadOnlyCollection<ContentFileCommand>? Files { get; set; }
     
-    public IReadOnlyCollection<ContentTagCommand>? Tags { get; set; } 
+    public IReadOnlyCollection<Guid>? Tags { get; set; } 
 
     public CreateContentCommand WithTitle(string title)
     {
@@ -111,7 +111,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         return this;
     }
 
-    public CreateContentCommand WithTags(IReadOnlyCollection<ContentTagCommand> tags)
+    public CreateContentCommand WithTags(IReadOnlyCollection<Guid> tags)
     {
         Tags = tags;
         return this;

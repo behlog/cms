@@ -34,6 +34,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public IReadOnlyCollection<Guid>? Categories { get; set; }
     public IReadOnlyCollection<MetaCommand>? Meta { get; set; }
     public IReadOnlyCollection<ContentFileCommand>? Files { get; set; }
+    public IReadOnlyCollection<Guid> Tags { get; set; }
 
     public UpdateContentCommand WithTitle(string title)
     {
@@ -122,6 +123,12 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public UpdateContentCommand WithMeta(IReadOnlyCollection<MetaCommand> meta)
     {
         Meta = meta?.ToList();
+        return this;
+    }
+
+    public UpdateContentCommand WithTags(IReadOnlyCollection<Guid> tags)
+    {
+        Tags = tags;
         return this;
     }
 }

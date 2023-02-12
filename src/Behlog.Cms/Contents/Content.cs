@@ -49,22 +49,22 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     
     public Language Language { get; protected set; }
     
-    public IEnumerable<ContentCategoryItem> Categories { get; protected set; } 
+    public ICollection<ContentCategoryItem> Categories { get; protected set; } 
         = new HashSet<ContentCategoryItem>();
 
-    public IEnumerable<ContentMeta> Meta { get; protected set; }
+    public ICollection<ContentMeta> Meta { get; protected set; }
         = new HashSet<ContentMeta>();
 
-    public IEnumerable<ContentFile> Files { get; protected set; } 
+    public ICollection<ContentFile> Files { get; protected set; } 
         = new HashSet<ContentFile>();
     
-    public IEnumerable<ContentLike> Likes { get; protected set; }
+    public ICollection<ContentLike> Likes { get; protected set; }
         = new HashSet<ContentLike>();
 
-    public IEnumerable<ContentComponent> Components { get; protected set; }
+    public ICollection<ContentComponent> Components { get; protected set; }
         = new HashSet<ContentComponent>();
 
-    public IEnumerable<ContentTag> Tags { get; protected set; }
+    public ICollection<ContentTag> Tags { get; protected set; }
         = new HashSet<ContentTag>();
 
     #endregion
@@ -110,9 +110,10 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         
         await GuardAgainstDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
         
-        content.Categories = command.Categories.Convert(content.Id);
+        content.Categories = command.Categories.GetContentCategoryItems(content.Id);
         content.Meta = command.Meta.Convert(content.Id);
         content.Files = command.Files.Convert(content.Id);
+        content.Tags = command.Tags.GetContentTags(content.Id);
         
         content.AddCreatedEvent();
         
@@ -141,15 +142,14 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         Summary = command.Summary?.CorrectYeKe()!;
         AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         OrderNum = command.OrderNum;
-        Categories = command.Categories.Convert(Id);
+        Categories = command.Categories.GetContentCategoryItems(Id);
         LastUpdated = dateTime.UtcNow;
         LastUpdatedByUserId = userContext.UserId;
         IconName = command.IconName;
         Password = command.Password;
-
-        Categories = command.Categories.Convert(Id);
         Meta = command.Meta.Convert(Id);
         Files = command.Files.Convert(Id);
+        Tags = command.Tags.GetContentTags(Id);
 
         if (command.IsDraft)
         {
