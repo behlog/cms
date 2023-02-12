@@ -42,15 +42,6 @@ public static partial class EntityConfigurations
                 m.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
             });
 
-            // web.OwnsMany(_ => _.Tags, tag => {
-            //     tag.ToTable(WebsiteTagTableName).HasKey(_=> new {
-            //         _.WebsiteId, _.TagId
-            //     });
-            //     tag.Property(_ => _.TagTitle).HasMaxLength(1000).IsUnicode().IsRequired();
-            //     tag.Property(_ => _.TagSlug).HasMaxLength(1000).IsUnicode().IsRequired();
-            //     tag.WithOwner(_ => _.Website).HasForeignKey(_ => _.WebsiteId);
-            // });
-
             builder.Entity<WebsiteTag>(tag =>
             {
                 tag.ToTable(WebsiteTagTableName).HasKey(_ => _.Id);

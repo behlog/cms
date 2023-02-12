@@ -44,4 +44,6 @@ public static partial class EntityConfigurations
     public const string ContentComponentTableName = nameof(ContentComponent);
 
     public const string WebsiteTagTableName = nameof(WebsiteTag);
+
+    public const string ContentTypeTagTableName = nameof(ContentTypeTag);
 }
