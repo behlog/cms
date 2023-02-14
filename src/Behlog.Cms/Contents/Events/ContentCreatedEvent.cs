@@ -52,4 +52,5 @@ public class ContentCreatedEvent : BehlogDomainEvent
     public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
     public IReadOnlyCollection<ContentFile> Files { get; }
     public IReadOnlyCollection<ContentMeta> Meta { get; }
+    public IReadOnlyCollection<>
 }

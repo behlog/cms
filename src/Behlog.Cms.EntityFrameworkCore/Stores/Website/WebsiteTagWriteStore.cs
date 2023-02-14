@@ -10,11 +10,10 @@ public class WebsiteTagWriteStore : IWebsiteTagWriteStore
     private readonly IBehlogEntityFrameworkDbContext _db;
     private readonly DbSet<WebsiteTag> _set;
 
-    public WebsiteTagWriteStore(
-        IBehlogEntityFrameworkDbContext db, DbSet<WebsiteTag> set)
+    public WebsiteTagWriteStore(IBehlogEntityFrameworkDbContext db)
     {
         _db = db ?? throw new ArgumentNullException(nameof(db));
-        _set = set ?? throw new ArgumentNullException(nameof(set));
+        _set = db.Set<WebsiteTag>();
     }
 
     public async Task AddAsync(

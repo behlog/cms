@@ -35,7 +35,8 @@ public static class ServiceProvider
         services.AddScoped<ITagReadStore, TagReadStore>();
         services.AddScoped<IWebsiteReadStore, WebsiteReadStore>();
         services.AddScoped<IComponentReadStore, ComponentReadStore>();
-        
+        services.AddScoped<IWebsiteTagReadStore, WebsiteTagReadStore>();
+
         return services;
     }
 

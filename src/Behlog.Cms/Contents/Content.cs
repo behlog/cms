@@ -44,7 +44,6 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
 
     #endregion
     
-
     #region Navigations
 
     public ContentType ContentType { get; protected set; }
