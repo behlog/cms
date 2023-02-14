@@ -248,7 +248,10 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             orderNum: OrderNum,
             categories: Categories?.Select(_=> _.CategoryId).ToList()!,
             meta: Meta?.ToList()!,
-            files: Files?.ToList()!
+            files: Files?.ToList()!,
+            tags: Tags != null && Tags.Any() 
+                    ? Tags.GetTagEventData(WebsiteId, ContentTypeId, LangId).ToList() 
+                    : new List<ContentTagEventData>()
         );
 
         Enqueue(e);
@@ -270,7 +273,10 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             orderNum: OrderNum,
             categories: Categories?.Select(_=> _.CategoryId).ToList()!,
             meta: Meta?.ToList()!,
-            files: Files?.ToList()!
+            files: Files?.ToList()!,
+            tags: Tags != null && Tags.Any() 
+                    ? Tags.GetTagEventData(WebsiteId, ContentTypeId, LangId).ToList() 
+                    : new List<ContentTagEventData>()
         );
 
         Enqueue(e);

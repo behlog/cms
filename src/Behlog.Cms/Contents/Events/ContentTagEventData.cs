@@ -4,8 +4,7 @@ public class ContentTagEventData : BehlogDomainEvent
 {
 
 	public ContentTagEventData(
-		Guid contentId, Guid websiteId, Guid contentTypeId,
-		Guid tagId, Guid langId, string tagTitle, string tagSlug) {
+		Guid contentId, Guid websiteId, Guid contentTypeId,Guid tagId, Guid langId) {
 		
 		contentId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Content)));
 		ContentId = contentId;
@@ -21,12 +20,6 @@ public class ContentTagEventData : BehlogDomainEvent
 
 		langId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Language)));
 		LangId = langId;
-
-		if (tagTitle.IsNullOrEmpty()) throw new ArgumentNullException(nameof(tagTitle));
-		TagTitle = tagTitle;
-
-		if (tagSlug.IsNullOrEmpty()) throw new ArgumentNullException(nameof(tagSlug));
-		TagSlug = tagSlug;
 	}
 
 	public Guid ContentId { get; }
@@ -34,6 +27,4 @@ public class ContentTagEventData : BehlogDomainEvent
 	public Guid ContentTypeId { get; }
 	public Guid TagId { get; }
 	public Guid LangId { get; }
-	public string TagTitle { get; }
-	public string TagSlug { get; }
 }

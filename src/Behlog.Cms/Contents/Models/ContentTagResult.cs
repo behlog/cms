@@ -17,11 +17,15 @@ public class ContentTagResult
 
         Title = tag.Title;
         Slug = tag.Slug;
+        LangId = tag.LangId;
+
         return this;
     }
     
     public Guid ContentId { get; }
     public Guid TagId { get; }
+
+    public Guid LangId { get; private set; }
     
     public string? Title { get; private set; }
     public string? Slug { get; private set; }

@@ -20,7 +20,8 @@ public class ContentCreatedEvent : BehlogDomainEvent
         int orderNum,
         IReadOnlyCollection<Guid> categories,
         IReadOnlyCollection<ContentMeta> meta,
-        IReadOnlyCollection<ContentFile> files)
+        IReadOnlyCollection<ContentFile> files,
+        IReadOnlyCollection<ContentTagEventData> tags)
     {
         Id = id;
         Title = title;
@@ -36,6 +37,7 @@ public class ContentCreatedEvent : BehlogDomainEvent
         Categories = categories;
         Meta = meta;
         Files = files;
+        Tags = tags;
     }
 
     public Guid Id { get; }
@@ -52,5 +54,5 @@ public class ContentCreatedEvent : BehlogDomainEvent
     public IReadOnlyCollection<Guid> Categories { get; } = new List<Guid>();
     public IReadOnlyCollection<ContentFile> Files { get; }
     public IReadOnlyCollection<ContentMeta> Meta { get; }
-    public IReadOnlyCollection<>
+    public IReadOnlyCollection<ContentTagEventData> Tags { get; }
 }

@@ -37,9 +37,22 @@ public static class ContentMappers
             meta.Status, meta.LangId, meta.Description!, meta.Category!, meta.OrderNum);
     }
 
-    public static ICollection<ContentTag>? GetContentTags(this IReadOnlyCollection<Guid> tags, Guid contentId)
+    public static ICollection<ContentTag>? GetContentTags(this IReadOnlyCollection<Guid>? tags, Guid contentId)
     {
         return tags?.ToList()
             .Select(tagId => new ContentTag(contentId, tagId)).ToList()!;
+    }
+
+    public static ICollection<ContentTagEventData> GetTagEventData(
+        this ICollection<ContentTag> tags, Guid websiteId, Guid contentTypeId, Guid langId) {
+
+        var result = new List<ContentTagEventData>();
+
+        foreach(var tag in tags) {
+            result.Add(new ContentTagEventData(
+                tag.ContentId, websiteId, contentTypeId, tag.TagId, langId));
+        }
+
+        return result;
     }
 }
