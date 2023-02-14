@@ -50,7 +50,7 @@ public static partial class EntityConfigurations
 
                 tag.HasIndex(_ => new
                 {
-                    _.TagId, _.WebsiteId
+                    _.TagId, _.WebsiteId, _.ContentId
                 }).IsUnique();
                 
                 tag.HasOne(_ => _.Website)
@@ -66,6 +66,16 @@ public static partial class EntityConfigurations
                 tag.HasOne(_ => _.Language)
                     .WithMany()
                     .HasForeignKey(_ => _.LangId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                tag.HasOne(_ => _.Content)
+                    .WithMany()
+                    .HasForeignKey(_ => _.ContentId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                tag.HasOne(_ => _.ContentType)
+                    .WithMany()
+                    .HasForeignKey(_ => _.ContentTypeId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
         });
