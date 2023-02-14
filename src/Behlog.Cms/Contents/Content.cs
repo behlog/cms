@@ -238,7 +238,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             id: Id,
             title: Title,
             slug: Slug,
+            websiteId: WebsiteId,
             contetTypeId: ContentTypeId,
+            langId: LangId,
             body: Body,
             bodyType: BodyType,
             authorUserId: AuthorUserId,
@@ -263,7 +265,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             id: Id,
             title: Title,
             slug: Slug,
+            websiteId: WebsiteId,
             contentTypeId: ContentTypeId,
+            langId: LangId,
             body: Body,
             bodyType: BodyType,
             authorUserId: AuthorUserId,
@@ -271,11 +275,11 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             status: Status,
             altTitle: AltTitle,
             orderNum: OrderNum,
-            categories: Categories?.Select(_=> _.CategoryId).ToList()!,
+            categories: Categories?.Select(_ => _.CategoryId).ToList()!,
             meta: Meta?.ToList()!,
             files: Files?.ToList()!,
-            tags: Tags != null && Tags.Any() 
-                    ? Tags.GetTagEventData(WebsiteId, ContentTypeId, LangId).ToList() 
+            tags: Tags != null && Tags.Any()
+                    ? Tags.GetTagEventData(WebsiteId, ContentTypeId, LangId).ToList()
                     : new List<ContentTagEventData>()
         );
 

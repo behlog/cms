@@ -39,4 +39,12 @@ public class WebsiteTagWriteStore : IWebsiteTagWriteStore
         _set.Remove(websiteTag);
         await _db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
+
+	public void MarkForAdd(WebsiteTag websiteTag) {
+        _set.Add(websiteTag);
+	}
+
+	public async Task SaveChangesAsync(CancellationToken cancellationToken = default) {
+        await _db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+	}
 }

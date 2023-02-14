@@ -10,7 +10,9 @@ public class ContentCreatedEvent : BehlogDomainEvent
         Guid id,
         string title,
         string slug,
+        Guid websiteId,
         Guid contetTypeId,
+        Guid langId,
         string body,
         ContentBodyType bodyType,
         string authorUserId,
@@ -27,6 +29,8 @@ public class ContentCreatedEvent : BehlogDomainEvent
         Title = title;
         Slug = slug;
         ContentTypeId = contetTypeId;
+        WebsiteId = websiteId;
+        LangId = langId;
         Body = body;
         BodyType = bodyType;
         AuthorUserId = authorUserId;
@@ -44,7 +48,9 @@ public class ContentCreatedEvent : BehlogDomainEvent
     public string Title { get; }
     public string Slug { get; }
     public Guid ContentTypeId { get; }
-    public string Body { get; }
+	public Guid WebsiteId { get; }
+    public Guid LangId { get; }
+	public string Body { get; }
     public ContentBodyType BodyType { get; }
     public string AuthorUserId { get; }
     public string Summary { get; }

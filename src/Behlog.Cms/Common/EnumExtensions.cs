@@ -1,6 +1,4 @@
-﻿using Behlog.Cms.Domain;
-
-namespace Behlog.Cms.Extensions;
+﻿namespace Behlog.Cms.Extensions;
 
 public static class EnumExtensions {
 

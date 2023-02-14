@@ -1,6 +1,3 @@
-using Behlog.Cms.Domain;
-using Behlog.Core.Domain;
-
 namespace Behlog.Cms.Events;
 
 public class ContentUpdatedEvent : BehlogDomainEvent
@@ -10,7 +7,9 @@ public class ContentUpdatedEvent : BehlogDomainEvent
         Guid id,
         string title,
         string slug,
+        Guid websiteId,
         Guid contentTypeId,
+        Guid langId,
         string body,
         ContentBodyType bodyType,
         string authorUserId,
@@ -26,7 +25,9 @@ public class ContentUpdatedEvent : BehlogDomainEvent
         Id = id;
         Title = title;
         Slug = slug;
+        WebsiteId = websiteId;
         ContentTypeId = contentTypeId;
+        LangId = langId;
         Body = body;
         BodyType = bodyType;
         AuthorUserId = authorUserId;
@@ -44,7 +45,9 @@ public class ContentUpdatedEvent : BehlogDomainEvent
     public string Title { get; }
     public string Slug { get; }
     public Guid ContentTypeId { get; }
-    public string Body { get; }
+	public Guid WebsiteId { get; }
+	public Guid LangId { get; }
+	public string Body { get; }
     public ContentBodyType BodyType { get; }
     public string AuthorUserId { get; }
     public string Summary { get; }
