@@ -1,8 +1,3 @@
-using Behlog.Core;
-using Behlog.Cms.Domain;
-using Behlog.Cms.Models;
-using Behlog.Core.Models;
-
 namespace Behlog.Cms.Commands;
 
 
@@ -44,6 +39,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public string Title { get; set; }
     public string Slug { get; set; }
     public Guid ContentTypeId { get; }
+    public string ContentTypeName { get; set; }
     public string Body { get; set; }
     public ContentBodyType BodyType { get; set; }
     public string Summary { get; set; }
@@ -54,6 +50,7 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public string? IconName { get; set; }
     public string? ViewPath { get; set; }
     public DateTime? PublishDate { get; set; }
+    public IFormFile? CoverPhotoFile { get; set; }
 
     public IReadOnlyCollection<Guid>? Categories { get; set; }
     
@@ -66,6 +63,12 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     public CreateContentCommand WithTitle(string title)
     {
         Title = title;
+        return this;
+    }
+
+    public CreateContentCommand WithContentTypeName(string contentTypeName)
+    {
+        ContentTypeName = contentTypeName;
         return this;
     }
 
@@ -116,6 +119,10 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         Tags = tags;
         return this;
     }
-    
-    
+
+    public CreateContentCommand WithCoverPhotoFile(IFormFile coverPhotoFile)
+    {
+        CoverPhotoFile = coverPhotoFile;
+        return this;
+    }
 }

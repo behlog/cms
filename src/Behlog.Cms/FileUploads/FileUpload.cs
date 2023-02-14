@@ -1,14 +1,7 @@
-using Behlog.Cms.Commands;
-using Behlog.Cms.Events;
 using Behlog.Cms.FileUploads.Internal;
-using Behlog.Core;
-using Behlog.Core.Contracts;
-using Behlog.Core.Domain;
-using Behlog.Core.Models;
-using Behlog.Extensions;
-using Idyfa.Core.Contracts;
 
 namespace Behlog.Cms.Domain;
+
 
 public class FileUpload : AggregateRoot<Guid>, IHasMetadata
 {

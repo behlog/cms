@@ -6,6 +6,7 @@ using Behlog.Core.Models;
 using Behlog.Cms.Commands;
 using Idyfa.Core.Contracts;
 using Behlog.Cms.Contracts;
+using Behlog.Cms.FileUploads.Internal;
 using Behlog.Core.Contracts;
 using Behlog.Cms.Validations;
 
@@ -26,12 +27,12 @@ public class ContentCommandHandlers :
     private readonly IContentService _service;
     private readonly ISystemDateTime _dateTime;
     private readonly Behlogger<ContentCommandHandlers> _behlogger;
-
+    private readonly FileUploader _fileUploader;
     
     public ContentCommandHandlers(
         ILogger<ContentCommandHandlers> logger, IIdyfaUserContext userContext, IContentReadStore readStore, 
         IContentWriteStore writeStore, IBehlogApplicationContext appContext, IContentService contentService, 
-        ISystemDateTime dateTime)
+        ISystemDateTime dateTime, IWebHostEnvironment env, BehlogOptions options)
     {
         _service = contentService ?? throw new ArgumentNullException(nameof(contentService));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
@@ -40,6 +41,9 @@ public class ContentCommandHandlers :
         _writeStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
         _behlogger = new Behlogger<ContentCommandHandlers>(logger, dateTime);
+        env.ThrowExceptionIfArgumentIsNull(nameof(IWebHostEnvironment));
+        options.ThrowExceptionIfArgumentIsNull(nameof(BehlogOptions));
+        _fileUploader = new FileUploader(options, env);
     }
 
     
@@ -55,7 +59,8 @@ public class ContentCommandHandlers :
         try
         {
             var content = await Content.CreateAsync(
-                command, _service, _userContext, _appContext, _dateTime);
+                command, _service, _userContext, _appContext, _dateTime, _fileUploader);
+            
             await _writeStore.AddAsync(content, cancellationToken).ConfigureAwait(false);
             
             return await Task.FromResult(
@@ -85,7 +90,7 @@ public class ContentCommandHandlers :
             content.ThrowExceptionIfReferenceIsNull(nameof(content));
 
             await content.UpdateAsync(
-                command, _service, _userContext, _dateTime, _appContext);
+                command, _service, _userContext, _dateTime, _appContext, _fileUploader);
         
             await _writeStore.UpdateAsync(content, cancellationToken).ConfigureAwait(false);
         }

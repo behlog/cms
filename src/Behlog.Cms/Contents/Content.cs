@@ -1,3 +1,5 @@
+using Behlog.Cms.FileUploads.Internal;
+
 namespace Behlog.Cms.Domain;
 
 
@@ -75,14 +77,15 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public static async Task<Content> CreateAsync(
         CreateContentCommand command, IContentService service,
         IIdyfaUserContext userContext, IBehlogApplicationContext appContext,
-        ISystemDateTime dateTime)
+        ISystemDateTime dateTime, FileUploader fileUploader)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         service.ThrowExceptionIfArgumentIsNull(nameof(service));
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
-        
+        fileUploader.ThrowExceptionIfArgumentIsNull(nameof(fileUploader));
+
         var content = new Content
         {
             Id = Guid.NewGuid(),
@@ -107,6 +110,11 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             LangCode = BehlogSupportedLanguages.GetCodeById(command.LangId),
             PublishDate = command.PublishDate,
         };
+
+        content.CoverPhoto = await content.UploadCoverPhoto(
+            fileUploader, 
+            command.CoverPhotoFile, 
+            command.ContentTypeName);
         
         await GuardAgainstDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
         
@@ -123,7 +131,7 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public async Task UpdateAsync(
         UpdateContentCommand command, IContentService service,
         IIdyfaUserContext userContext, ISystemDateTime dateTime, 
-        IBehlogApplicationContext appContext)
+        IBehlogApplicationContext appContext, FileUploader fileUploader)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         service.ThrowExceptionIfArgumentIsNull(nameof(service));
@@ -151,6 +159,12 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         Files = command.Files.Convert(Id);
         Tags = command.Tags.GetContentTags(Id);
 
+        if (command.CoverPhotoFile.IsNotNullOrEmpty())
+        {
+            CoverPhoto = await UploadCoverPhoto(
+                fileUploader, command.CoverPhotoFile, command.ContentTypeName);
+        }
+        
         if (command.IsDraft)
         {
             Status = ContentStatusEnum.Draft;
@@ -267,6 +281,26 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     {
         var e = new ContentRemovedEvent(Id);
         Enqueue(e);
+    }
+
+    #endregion
+
+
+    #region helpers
+
+    private async Task<string> UploadCoverPhoto(
+        FileUploader fileUploader, IFormFile? coverPhotoFile, string contentType)
+    {
+        if(coverPhotoFile.IsNullOrEmpty()) return null;
+
+        var uploadResult = await fileUploader.UploadAsync(
+            coverPhotoFile, contentType, FileTypeEnum.Image).ConfigureAwait(false);
+        if (uploadResult.HasError)
+        {
+            throw new BehlogFileUploadException(uploadResult.ErrorMessage);
+        }
+
+        return uploadResult.FilePath;
     }
 
     #endregion

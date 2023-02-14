@@ -23,6 +23,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public ContentBodyType BodyType { get; set; }
     public bool IsDraft { get; set; }
     public Guid ContentTypeId { get; set; }
+    public string ContentTypeName { get; set; }
     public Guid LangId { get; set; }
     public string? Summary { get; set; }
     public string? AltTitle { get; set; }
@@ -31,6 +32,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public string? IconName { get; set; }
     public string? ViewPath { get; set; }
     public DateTime? PublishDate { get; set; }
+    public IFormFile? CoverPhotoFile { get; set; }
     public IReadOnlyCollection<Guid>? Categories { get; set; }
     public IReadOnlyCollection<MetaCommand>? Meta { get; set; }
     public IReadOnlyCollection<ContentFileCommand>? Files { get; set; }
@@ -129,6 +131,18 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
     public UpdateContentCommand WithTags(IReadOnlyCollection<Guid> tags)
     {
         Tags = tags;
+        return this;
+    }
+
+    public UpdateContentCommand WithCoverPhotoFile(IFormFile coverPhotoFile)
+    {
+        CoverPhotoFile = coverPhotoFile;
+        return this;
+    }
+
+    public UpdateContentCommand WithContentTypeName(string contentTypeName)
+    {
+        ContentTypeName = contentTypeName;
         return this;
     }
 }

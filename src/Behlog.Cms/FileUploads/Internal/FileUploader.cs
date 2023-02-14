@@ -1,12 +1,9 @@
-using Behlog.Cms.Domain;
-using Behlog.Core.Models;
-using Behlog.Extensions;
 using Behlog.Cms.Extensions;
 
 namespace Behlog.Cms.FileUploads.Internal;
 
 
-internal class FileUploader
+public class FileUploader
 {
     private readonly BehlogOptions _options;
     private readonly IWebHostEnvironment _env;
