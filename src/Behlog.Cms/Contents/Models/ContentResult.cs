@@ -1,8 +1,8 @@
-using Behlog.Cms.Domain;
-
 namespace Behlog.Cms.Models;
 
-
+/// <summary>
+/// Represents <see cref="Content"/> and it's related data.
+/// </summary>
 public class ContentResult
 {
 
@@ -51,13 +51,24 @@ public class ContentResult
     
     public ContentResult WithFiles(IReadOnlyCollection<ContentFileResult> files)
     {
+        if (files is null || !files.Any())
+        {
+            files = new List<ContentFileResult>();
+        }
+        
         Files = files;
         return this;
     }
 
-    public ContentResult WithFiles(IReadOnlyCollection<ContentFile> files)
+    public ContentResult WithFiles(IReadOnlyCollection<ContentFile>? files)
     {
         var result = new List<ContentFileResult>();
+        if (files is null || !files.Any())
+        {
+            Files = result;
+            return this;
+        }
+        
         foreach(var file in files)
             result.Add(new ContentFileResult(
                 file.ContentId, file.FileId, file.Title, file.FileName, file.Description)
@@ -66,14 +77,25 @@ public class ContentResult
         return this;
     }
 
-    public ContentResult WithMeta(IReadOnlyCollection<MetaResult> meta)
+    public ContentResult WithMeta(IReadOnlyCollection<MetaResult>? meta)
     {
+        if (meta is null || !meta.Any())
+        {
+            meta = new List<MetaResult>();
+        }
+        
         Meta = meta;
         return this;
     }
 
-    public ContentResult WithMeta(IReadOnlyCollection<ContentMeta> meta)
+    public ContentResult WithMeta(IReadOnlyCollection<ContentMeta>? meta)
     {
+        if (meta is null || !meta.Any())
+        {
+            Meta = new List<MetaResult>();
+            return this;
+        }
+        
         var result = new List<MetaResult>();
         foreach(var m in meta)
             result.Add(m.ToResult());
@@ -92,9 +114,13 @@ public class ContentResult
     }
 
     public ContentResult WithCategories(
-        IReadOnlyCollection<ContentCategoryItem> categoryItems)
+        IReadOnlyCollection<ContentCategoryItem>? categoryItems)
     {
-        if (categoryItems is null) return this;
+        if (categoryItems is null || !categoryItems.Any())
+        {
+            Categories = new List<ContentCategoryItemResult>();
+            return this;
+        }
 
         var result = new List<ContentCategoryItemResult>();
         foreach(var cat in categoryItems) 
@@ -110,8 +136,14 @@ public class ContentResult
         return this;
     }
 
-    public ContentResult WithTags(IReadOnlyCollection<ContentTag> tags)
+    public ContentResult WithTags(IReadOnlyCollection<ContentTag>? tags)
     {
+        if (tags is null || !tags.Any())
+        {
+            Tags = new List<ContentTagResult>();
+            return this;
+        }
+        
         var result = new List<ContentTagResult>();
         foreach(var tag in tags)
             result.Add(new ContentTagResult(tag.ContentId, tag.TagId).WithTag(tag.Tag));
