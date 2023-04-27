@@ -163,6 +163,11 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         Files = command.Files.Convert(Id);
         Tags = command.Tags.GetContentTags(Id);
 
+        if (Slug.IsNullOrEmpty())
+        {
+            Slug = Title.MakeSlug();
+        }
+
         if (command.CoverPhotoFile.IsNotNullOrEmpty())
         {
             CoverPhoto = await UploadCoverPhoto(
