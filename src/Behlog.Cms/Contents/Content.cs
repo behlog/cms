@@ -110,6 +110,11 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             PublishDate = command.PublishDate,
         };
 
+        if (content.Slug.IsNullOrEmpty())
+        {
+            content.Slug = content.Title.MakeSlug();
+        }
+
         content.CoverPhoto = await content.UploadCoverPhoto(
             fileUploader, 
             command.CoverPhotoFile, 

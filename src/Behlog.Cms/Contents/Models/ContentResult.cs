@@ -5,7 +5,7 @@ namespace Behlog.Cms.Models;
 /// </summary>
 public class ContentResult
 {
-
+ 
     public ContentResult() { }
 
     public ContentResult(
