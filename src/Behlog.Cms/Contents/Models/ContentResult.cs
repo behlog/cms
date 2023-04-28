@@ -110,6 +110,8 @@ public class ContentResult
         
         ContentTypeSlug = contentType.Slug;
         ContentTypeTitle = contentType.Title;
+        ContentTypeName = contentType.SystemName;
+        
         return this;
     }
 
