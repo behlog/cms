@@ -18,12 +18,12 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
 
     public Guid Id { get; }
     public string Title { get; set; }
-    public string Slug { get; set; }
-    public string Body { get; set; }
+    public string? Slug { get; set; }
+    public string? Body { get; set; }
     public ContentBodyType BodyType { get; set; }
     public bool IsDraft { get; set; }
     public Guid ContentTypeId { get; set; }
-    public string ContentTypeName { get; set; }
+    public string? ContentTypeName { get; set; }
     public Guid LangId { get; set; }
     public string? Summary { get; set; }
     public string? AltTitle { get; set; }
@@ -44,25 +44,25 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         return this;
     }
 
-    public UpdateContentCommand WithAltTitle(string altTitle)
+    public UpdateContentCommand WithAltTitle(string? altTitle)
     {
         AltTitle = altTitle;
         return this;
     }
 
-    public UpdateContentCommand WithSlug(string slug)
+    public UpdateContentCommand WithSlug(string? slug)
     {
         Slug = slug;
         return this;
     }
 
-    public UpdateContentCommand WithSummary(string summary)
+    public UpdateContentCommand WithSummary(string? summary)
     {
         Summary = summary;
         return this;
     }
 
-    public UpdateContentCommand WithBody(string body)
+    public UpdateContentCommand WithBody(string? body)
     {
         Body = body;
         return this;
@@ -92,19 +92,19 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         return this;
     }
 
-    public UpdateContentCommand WithPassword(string password)
+    public UpdateContentCommand WithPassword(string? password)
     {
         Password = password;
         return this;
     }
 
-    public UpdateContentCommand WithIconName(string iconName)
+    public UpdateContentCommand WithIconName(string? iconName)
     {
         IconName = iconName;
         return this;
     }
 
-    public UpdateContentCommand WithViewPath(string viewPath)
+    public UpdateContentCommand WithViewPath(string? viewPath)
     {
         ViewPath = viewPath;
         return this;
@@ -116,33 +116,35 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         return this;
     }
 
-    public UpdateContentCommand WithFiles(IReadOnlyCollection<ContentFileCommand> files)
+    public UpdateContentCommand WithFiles(IReadOnlyCollection<ContentFileCommand>? files)
     {
         Files = files?.ToList();
         return this;
     }
 
-    public UpdateContentCommand WithMeta(IReadOnlyCollection<MetaCommand> meta)
+    public UpdateContentCommand WithMeta(IReadOnlyCollection<MetaCommand>? meta)
     {
         Meta = meta?.ToList();
         return this;
     }
 
-    public UpdateContentCommand WithTags(IReadOnlyCollection<Guid> tags)
+    public UpdateContentCommand WithTags(IReadOnlyCollection<Guid>? tags)
     {
         Tags = tags;
         return this;
     }
 
-    public UpdateContentCommand WithCoverPhotoFile(IFormFile coverPhotoFile)
+    public UpdateContentCommand WithCoverPhotoFile(IFormFile? coverPhotoFile)
     {
         CoverPhotoFile = coverPhotoFile;
         return this;
     }
 
-    public UpdateContentCommand WithContentTypeName(string contentTypeName)
+    public UpdateContentCommand WithContentTypeName(string? contentTypeName)
     {
         ContentTypeName = contentTypeName;
         return this;
     }
+
+    public UpdateContentCommand Build() => this;
 }
