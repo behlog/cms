@@ -119,6 +119,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         LastUpdatedByIp = appContext.IpAddress;
         LastUpdatedByUserId = userContext.UserId;
         LastUpdated = dateTime.UtcNow;
+        Url = command.Url;
 
         if (command.Hidden && Status != FileUploadStatus.Hidden)
         {
