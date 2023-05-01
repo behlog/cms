@@ -13,11 +13,11 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     
     public CreateContentCommand(
         Guid websiteId,
-        string title, string slug, Guid contentTypeId, Guid langId, 
-        string body, ContentBodyType bodyType, 
-        string summary, string altTitle, int orderNum, 
-        IEnumerable<Guid> categories, IEnumerable<MetaCommand> meta,
-        IEnumerable<ContentFileCommand> files, IEnumerable<Guid>? tags)
+        string title, string? slug, Guid contentTypeId, Guid langId, 
+        string? body, ContentBodyType bodyType, 
+        string? summary, string? altTitle, int orderNum, 
+        IEnumerable<Guid>? categories, IEnumerable<MetaCommand>? meta,
+        IEnumerable<ContentFileCommand>? files, IEnumerable<Guid>? tags)
     {
         WebsiteId = websiteId;
         Title = title;
@@ -37,13 +37,13 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     
     public Guid WebsiteId { get; }
     public string Title { get; set; }
-    public string Slug { get; set; }
+    public string? Slug { get; set; }
     public Guid ContentTypeId { get; }
     public string ContentTypeName { get; set; }
-    public string Body { get; set; }
+    public string? Body { get; set; }
     public ContentBodyType BodyType { get; set; }
-    public string Summary { get; set; }
-    public string AltTitle { get; set; }
+    public string? Summary { get; set; }
+    public string? AltTitle { get; set; }
     public int OrderNum { get; set; }
     public Guid LangId { get; }
     public string? Password { get; set; }
@@ -58,8 +58,11 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
     
     public IReadOnlyCollection<ContentFileCommand>? Files { get; set; }
     
-    public IReadOnlyCollection<Guid>? Tags { get; set; } 
+    public IReadOnlyCollection<Guid>? Tags { get; set; }
 
+
+    public CreateContentCommand Build => this;
+    
     public CreateContentCommand WithTitle(string title)
     {
         Title = title;
@@ -72,19 +75,19 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         return this;
     }
 
-    public CreateContentCommand WithBody(string body)
+    public CreateContentCommand WithBody(string? body)
     {
         Body = body;
         return this;
     }
     
-    public CreateContentCommand WithPassword(string password)
+    public CreateContentCommand WithPassword(string? password)
     {
         Password = password;
         return this;
     }
 
-    public CreateContentCommand WithIconName(string iconName)
+    public CreateContentCommand WithIconName(string? iconName)
     {
         IconName = iconName;
         return this;
@@ -96,31 +99,31 @@ public class CreateContentCommand : IBehlogCommand<CommandResult<ContentResult>>
         return this;
     }
 
-    public CreateContentCommand WithCategories(IReadOnlyCollection<Guid> categories)
+    public CreateContentCommand WithCategories(IReadOnlyCollection<Guid>? categories)
     {
         Categories = categories;
         return this;
     }
 
-    public CreateContentCommand WithMeta(IReadOnlyCollection<MetaCommand> meta)
+    public CreateContentCommand WithMeta(IReadOnlyCollection<MetaCommand>? meta)
     {
         Meta = meta;
         return this;
     }
 
-    public CreateContentCommand WithFiles(IReadOnlyCollection<ContentFileCommand> files)
+    public CreateContentCommand WithFiles(IReadOnlyCollection<ContentFileCommand>? files)
     {
         Files = files;
         return this;
     }
 
-    public CreateContentCommand WithTags(IReadOnlyCollection<Guid> tags)
+    public CreateContentCommand WithTags(IReadOnlyCollection<Guid>? tags)
     {
         Tags = tags;
         return this;
     }
 
-    public CreateContentCommand WithCoverPhotoFile(IFormFile coverPhotoFile)
+    public CreateContentCommand WithCoverPhotoFile(IFormFile? coverPhotoFile)
     {
         CoverPhotoFile = coverPhotoFile;
         return this;

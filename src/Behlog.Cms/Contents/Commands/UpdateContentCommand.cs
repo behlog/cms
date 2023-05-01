@@ -80,14 +80,16 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         return this;
     }
 
-    public UpdateContentCommand WillBeDraft()
+    public UpdateContentCommand AsDraft()
     {
         IsDraft = true;
+        PublishDate = null;
         return this;
     }
 
     public UpdateContentCommand WillBePublishedOn(DateTime publishDate)
     {
+        IsDraft = false;
         PublishDate = publishDate;
         return this;
     }
@@ -110,7 +112,7 @@ public class UpdateContentCommand : IBehlogCommand<CommandResult>
         return this;
     }
 
-    public UpdateContentCommand WithCategories(IReadOnlyCollection<Guid> categories)
+    public UpdateContentCommand WithCategories(IReadOnlyCollection<Guid>? categories)
     {
         Categories = categories?.ToList();
         return this;
