@@ -8,7 +8,7 @@ public class QueryFileUploadsByWebsiteId : IBehlogQuery<QueryResult<FileUploadRe
         websiteId.ThrowIfGuidIsEmpty(new BehlogInvalidEntityIdException(nameof(Website)));
         WebsiteId = websiteId;
         Options = QueryOptions.New()
-            .WillOrderBy("id").WithPageSize(1)
+            .WillOrderBy("id").WithPageNumber(1)
             .WithPageSize(10).WillOrderDesc();
     }
 
@@ -21,7 +21,7 @@ public class QueryFileUploadsByWebsiteId : IBehlogQuery<QueryResult<FileUploadRe
         if (Options is null)
         {
             Options = QueryOptions.New()
-                .WillOrderBy("id").WithPageSize(1)
+                .WillOrderBy("id").WithPageNumber(1)
                 .WithPageSize(10).WillOrderDesc();
         }
     }

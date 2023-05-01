@@ -4,8 +4,8 @@ namespace Behlog.Cms.Commands;
 public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadResult>>
 {
     public CreateFileUploadCommand(
-        IFormFile fileData, string contentType, FileTypeEnum fileType, Guid websiteId, 
-        string title, string description)
+        IFormFile fileData, string? contentType, FileTypeEnum fileType, Guid websiteId, 
+        string? title, string? description)
     {
         FileData = fileData;
         FileType = fileType;
@@ -17,7 +17,7 @@ public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadRe
 
     public CreateFileUploadCommand(
         IFormFile fileData, FileTypeEnum fileType, Guid websiteId, 
-        IFormFile alternateFileData, string title, string altTitle, string description)
+        IFormFile? alternateFileData, string? title, string? altTitle, string? description)
     {
         FileData = fileData;
         FileType = fileType;
@@ -30,12 +30,12 @@ public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadRe
 
     public IFormFile FileData { get; }
     public FileTypeEnum FileType { get; }
-    public string Title { get; }
-    public IFormFile AlternateFileData { get; }
-    public string AltTitle { get; }
-    public string Description { get; }
+    public string? Title { get; }
+    public IFormFile? AlternateFileData { get; }
+    public string? AltTitle { get; }
+    public string? Description { get; }
     public Guid WebsiteId { get; }
-    public string ContentType { get; }
+    public string? ContentType { get; }
 }
 
 
@@ -43,7 +43,7 @@ public class CreateFileWithUrlCommand : IBehlogCommand<FileUploadResult>
 {
     public CreateFileWithUrlCommand(
         string url, FileTypeEnum fileType, Guid websiteId, 
-        string title, string altTitle, string description)
+        string? title, string? altTitle, string? description)
     {
         Url = url;
         FileType = fileType;
@@ -53,10 +53,10 @@ public class CreateFileWithUrlCommand : IBehlogCommand<FileUploadResult>
         Description = description;
     }
     
-    public string Title { get; }
-    public string AltTitle { get; }
+    public string? Title { get; }
+    public string? AltTitle { get; }
     public string Url { get; }
     public FileTypeEnum FileType { get; }
     public Guid WebsiteId { get; }
-    public string Description { get; }
+    public string? Description { get; }
 }
