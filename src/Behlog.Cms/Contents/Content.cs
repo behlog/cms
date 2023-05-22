@@ -1,4 +1,5 @@
 using Behlog.Cms.FileUploads.Internal;
+using Idyfa.Core;
 
 namespace Behlog.Cms.Domain;
 
@@ -67,6 +68,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
 
     public ICollection<ContentTag> Tags { get; protected set; }
         = new HashSet<ContentTag>();
+    
+    public User AuthorUser { get; protected set; }
 
     #endregion
 
@@ -120,12 +123,12 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             command.CoverPhotoFile, 
             command.ContentTypeName);
         
-        await GuardAgainstDuplicateSlug(content.Id, command.WebsiteId, command.Slug!, service);
+        await GuardAgainstDuplicateSlug(content.Id, content.WebsiteId, content.Slug, service);
         
         content.Categories = command.Categories.GetContentCategoryItems(content.Id);
         content.Meta = command.Meta.Convert(content.Id);
         content.Files = command.Files.Convert(content.Id);
-        content.Tags = command.Tags.GetContentTags(content.Id);
+        content.Tags = command.Tags?.GetContentTags(content.Id);
         
         content.AddCreatedEvent();
         
@@ -143,8 +146,6 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         dateTime.ThrowExceptionIfArgumentIsNull(nameof(dateTime));
         appContext.ThrowExceptionIfArgumentIsNull(nameof(appContext));
 
-        await GuardAgainstDuplicateSlug(Id, WebsiteId, command.Slug, service);
-        
         Title = command.Title.Trim().CorrectYeKe();
         Slug = command.Slug?.MakeSlug().CorrectYeKe()!;
         ContentTypeId = command.ContentTypeId;
@@ -167,6 +168,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         {
             Slug = Title.MakeSlug();
         }
+        
+        await GuardAgainstDuplicateSlug(Id, WebsiteId, Slug, service);
 
         if (command.CoverPhotoFile.IsNotNullOrEmpty())
         {

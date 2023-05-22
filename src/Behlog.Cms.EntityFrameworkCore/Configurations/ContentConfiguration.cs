@@ -89,6 +89,11 @@ public static partial class EntityConfigurations
                 .WithMany()
                 .HasForeignKey(_ => _.LangId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            content.HasOne(_ => _.AuthorUser)
+                .WithMany()
+                .HasForeignKey(_ => _.AuthorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

@@ -245,6 +245,7 @@ public class ContentReadStore : BehlogEntityFrameworkCoreReadStore<Content, Guid
                 .ThenInclude(_ => _.Category)
                 .Include(_ => _.ContentType)
                 .Include(_ => _.Language)
+                .Include(_=> _.AuthorUser)
                 .SortBy(model.Options.OrderBy, model.Options.OrderDesc)
                 .Skip(model.Options.StartIndex)
                 .Take(model.Options.PageSize)

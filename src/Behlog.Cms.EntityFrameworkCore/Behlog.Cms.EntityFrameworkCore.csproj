@@ -15,6 +15,9 @@
         <Reference Include="Behlog.Core">
             <HintPath>..\..\..\core\src\bin\Debug\net6.0\Behlog.Core.dll</HintPath>
         </Reference>
+        <Reference Include="Idyfa.Core, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\..\..\..\Idyfa\src\Idyfa.Core\bin\Debug\net6.0\Idyfa.Core.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Behlog.Cms\Behlog.Cms.csproj" />
