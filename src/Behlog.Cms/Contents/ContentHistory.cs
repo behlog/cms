@@ -1,5 +1,9 @@
 namespace Behlog.Cms.Contents;
 
+/// <summary>
+/// Keep tracks of <see cref="Content"/> changes.
+/// When Content's body, summary or title changes.
+/// </summary>
 public class ContentHistory : ValueObject
 {
     private ContentHistory() { }
@@ -22,8 +26,52 @@ public class ContentHistory : ValueObject
     public string? IpAddress { get; private set; }
 
     #region Builders
-    
-    
+
+    public static ContentHistory New(Guid contentId)
+    {
+        var history = new ContentHistory(contentId);
+        history.CreatedDate = DateTime.UtcNow;
+        return history;
+    }
+
+    public ContentHistory WithTitle(string title)
+    {
+        Title = title?.CorrectYeKe();
+        return this;
+    }
+
+    public ContentHistory WithBody(string body, ContentBodyType bodyType = ContentBodyType.HTML)
+    {
+        Body = body?.CorrectYeKe();
+        BodyType = bodyType;
+        return this;
+    }
+
+    public ContentHistory WithUser(string userId, string displayName, string userName)
+    {
+        UserId = userId;
+        UserDisplayName = displayName?.CorrectYeKe();
+        UserName = userName?.CorrectYeKe();
+        return this;
+    }
+
+    public ContentHistory WithBodyType(ContentBodyType bodyType)
+    {
+        BodyType = bodyType;
+        return this;
+    }
+
+    public ContentHistory WithSummary(string summary)
+    {
+        Summary = summary?.CorrectYeKe();
+        return this;
+    }
+
+    public ContentHistory WithIpAddress(string ipAddress)
+    {
+        IpAddress = ipAddress;
+        return this;
+    }
 
     #endregion
     
@@ -36,5 +84,6 @@ public class ContentHistory : ValueObject
         yield return BodyType;
         yield return Summary;
         yield return UserId;
+        yield return IpAddress;
     }
 }
