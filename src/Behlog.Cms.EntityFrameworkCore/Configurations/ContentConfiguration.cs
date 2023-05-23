@@ -19,8 +19,8 @@ public static partial class EntityConfigurations
             content.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
             content.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false);
             content.Property(_ => _.AuthorUserId).HasMaxLength(100).IsRequired();
-            content.Property(_ => _.AuthorUserDisplayName).HasMaxLength(256).IsRequired(false);
-            content.Property(_ => _.AuthorUserName).HasMaxLength(256).IsRequired(false);
+            content.Property(_ => _.AuthorUserDisplayName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            content.Property(_ => _.AuthorUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
             content.Property(_ => _.Summary).HasMaxLength(2000).IsUnicode().IsRequired(false);
             content.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML);
             content.Property(_ => _.Status).HasDefaultValue(ContentStatusEnum.Draft);
@@ -80,6 +80,17 @@ public static partial class EntityConfigurations
                     .WithMany()
                     .HasForeignKey(_ => _.ComponentId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            content.OwnsMany(_ => _.Authors, author =>
+            {
+                author.ToTable(ContentAuthorTableName)
+                    .HasKey(_ => _.Id);
+                author.Property(_ => _.Id).ValueGeneratedOnAdd();
+                author.Property(_ => _.DisplayName).HasMaxLength(256).IsUnicode().IsRequired();
+                author.Property(_ => _.UserId).HasMaxLength(100).IsRequired();
+                author.Property(_ => _.UserName).HasMaxLength(256).IsUnicode().IsRequired();
+                author.WithOwner().HasForeignKey(_=> _.ContentId);
             });
             
             content.HasOne(_ => _.ContentType)

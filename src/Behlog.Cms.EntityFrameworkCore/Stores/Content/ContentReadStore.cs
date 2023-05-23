@@ -4,8 +4,6 @@ using Behlog.Extensions;
 using Behlog.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Behlog.Cms.EntityFrameworkCore.Extensions;
-using Behlog.Cms.Models;
-using Microsoft.Extensions.Options;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 

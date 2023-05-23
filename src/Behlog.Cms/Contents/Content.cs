@@ -70,7 +70,10 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
 
     public ICollection<ContentTag> Tags { get; protected set; }
         = new HashSet<ContentTag>();
-    
+
+    public ICollection<ContentAuthor> Authors { get; protected set; }
+        = new HashSet<ContentAuthor>();
+
     #endregion
 
     #region Builders
@@ -98,6 +101,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
             ContentTypeId = command.ContentTypeId,
             Body = command.Body?.CorrectYeKe()!,
             AuthorUserId = userContext.UserId!,
+            AuthorUserName = userContext.UserName,
+            AuthorUserDisplayName = userContext.DisplayName,
             Summary = command.Summary?.CorrectYeKe()!,
             OrderNum = command.OrderNum,
             Status = ContentStatusEnum.Draft,
@@ -151,7 +156,6 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
         ContentTypeId = command.ContentTypeId;
         Body = command.Body?.CorrectYeKe()!;
         BodyType = command.BodyType;
-        AuthorUserId = userContext.UserId!;
         Summary = command.Summary?.CorrectYeKe()!;
         AltTitle = command.AltTitle?.Trim().CorrectYeKe()!;
         OrderNum = command.OrderNum;
