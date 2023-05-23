@@ -19,6 +19,8 @@ public static partial class EntityConfigurations
             content.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
             content.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false);
             content.Property(_ => _.AuthorUserId).HasMaxLength(100).IsRequired();
+            content.Property(_ => _.AuthorUserDisplayName).HasMaxLength(256).IsRequired(false);
+            content.Property(_ => _.AuthorUserName).HasMaxLength(256).IsRequired(false);
             content.Property(_ => _.Summary).HasMaxLength(2000).IsUnicode().IsRequired(false);
             content.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML);
             content.Property(_ => _.Status).HasDefaultValue(ContentStatusEnum.Draft);
@@ -88,11 +90,6 @@ public static partial class EntityConfigurations
             content.HasOne(_ => _.Language)
                 .WithMany()
                 .HasForeignKey(_ => _.LangId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            content.HasOne(_ => _.AuthorUser)
-                .WithMany()
-                .HasForeignKey(_ => _.AuthorUserId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

@@ -21,6 +21,8 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public string? LangCode { get; protected set; }
     public ContentBodyType BodyType { get; protected set; }
     public string AuthorUserId { get; protected set; }
+    public string? AuthorUserDisplayName { get; protected set; }
+    public string? AuthorUserName { get; protected set; }
     public string? Summary { get; protected set; }
     public ContentStatusEnum Status { get; protected set; }
     public DateTime? LastStatusChangedDate { get; protected set; }
@@ -69,8 +71,6 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
     public ICollection<ContentTag> Tags { get; protected set; }
         = new HashSet<ContentTag>();
     
-    public User AuthorUser { get; protected set; }
-
     #endregion
 
     #region Builders
