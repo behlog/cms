@@ -1,3 +1,4 @@
+using Behlog.Cms.Contents;
 using Behlog.Core;
 using Behlog.Cms.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -69,8 +70,7 @@ public static partial class EntityConfigurations
 
 
             content.OwnsMany(_ => _.Components, comp => {
-                comp.ToTable(ContentComponentTableName)
-                    .HasKey(_ => _.Id);
+                comp.ToTable(ContentComponentTableName).HasKey(_ => _.Id);
                 comp.Property(_ => _.Id).ValueGeneratedOnAdd();
                 comp.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
                 comp.Property(_ => _.Params).HasMaxLength(4000).IsUnicode().IsRequired(false);
@@ -84,13 +84,29 @@ public static partial class EntityConfigurations
 
             content.OwnsMany(_ => _.Authors, author =>
             {
-                author.ToTable(ContentAuthorTableName)
-                    .HasKey(_ => _.Id);
+                author.ToTable(ContentAuthorTableName).HasKey(_ => _.Id);
                 author.Property(_ => _.Id).ValueGeneratedOnAdd();
                 author.Property(_ => _.DisplayName).HasMaxLength(256).IsUnicode().IsRequired();
                 author.Property(_ => _.UserId).HasMaxLength(100).IsRequired();
                 author.Property(_ => _.UserName).HasMaxLength(256).IsUnicode().IsRequired();
                 author.WithOwner().HasForeignKey(_=> _.ContentId);
+            });
+
+            content.OwnsMany(_ => _.Histories, history =>
+            {
+                history.ToTable(ContentHistoryTableName).HasKey(_ => _.Id);
+                history.Property(_ => _.Id).ValueGeneratedOnAdd();
+                history.WithOwner().HasForeignKey(_ => _.ContentId);
+                history.Property(_ => _.Body).HasColumnType("nTEXT").IsUnicode().IsRequired(false);
+                history.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired();
+                history.Property(_ => _.Slug).HasMaxLength(1000).IsUnicode().IsRequired();
+                history.Property(_ => _.AltTitle).HasMaxLength(1000).IsUnicode().IsRequired(false);
+                history.Property(_ => _.UserId).HasMaxLength(100).IsRequired();
+                history.Property(_ => _.UserDisplayName).HasMaxLength(256).IsUnicode().IsRequired(false);
+                history.Property(_ => _.UserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+                history.Property(_ => _.Summary).HasMaxLength(2000).IsUnicode().IsRequired(false);
+                history.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML);
+                history.Property(_ => _.IpAddress).HasMaxLength(50).IsUnicode().IsRequired(false);
             });
             
             content.HasOne(_ => _.ContentType)

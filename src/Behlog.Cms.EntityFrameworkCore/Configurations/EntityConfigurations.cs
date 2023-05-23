@@ -1,3 +1,4 @@
+using Behlog.Cms.Contents;
 using Behlog.Core;
 using Behlog.Cms.Domain;
 
@@ -48,4 +49,6 @@ public static partial class EntityConfigurations
     public const string ContentTypeTagTableName = nameof(ContentTypeTag);
 
     public const string ContentAuthorTableName = nameof(ContentAuthor);
+
+    public const string ContentHistoryTableName = nameof(ContentHistory);
 }

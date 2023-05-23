@@ -1,5 +1,5 @@
+using Behlog.Cms.Contents;
 using Behlog.Cms.FileUploads.Internal;
-using Idyfa.Core;
 
 namespace Behlog.Cms.Domain;
 
@@ -73,6 +73,9 @@ public partial class Content : AggregateRoot<Guid>, IHasMetadata
 
     public ICollection<ContentAuthor> Authors { get; protected set; }
         = new HashSet<ContentAuthor>();
+
+    public ICollection<ContentHistory> Histories { get; protected set; }
+        = new HashSet<ContentHistory>();
 
     #endregion
 

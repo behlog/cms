@@ -17,6 +17,8 @@ public class ContentHistory : ValueObject
     public Guid ContentId { get; private set; }
     public DateTime CreatedDate { get; private set; }
     public string Title { get; private set; }
+    public string? AltTitle { get; private set; }
+    public string Slug { get; private set; }
     public ContentBodyType BodyType { get; private set; }
     public string? Body { get; private set; }
     public string? Summary { get; private set; }
@@ -37,6 +39,18 @@ public class ContentHistory : ValueObject
     public ContentHistory WithTitle(string title)
     {
         Title = title?.CorrectYeKe();
+        return this;
+    }
+
+    public ContentHistory WithAltTitle(string altTitle)
+    {
+        AltTitle = altTitle?.CorrectYeKe();
+        return this;
+    }
+
+    public ContentHistory WithSlug(string slug)
+    {
+        Slug = slug?.CorrectYeKe();
         return this;
     }
 
