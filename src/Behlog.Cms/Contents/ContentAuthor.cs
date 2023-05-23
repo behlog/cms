@@ -16,15 +16,10 @@ public class ContentAuthor : ValueObject
     }
     
     public long Id { get; private set; }
-    
     public Guid ContentId { get; private set; }
-    
     public string UserId { get; private set; }
-    
     public string? DisplayName { get; private set; }
-    
     public string? UserName { get; private set; }
-    
     public bool Visible { get; private set; }
 
     #region Builders
@@ -35,9 +30,17 @@ public class ContentAuthor : ValueObject
         return contentAuthor;
     }
 
-    public ContentAuthor WithUserId(string userId)
+    public ContentAuthor WithUser(string userId, string? displayName, string? userName)
     {
         UserId = userId;
+        DisplayName = displayName;
+        UserName = userName;
+        return this;
+    }
+
+    public ContentAuthor Visibility(bool visible = true)
+    {
+        Visible = visible;
         return this;
     }
 
