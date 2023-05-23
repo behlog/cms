@@ -24,7 +24,8 @@ public static class ContentMappers
             .WithFiles(content.Files?.ToList()!)
             .WithLanguage(content.Language)
             .WithMeta(content.Meta?.ToList()!)
-            .WithTags(content.Tags?.ToList()!);
+            .WithTags(content.Tags?.ToList()!)
+            .WithAuthor(content.AuthorUserName, content.AuthorUserDisplayName);
     }
 
 
