@@ -9,13 +9,16 @@ public static class FileUploadMappers
         return new FileUploadResult
         {
             Id = fileUpload.Id,
+            WebsiteId = fileUpload.WebsiteId,
             Title = fileUpload.Title,
             FileName = fileUpload.FileName,
             Extension = fileUpload.Extension,
             Status = fileUpload.Status,
+            FileType = fileUpload.FileType,
             Url = fileUpload.Url,
             AltTitle = fileUpload.AltTitle,
             Description = fileUpload.Description,
+            LastStatusChangedOn = fileUpload.LastStatusChangedOn,
             CreatedDate = fileUpload.CreatedDate,
             FilePath = fileUpload.FilePath,
             FileSize = fileUpload.FileSize,
