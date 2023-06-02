@@ -13,7 +13,7 @@ public class FileUploader
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _env = env ?? throw new ArgumentNullException(nameof(env));
-        _uploadRoot = $"{_env.ContentRootPath}/uploads";
+        _uploadRoot = $"{_env.ContentRootPath}{Path.DirectorySeparatorChar}uploads";
     }
 
     private string createDirectory(string contentType)
@@ -23,7 +23,7 @@ public class FileUploader
             Directory.CreateDirectory(_uploadRoot);
         }
 
-        var contentTypeDirPath = $"{_uploadRoot}/{contentType}";
+        var contentTypeDirPath = $"{_uploadRoot}{Path.DirectorySeparatorChar}{contentType}";
         if (contentType.IsNotNullOrEmpty() && !Directory.Exists(contentTypeDirPath))
         {
             Directory.CreateDirectory(contentTypeDirPath);
@@ -79,14 +79,15 @@ public class FileUploader
         IFormFile fileData, string contentType, FileTypeEnum fileType)
     {
         fileData.ThrowExceptionIfArgumentIsNull(nameof(fileData));
-        //TODO : need to check if fileData length is zero !?
-
+        if (fileData.Length <= 0)
+            throw new BehlogFileUploadException("FileData length cannot be zero or negative.");
+        
         var root = createDirectory(contentType);
         var fileName = getFileName(fileData, root);
         var result = new FileUploaderResult
         {
             FileName = fileName,
-            FilePath = $"{root}/{fileName}",
+            FilePath = $"{root}{Path.DirectorySeparatorChar}{fileName}",
             FileSize = fileData.Length,
             Extension = Path.GetExtension(fileName)
         };
@@ -114,7 +115,7 @@ public class FileUploader
         fileData.ThrowExceptionIfArgumentIsNull(nameof(fileData));
 
         var result = fileData.FileName;
-        var filePath = $"{targetDirectory}/{result}";
+        var filePath = $"{targetDirectory}{Path.DirectorySeparatorChar}{result}";
         var fileName = Path.GetFileNameWithoutExtension(result);
         var fileExt = Path.GetExtension(result);
         
@@ -122,7 +123,7 @@ public class FileUploader
         while (File.Exists(filePath))
         {
             result = $"{fileName}_{i}{fileExt}";
-            filePath = $"{targetDirectory}/{result}";
+            filePath = $"{targetDirectory}{Path.DirectorySeparatorChar}{result}";
         }
 
         return result;
