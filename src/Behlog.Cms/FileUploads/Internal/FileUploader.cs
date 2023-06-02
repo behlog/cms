@@ -13,7 +13,7 @@ public class FileUploader
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _env = env ?? throw new ArgumentNullException(nameof(env));
-        _uploadRoot = $"{_env.ContentRootPath}{Path.DirectorySeparatorChar}uploads";
+        _uploadRoot = $"{_env.WebRootPath}{Path.DirectorySeparatorChar}uploads";
     }
 
     private string createDirectory(string contentType)
