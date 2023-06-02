@@ -26,7 +26,7 @@ public class FileUploadCommandHandlers :
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
-        _uploader = new FileUploader(options, env);
+        _uploader = new FileUploader(options, env, appContext);
     }
 
     public async Task<CommandResult<FileUploadResult>> HandleAsync(

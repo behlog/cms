@@ -7,13 +7,17 @@ public class FileUploader
 {
     private readonly BehlogOptions _options;
     private readonly IWebHostEnvironment _env;
+    private readonly IBehlogApplicationContext _appContext;
     private string _uploadRoot;
+    private string _appBaseUrl;
 
-    public FileUploader(BehlogOptions options, IWebHostEnvironment env)
+    public FileUploader(BehlogOptions options, IWebHostEnvironment env, IBehlogApplicationContext appContext)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _env = env ?? throw new ArgumentNullException(nameof(env));
+        _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         _uploadRoot = $"{_env.WebRootPath}{Path.DirectorySeparatorChar}uploads";
+        _appBaseUrl = appContext.BaseUrl;
     }
 
     private string createDirectory(string contentType)
@@ -30,6 +34,11 @@ public class FileUploader
         }
 
         return contentTypeDirPath;
+    }
+
+    private string getFileUrl(string contentType, string filename)
+    {
+        return $"{_appBaseUrl}/{contentType}/{filename}";
     }
     
     public FileUploaderResult Upload(IFormFile fileData, string contentType, FileTypeEnum fileType)
@@ -89,6 +98,7 @@ public class FileUploader
             FileName = fileName,
             FilePath = $"{root}{Path.DirectorySeparatorChar}{fileName}",
             FileSize = fileData.Length,
+            FileUrl = getFileUrl(contentType, fileName),
             Extension = Path.GetExtension(fileName)
         };
 
