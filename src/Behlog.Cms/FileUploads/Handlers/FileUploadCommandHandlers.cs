@@ -39,12 +39,22 @@ public class FileUploadCommandHandlers :
         }
         
         var uploadResult = await _uploader
-            .UploadAsync(command.FileData, command.ContentType, command.FileType);
+            .UploadAsync(command.FileData, command.ContentType!, command.FileType);
+        if (uploadResult.HasError)
+        {
+            return CommandResult<FileUploadResult>.Failed(
+                ValidationError.Create(uploadResult.ErrorMessage));
+        }
         FileUploaderResult? alternateUploadResult = null;
         if (command.AlternateFileData.IsNotNullOrEmpty())
         {
             alternateUploadResult = await _uploader
-                .UploadAsync(command.AlternateFileData, command.ContentType, command.FileType);
+                .UploadAsync(command.AlternateFileData, command.ContentType!, command.FileType);
+            if (alternateUploadResult.HasError)
+            {
+                return CommandResult<FileUploadResult>.Failed(
+                    ValidationError.Create(alternateUploadResult.ErrorMessage));
+            }
         }
         
         var fileUpload = FileUpload.Create(
