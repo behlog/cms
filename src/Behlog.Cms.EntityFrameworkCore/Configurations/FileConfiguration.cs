@@ -15,6 +15,7 @@ public static partial class EntityConfigurations
             file.Property(_=> _.Id).ValueGeneratedNever();
             file.Property(_ => _.Title).HasMaxLength(1000).IsUnicode().IsRequired(false);
             file.Property(_ => _.FilePath).HasMaxLength(2000).IsUnicode().IsRequired(false);
+            file.Property(_ => _.FileUrl).HasMaxLength(4000).IsUnicode().IsRequired(false);
             file.Property(_ => _.AlternateFilePath).HasMaxLength(2000).IsUnicode().IsRequired(false);
             file.Property(_ => _.AltTitle).HasMaxLength(1000).IsRequired(false);
             file.Property(_ => _.Extension).HasMaxLength(50).IsUnicode().IsRequired(false);
