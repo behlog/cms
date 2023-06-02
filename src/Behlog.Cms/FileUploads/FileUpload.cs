@@ -13,6 +13,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     public string? Title { get; protected set; }
     public string FilePath { get; protected set; }
     public string FileName { get; protected set; }
+    public string FileUrl { get; protected set; }
     public string? AlternateFilePath { get; protected set; }
     public string? Extension { get; protected set; }
     public long FileSize { get; protected set; }
@@ -58,6 +59,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             Description = command.Description?.CorrectYeKe()!,
             CreatedDate = dateTime.UtcNow,
             FileName = uploaderResult.FileName,
+            FileUrl = uploaderResult.FileUrl,
             Extension = uploaderResult.Extension,
             FileSize = uploaderResult.FileSize,
             WebsiteId = command.WebsiteId,
@@ -89,6 +91,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         {
             Id = Guid.NewGuid(),
             Url = command.Url,
+            FileUrl = command.Url,
             Description = command.Description,
             WebsiteId = command.WebsiteId,
             FileType = command.FileType,
@@ -167,7 +170,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     private void AddCreatedEvent()
     {
         var e = new FileUploadCreatedEvent(
-            Id, Title, FilePath, FileName, AlternateFilePath, Extension, FileSize, AltTitle,
+            Id, Title, FilePath, FileName, FileUrl, AlternateFilePath, Extension, FileSize, AltTitle,
             Url, Status, Description, CreatedDate, CreatedByUserId, CreatedByIp);
         Enqueue(e);
     }

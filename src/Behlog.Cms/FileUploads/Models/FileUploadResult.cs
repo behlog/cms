@@ -10,6 +10,7 @@ public class FileUploadResult
     public Guid WebsiteId { get; set; }
     public string? Title { get; set; }
     public string FilePath { get; set; }
+    public string FileUrl { get; set; }
     public string FileName { get; set; }
     public string AlternateFilePath { get; set; }
     public string? Extension { get; set; }

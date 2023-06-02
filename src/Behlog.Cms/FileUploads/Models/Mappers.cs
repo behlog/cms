@@ -12,6 +12,7 @@ public static class FileUploadMappers
             WebsiteId = fileUpload.WebsiteId,
             Title = fileUpload.Title,
             FileName = fileUpload.FileName,
+            FileUrl = fileUpload.FileUrl,
             Extension = fileUpload.Extension,
             Status = fileUpload.Status,
             FileType = fileUpload.FileType,

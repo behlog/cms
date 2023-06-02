@@ -6,7 +6,7 @@ namespace Behlog.Cms.Events;
 public class FileUploadCreatedEvent : BehlogDomainEvent
 {
     public FileUploadCreatedEvent(
-        Guid id, string title, string filePath, string fileName, string alternateFilePath, 
+        Guid id, string title, string filePath, string fileName, string fileUrl, string alternateFilePath, 
         string extension, long fileSize, string altTitle, string url, FileUploadStatus status, 
         string description, DateTime createdDate, string createdByUserId, 
         string createdByIp)
@@ -15,6 +15,7 @@ public class FileUploadCreatedEvent : BehlogDomainEvent
         Title = title;
         FilePath = filePath;
         FileName = fileName;
+        FileUrl = fileUrl;
         AlternateFilePath = alternateFilePath;
         Extension = extension;
         FileSize = fileSize;
@@ -31,6 +32,7 @@ public class FileUploadCreatedEvent : BehlogDomainEvent
     public string Title { get; }
     public string FileName { get; }
     public string FilePath { get; }
+    public string FileUrl { get; }
     public string AlternateFilePath { get; }
     public string Extension { get; }
     public long FileSize { get; }

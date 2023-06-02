@@ -33,7 +33,7 @@ public class ContentCommandHandlers :
         _behlogger = new Behlogger<ContentCommandHandlers>(logger, dateTime);
         env.ThrowExceptionIfArgumentIsNull(nameof(IWebHostEnvironment));
         options.ThrowExceptionIfArgumentIsNull(nameof(BehlogOptions));
-        _fileUploader = new FileUploader(options, env);
+        _fileUploader = new FileUploader(options, env, appContext);
     }
 
     
