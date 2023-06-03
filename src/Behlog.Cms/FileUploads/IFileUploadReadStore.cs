@@ -15,5 +15,7 @@ public interface IFileUploadReadStore : IBehlogReadStore<FileUpload, Guid>
     /// <param name="cancellationToken"></param>
     Task<QueryResult<FileUpload>> GetFilesAsync(
         QueryFileUploadsByWebsiteId model, CancellationToken cancellationToken = default);
-    
+
+
+    Task<FileUpload?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

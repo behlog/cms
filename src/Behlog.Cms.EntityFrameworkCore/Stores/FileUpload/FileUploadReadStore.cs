@@ -1,10 +1,10 @@
-using Behlog.Cms.Domain;
-using Behlog.Cms.EntityFrameworkCore.Extensions;
 using Behlog.Cms.Query;
 using Behlog.Cms.Store;
-using Behlog.Core.Models;
+using Behlog.Cms.Domain;
 using Behlog.Extensions;
+using Behlog.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Behlog.Cms.EntityFrameworkCore.Extensions;
 
 namespace Behlog.Cms.EntityFrameworkCore.Stores;
 
@@ -53,6 +53,10 @@ public class FileUploadReadStore : BehlogEntityFrameworkCoreReadStore<FileUpload
             .WithPageNumber(model.Options.PageNumber)
             .WithPageSize(model.Options.PageSize)
             .WithTotalCount(await query.LongCountAsync(cancellationToken).ConfigureAwait(false));
-        
+    }
+
+    public async Task<FileUpload?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _set.FirstOrDefaultAsync(_ => _.Id == id, cancellationToken).ConfigureAwait(false);
     }
 }
