@@ -13,13 +13,14 @@ public class FileUploader
     private readonly IBehlogApplicationContext _appContext;
     private string _uploadRoot;
     private string _appBaseUrl;
+    private const string _rootDirName = "uploads";
 
     public FileUploader(BehlogOptions options, IWebHostEnvironment env, IBehlogApplicationContext appContext)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _env = env ?? throw new ArgumentNullException(nameof(env));
         _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
-        _uploadRoot = $"{_env.WebRootPath}{Path.DirectorySeparatorChar}uploads";
+        _uploadRoot = $"{_env.WebRootPath}{Path.DirectorySeparatorChar}{_rootDirName}";
         _appBaseUrl = appContext.BaseUrl;
     }
 
@@ -31,14 +32,18 @@ public class FileUploader
         }
 
         var contentTypeDirPath = $"{_uploadRoot}";
-        if (_uploadRoot.EndsWith(Path.DirectorySeparatorChar))
-            contentTypeDirPath += $"{contentType}";
-        else
-            contentTypeDirPath += $"{Path.DirectorySeparatorChar}{contentType}";
+        
 
-        if (contentType.IsNotNullOrEmpty() && !Directory.Exists(contentTypeDirPath))
+        if (contentType.IsNotNullOrEmpty())
         {
-            Directory.CreateDirectory(contentTypeDirPath);
+            if (_uploadRoot.EndsWith(Path.DirectorySeparatorChar))
+                contentTypeDirPath += $"{contentType}";
+            else
+                contentTypeDirPath += $"{Path.DirectorySeparatorChar}{contentType}";
+
+            if(!Directory.Exists(contentTypeDirPath)) {
+                Directory.CreateDirectory(contentTypeDirPath);
+            }
         }
 
         return contentTypeDirPath;
@@ -47,9 +52,9 @@ public class FileUploader
     private string getFileUrl(string contentType, string filename)
     {
         if (_appBaseUrl.EndsWith("/"))
-            return $"{_appBaseUrl}{contentType}/{filename}";
+            return $"{_appBaseUrl}{_rootDirName}/{contentType}/{filename}";
 
-        return $"{_appBaseUrl}/{contentType}/{filename}";
+        return $"{_appBaseUrl}/{_rootDirName}/{contentType}/{filename}";
     }
     
     public FileUploaderResult Upload(IFormFile fileData, string contentType, FileTypeEnum fileType)
@@ -104,10 +109,13 @@ public class FileUploader
         
         var root = createDirectory(contentType);
         var fileName = getFileName(fileData, root);
+        if (!root.EndsWith(Path.DirectorySeparatorChar))
+            root += $"{Path.DirectorySeparatorChar}";
+
         var result = new FileUploaderResult
         {
             FileName = fileName,
-            FilePath = $"{root}{Path.DirectorySeparatorChar}{fileName}",
+            FilePath = $"{root}{fileName}",
             FileSize = fileData.Length,
             FileUrl = getFileUrl(contentType, fileName),
             Extension = Path.GetExtension(fileName)
