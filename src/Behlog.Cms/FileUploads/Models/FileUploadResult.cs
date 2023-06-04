@@ -9,9 +9,11 @@ public class FileUploadResult
     public string FilePath { get; set; }
     public string FileUrl { get; set; }
     public string FileName { get; set; }
-    public string AlternateFilePath { get; set; }
+    public string? AlternateFilePath { get; set; }
+    public string? AltFileUrl { get; set; }
     public string? Extension { get; set; }
     public long FileSize { get; set; }
+    public long? AltFileSize { get; set; }
     public string? AltTitle { get; set; }
     public string? Url { get; set; }
     public FileUploadStatus Status { get; set; }

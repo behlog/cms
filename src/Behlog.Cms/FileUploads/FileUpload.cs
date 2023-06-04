@@ -18,6 +18,8 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     public string? Extension { get; protected set; }
     public long FileSize { get; protected set; }
     public string? AltTitle { get; protected set; }
+    public string? AltFileUrl { get; protected set; }
+    public long? AltFileSize { get; protected set; }
     public string? Url { get; protected set; }
     public FileUploadStatus Status { get; protected set; }
     public FileTypeEnum FileType { get; protected set; }

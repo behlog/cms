@@ -25,6 +25,8 @@ public static class FileUploadMappers
             FileSize = fileUpload.FileSize,
             LastUpdated = fileUpload.LastUpdated,
             AlternateFilePath = fileUpload.AlternateFilePath,
+            AltFileUrl = fileUpload.AltFileUrl,
+            AltFileSize = fileUpload.AltFileSize,
             CreatedByIp = fileUpload.CreatedByIp,
             CreatedByUserId = fileUpload.CreatedByUserId,
             LastUpdatedByIp = fileUpload.LastUpdatedByIp,
