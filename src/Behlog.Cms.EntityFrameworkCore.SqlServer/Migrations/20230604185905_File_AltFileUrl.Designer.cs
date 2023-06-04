@@ -4,6 +4,7 @@ using Behlog.Cms.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Behlog.Cms.EntityFrameworkCore.SqlServer.Migrations
 {
     [DbContext(typeof(BehlogSqlServerDbContext))]
-    partial class BehlogSqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230604185905_File_AltFileUrl")]
+    partial class File_AltFileUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
