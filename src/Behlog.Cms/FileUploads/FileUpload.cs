@@ -73,6 +73,8 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         if (alternateFileUploadResult is not null)
         {
             file.AlternateFilePath = alternateFileUploadResult.FilePath;
+            file.AltFileUrl = alternateFileUploadResult.FileUrl;
+            file.AltFileSize = alternateFileUploadResult.FileSize;
         }
 
         file.AddCreatedEvent();

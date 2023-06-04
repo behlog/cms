@@ -2,7 +2,10 @@ using Behlog.Cms.Extensions;
 
 namespace Behlog.Cms.FileUploads.Internal;
 
-
+/// <summary>
+/// Helper class to Upload files physically on the server (wwwroot) based on the ContentType.
+/// (ContentType refers to <see cref="ContentType"/> not file's actual content-type!)
+/// </summary>
 public class FileUploader
 {
     private readonly BehlogOptions _options;
@@ -27,7 +30,12 @@ public class FileUploader
             Directory.CreateDirectory(_uploadRoot);
         }
 
-        var contentTypeDirPath = $"{_uploadRoot}{Path.DirectorySeparatorChar}{contentType}";
+        var contentTypeDirPath = $"{_uploadRoot}";
+        if (_uploadRoot.EndsWith(Path.DirectorySeparatorChar))
+            contentTypeDirPath += $"{contentType}";
+        else
+            contentTypeDirPath += $"{Path.DirectorySeparatorChar}{contentType}";
+
         if (contentType.IsNotNullOrEmpty() && !Directory.Exists(contentTypeDirPath))
         {
             Directory.CreateDirectory(contentTypeDirPath);
@@ -38,6 +46,9 @@ public class FileUploader
 
     private string getFileUrl(string contentType, string filename)
     {
+        if (_appBaseUrl.EndsWith("/"))
+            return $"{_appBaseUrl}{contentType}/{filename}";
+
         return $"{_appBaseUrl}/{contentType}/{filename}";
     }
     
@@ -125,7 +136,10 @@ public class FileUploader
         fileData.ThrowExceptionIfArgumentIsNull(nameof(fileData));
 
         var result = fileData.FileName;
-        var filePath = $"{targetDirectory}{Path.DirectorySeparatorChar}{result}";
+        if (!targetDirectory.EndsWith(Path.DirectorySeparatorChar))
+            targetDirectory += $"{Path.DirectorySeparatorChar}";
+
+        var filePath = $"{targetDirectory}{result}";
         var fileName = Path.GetFileNameWithoutExtension(result);
         var fileExt = Path.GetExtension(result);
         
@@ -133,7 +147,7 @@ public class FileUploader
         while (File.Exists(filePath))
         {
             result = $"{fileName}_{i}{fileExt}";
-            filePath = $"{targetDirectory}{Path.DirectorySeparatorChar}{result}";
+            filePath = $"{targetDirectory}{result}";
         }
 
         return result;

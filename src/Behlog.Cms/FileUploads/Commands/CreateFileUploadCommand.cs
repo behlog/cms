@@ -16,10 +16,11 @@ public class CreateFileUploadCommand : IBehlogCommand<CommandResult<FileUploadRe
     }
 
     public CreateFileUploadCommand(
-        IFormFile fileData, FileTypeEnum fileType, Guid websiteId, 
+        IFormFile fileData, string? contentType, FileTypeEnum fileType, Guid websiteId, 
         IFormFile? alternateFileData, string? title, string? altTitle, string? description)
     {
         FileData = fileData;
+        ContentType = contentType;
         FileType = fileType;
         WebsiteId = websiteId;
         AlternateFileData = alternateFileData;
