@@ -44,7 +44,7 @@ public static class EnumExtensions
             _=> EnumText.Unknown
         };
 
-    public static string ToDisplay(FileUploadStatus status) =>
+    public static string ToDisplay(this FileUploadStatus status) =>
         status switch {
             FileUploadStatus.Deleted => EnumText.Deleted,
             FileUploadStatus.Created => EnumText.Created,
@@ -64,5 +64,12 @@ public static class EnumExtensions
             CommentStatusEnum.Rejected => EnumText.Comment_Rejected,
             _=> EnumText.Unknown
         };
-    
+
+    public static string ToDisplay(this ContentBodyType bodyType) =>
+        bodyType switch {
+            ContentBodyType.HTML => EnumText.BodyType_HTML,
+            ContentBodyType.Text => EnumText.BodyType_Text,
+            ContentBodyType.Markdown => EnumText.BodyType_Markdown,
+            _=> EnumText.Unknown
+        };
 }
