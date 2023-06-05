@@ -30,7 +30,8 @@ public static class FileUploadMappers
             CreatedByIp = fileUpload.CreatedByIp,
             CreatedByUserId = fileUpload.CreatedByUserId,
             LastUpdatedByIp = fileUpload.LastUpdatedByIp,
-            LastUpdatedByUserId = fileUpload.LastUpdatedByUserId
+            LastUpdatedByUserId = fileUpload.LastUpdatedByUserId,
+            ContentType = fileUpload.ContentType,
         };
     }
     

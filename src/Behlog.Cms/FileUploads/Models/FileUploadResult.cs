@@ -12,6 +12,7 @@ public class FileUploadResult
     public string? AlternateFilePath { get; set; }
     public string? AltFileUrl { get; set; }
     public string? Extension { get; set; }
+    public string? ContentType { get; set; }
     public long FileSize { get; set; }
     public long? AltFileSize { get; set; }
     public string? AltTitle { get; set; }

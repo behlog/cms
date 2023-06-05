@@ -79,7 +79,17 @@ public class FileUploadCommandHandlers :
         var fileUpload = await _readStore.FindAsync(command.Id, cancellationToken).ConfigureAwait(false);
         fileUpload.ThrowExceptionIfReferenceIsNull(nameof(fileUpload));
 
-        fileUpload.Update(command, _userContext, _appContext, _dateTime);
+        FileUploaderResult? alternateUploadResult = null;
+        if(command.AlternateFileData.IsNotNullOrEmpty()) {
+            alternateUploadResult = await _uploader
+                .UploadAsync(command.AlternateFileData, fileUpload.ContentType, fileUpload.FileType);
+            if (alternateUploadResult.HasError) {
+                return CommandResult<FileUploadResult>.Failed(
+                    ValidationError.Create(alternateUploadResult.ErrorMessage));
+            }
+        }
+
+        fileUpload.Update(command, alternateUploadResult, _userContext, _appContext, _dateTime);
         _writeStore.MarkForUpdate(fileUpload);
         await _writeStore.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

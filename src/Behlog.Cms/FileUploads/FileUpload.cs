@@ -16,6 +16,7 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     public string FileUrl { get; protected set; }
     public string? AlternateFilePath { get; protected set; }
     public string? Extension { get; protected set; }
+    public string? ContentType { get; protected set; }
     public long FileSize { get; protected set; }
     public string? AltTitle { get; protected set; }
     public string? AltFileUrl { get; protected set; }
@@ -67,7 +68,8 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
             WebsiteId = command.WebsiteId,
             FilePath = uploaderResult.FilePath,
             CreatedByIp = appContext.IpAddress, 
-            CreatedByUserId = userContext.UserId
+            CreatedByUserId = userContext.UserId,
+            ContentType = command.ContentType
         };
 
         if (alternateFileUploadResult is not null)
@@ -112,8 +114,8 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
     }
     
 
-    public void Update(UpdateFileUploadCommand command, IIdyfaUserContext userContext,
-        IBehlogApplicationContext appContext, ISystemDateTime dateTime)
+    public void Update(UpdateFileUploadCommand command, FileUploaderResult? alternateFileUploadResult, 
+        IIdyfaUserContext userContext,IBehlogApplicationContext appContext, ISystemDateTime dateTime)
     {
         command.ThrowExceptionIfArgumentIsNull(nameof(command));
         userContext.ThrowExceptionIfArgumentIsNull(nameof(userContext));
@@ -132,7 +134,13 @@ public class FileUpload : AggregateRoot<Guid>, IHasMetadata
         {
             ChangeStatus(FileUploadStatus.Hidden, appContext, userContext, dateTime);
         }
-        
+
+        if (alternateFileUploadResult is not null) {
+            AlternateFilePath = alternateFileUploadResult.FilePath;
+            AltFileUrl = alternateFileUploadResult.FileUrl;
+            AltFileSize = alternateFileUploadResult.FileSize;
+        }
+
         AddUpdatedEvent();
     }
 
