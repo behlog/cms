@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <EmbeddedResource Update="EnumText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>EnumText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       <EmbeddedResource Update="SeedText.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>SeedText.Designer.cs</LastGenOutput>
@@ -22,6 +26,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="EnumText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EnumText.resx</DependentUpon>
+      </Compile>
       <Compile Update="SeedText.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
