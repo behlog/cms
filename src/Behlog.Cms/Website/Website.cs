@@ -24,6 +24,8 @@ public partial class Website : AggregateRoot<Guid>
     public string? Keywords { get; protected set; }
     public string? Url { get; protected set; }
     public string OwnerUserId { get; protected set; }
+    public string? OwnerUserName { get; protected set; }
+    public string? OwneruserDisplayName { get; protected set; }
     public Guid? DefaultLangId { get; protected set; }
     public WebsiteStatus Status { get; protected set; }
     public DateTime CreatedDate { get; protected set; }
@@ -35,6 +37,8 @@ public partial class Website : AggregateRoot<Guid>
     public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
     public string? LastUpdatedByUserId { get; protected set; }
+    public string? LastUpdatedByUserName { get; protected set; }
+    public string? LastUpdatedByUserDisplayName { get; protected set; }
     public string? LastUpdatedByIp { get; protected set; }
     
     #endregion

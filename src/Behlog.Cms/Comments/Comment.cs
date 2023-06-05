@@ -21,7 +21,11 @@ public class Comment : AggregateRoot<Guid>, IHasMetadata
     public DateTime? LastUpdated { get; protected set; }
     public DateTime? LastStatusChangedOn { get; protected set; }
     public string? CreatedByUserId { get; protected set; }
+    public string? CreatedByUserName { get; protected set; }
+    public string? CreatedByUserDisplayName { get; protected set; }
     public string? LastUpdatedByUserId { get; protected set; }
+    public string? LastUpdatedByUserName { get; protected set; }
+    public string? LastUpdatedByUserDisplayName { get; protected set; }
     public string? CreatedByIp { get; protected set; }
     public string? LastUpdatedByIp { get; protected set; }
     #endregion
