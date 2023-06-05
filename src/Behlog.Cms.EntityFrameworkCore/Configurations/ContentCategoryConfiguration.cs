@@ -20,6 +20,12 @@ public static partial class EntityConfigurations
             category.Property(_ => _.Slug).HasMaxLength(256).IsUnicode().IsRequired();
             category.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
             category.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
+            category.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
+            category.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
+            category.Property(_ => _.CreatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            category.Property(_ => _.CreatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            category.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            category.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
 
             category.HasOne(_=> _.ContentType)
                 .WithMany()

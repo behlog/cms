@@ -29,7 +29,10 @@ public static partial class EntityConfigurations
             component.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsUnicode().IsRequired(false);
             component.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsUnicode().IsRequired(false);
             component.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsUnicode().IsRequired(false);
-            
+            component.Property(_ => _.CreatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            component.Property(_ => _.CreatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            component.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            component.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
 
             component.OwnsMany(_ => _.Meta, m => {
                 m.ToTable(ComponentMetaTableName).HasKey(_=> _.Id);

@@ -19,6 +19,11 @@ public static partial class EntityConfigurations
             tag.Property(_ => _.Status).HasDefaultValue(EntityStatus.Enabled);
             tag.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
             tag.Property(_ => _.CreatedByIp).HasMaxLength(50).IsRequired(false);
+            tag.Property(_ => _.CreatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            tag.Property(_ => _.CreatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            tag.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsRequired(false);
+            tag.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            tag.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
 
             tag.HasOne(_ => _.Language)
                 .WithMany()

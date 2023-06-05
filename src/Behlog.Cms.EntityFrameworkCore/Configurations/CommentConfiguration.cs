@@ -25,6 +25,10 @@ public static partial class EntityConfigurations
             comment.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsRequired(false);
             comment.Property(_ => _.BodyType).HasDefaultValue(ContentBodyType.HTML);
             comment.Property(_ => _.Status).HasDefaultValue(CommentStatusEnum.Created);
+            comment.Property(_ => _.CreatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            comment.Property(_ => _.CreatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            comment.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            comment.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
 
             comment.HasOne(_ => _.Content)
                 .WithMany()

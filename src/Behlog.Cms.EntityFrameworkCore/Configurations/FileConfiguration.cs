@@ -25,6 +25,10 @@ public static partial class EntityConfigurations
             file.Property(_ => _.FileType).HasDefaultValue(FileTypeEnum.Common);
             file.Property(_ => _.Description).HasMaxLength(2000).IsUnicode().IsRequired(false);
             file.Property(_ => _.ContentType).HasMaxLength(256).IsUnicode().IsRequired(false);
+            file.Property(_ => _.CreatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            file.Property(_ => _.CreatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            file.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            file.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
 
             file.HasOne(_ => _.Website)
                 .WithMany()

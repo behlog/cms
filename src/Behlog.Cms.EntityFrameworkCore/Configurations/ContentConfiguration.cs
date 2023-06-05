@@ -33,6 +33,10 @@ public static partial class EntityConfigurations
             content.Property(_ => _.CreatedByUserId).HasMaxLength(100).IsRequired(false);
             content.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
             content.Property(_ => _.LangCode).HasMaxLength(10).IsUnicode().IsRequired(false);
+            content.Property(_ => _.CreatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            content.Property(_ => _.CreatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            content.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            content.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
 
             content.OwnsMany(_ => _.Meta, m => {
                 m.ToTable(ContentMetaTableName).HasKey(_=> _.Id);

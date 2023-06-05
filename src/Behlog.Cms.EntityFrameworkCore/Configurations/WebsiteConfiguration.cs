@@ -27,6 +27,12 @@ public static partial class EntityConfigurations
             web.Property(_ => _.Email).HasMaxLength(2000).IsUnicode().IsRequired(false);
             web.Property(_ => _.TemplateName).HasDefaultValue("default").HasMaxLength(256).IsUnicode().IsRequired();
             web.Property(_ => _.CopyrightText).HasMaxLength(1000).IsUnicode().IsRequired(false);
+            web.Property(_ => _.OwnerUserName).HasMaxLength(256).IsUnicode().IsRequired(false);
+            web.Property(_ => _.OwneruserDisplayName).HasMaxLength(500).IsUnicode().IsRequired(false);
+            web.Property(_ => _.LastUpdatedByIp).HasMaxLength(50).IsRequired(false);
+            web.Property(_ => _.LastUpdatedByUserId).HasMaxLength(100).IsRequired(false);
+            web.Property(_ => _.LastUpdatedByUserName).HasMaxLength(256).IsRequired(false);
+            web.Property(_ => _.LastUpdatedByUserDisplayName).HasMaxLength(500).IsRequired(false);
 
             web.OwnsMany(_ => _.Meta, m =>
             {
