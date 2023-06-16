@@ -11,5 +11,5 @@ public interface ICommentReadStore : IBehlogReadStore<Comment, Guid>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<QueryResult<Comment>> QueryAsync(
-        QueryWebsiteComments query, CancellationToken cancellationToken = default);
+        QueryWebsiteComments model, CancellationToken cancellationToken = default);
 }
